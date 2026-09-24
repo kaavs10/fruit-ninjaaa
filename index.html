@@ -1,232 +1,835 @@
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fruit Ninja — Hand Slice</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+<meta charset="UTF-8">
 
-        body {
-            overflow: hidden;
-            background: #050505;
-            font-family: Arial, sans-serif;
-            color: white;
-        }
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-        #game {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
-            background:
-                radial-gradient(circle at center, #171717 0%, #050505 70%);
-        }
+<title>Fruit Ninja — Hand Slice</title>
 
-        #camera {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transform: scaleX(-1);
-            opacity: 0.12;
-        }
+<style>
 
-        #gameCanvas {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-        }
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-        #hud {
-            position: absolute;
-            top: 25px;
-            left: 30px;
-            right: 30px;
+body {
+    overflow: hidden;
+    background: #050505;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+}
 
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+#game {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
 
-            z-index: 10;
-            pointer-events: none;
-        }
+    background:
+        radial-gradient(
+            circle at center,
+            #191919 0%,
+            #070707 65%,
+            #000000 100%
+        );
+}
 
-        .hudBox {
-            padding: 12px 20px;
-            border-radius: 15px;
+/* =========================
+   CAMERA
+========================= */
 
-            background: rgba(0, 0, 0, 0.45);
-            backdrop-filter: blur(10px);
+#camera {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scaleX(-1);
+    opacity: 0.10;
+}
 
-            border: 1px solid rgba(255,255,255,0.15);
+/* =========================
+   CANVAS
+========================= */
 
-            font-size: 22px;
-            font-weight: bold;
-        }
+#gameCanvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
 
-        #score {
-            color: #7cff00;
-        }
+/* =========================
+   HUD
+========================= */
 
-        #lives {
-            color: #ff4b4b;
-        }
+#hud {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
 
-        #timer {
-            color: #5edcff;
-        }
+    display: flex;
+    gap: 15px;
 
-        #startScreen {
-            position: absolute;
-            inset: 0;
+    z-index: 10;
+    pointer-events: none;
+}
 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
+.hudBox {
+    padding: 10px 20px;
 
-            z-index: 20;
+    border-radius: 14px;
 
-            background:
-                radial-gradient(circle, rgba(30,30,30,0.95), rgba(0,0,0,0.98));
-        }
+    background:
+        rgba(0,0,0,0.55);
 
-        #startScreen h1 {
-            font-size: clamp(50px, 9vw, 110px);
-            letter-spacing: -5px;
+    backdrop-filter: blur(10px);
 
-            background: linear-gradient(
-                90deg,
-                #ff3d3d,
-                #ffb300,
-                #7cff00,
-                #00e5ff
-            );
+    border:
+        1px solid
+        rgba(255,255,255,0.14);
 
-            -webkit-background-clip: text;
-            color: transparent;
+    font-size: 20px;
+    font-weight: bold;
+}
 
-            margin-bottom: 10px;
-        }
+#score {
+    color: #7cff00;
+}
 
-        #startScreen p {
-            color: #aaa;
-            font-size: 18px;
-            margin-bottom: 30px;
-        }
+#timer {
+    color: #55ddff;
+}
 
-        button {
-            border: none;
-            padding: 16px 35px;
+#lives {
+    color: #ff4444;
+}
 
-            border-radius: 50px;
+/* =========================
+   SIDE PANELS
+========================= */
 
-            background: white;
-            color: black;
+.sidePanel {
+    position: absolute;
 
-            font-size: 18px;
-            font-weight: bold;
+    top: 25px;
 
-            cursor: pointer;
+    width: 190px;
 
-            transition: 0.2s;
-        }
+    padding: 18px;
 
-        button:hover {
-            transform: scale(1.08);
-            box-shadow: 0 0 30px rgba(255,255,255,0.3);
-        }
+    border-radius: 18px;
 
-        #gameOver {
-            position: absolute;
-            inset: 0;
+    background:
+        rgba(0,0,0,0.45);
 
-            display: none;
+    backdrop-filter: blur(12px);
 
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
+    border:
+        1px solid
+        rgba(255,255,255,0.12);
 
-            z-index: 30;
+    z-index: 9;
+}
 
-            background: rgba(0,0,0,0.85);
-            backdrop-filter: blur(12px);
-        }
+#leaderboard {
+    left: 20px;
+}
 
-        #gameOver h2 {
-            font-size: 70px;
-            margin-bottom: 10px;
-        }
+#ratingsPanel {
+    right: 20px;
+}
 
-        #finalScore {
-            font-size: 30px;
-            color: #7cff00;
-            margin-bottom: 30px;
-        }
+.panelTitle {
+    text-align: center;
 
-        #cameraPermission {
-            position: absolute;
-            bottom: 25px;
-            left: 50%;
-            transform: translateX(-50%);
+    font-size: 16px;
+    font-weight: bold;
 
-            z-index: 15;
+    letter-spacing: 1px;
 
-            color: #aaa;
-            font-size: 14px;
-        }
-    </style>
+    margin-bottom: 15px;
+
+    color: #ffffff;
+}
+
+.rankRow {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 9px 4px;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,0.08);
+
+    font-size: 14px;
+}
+
+.rankNumber {
+    font-weight: bold;
+}
+
+.rankName {
+    flex: 1;
+    margin-left: 8px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+.rankScore {
+    color: #7cff00;
+    font-weight: bold;
+}
+
+#averageRating {
+    text-align: center;
+
+    font-size: 27px;
+
+    margin-bottom: 12px;
+}
+
+.ratingNinjas {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 3px;
+
+    font-size: 21px;
+}
+
+.ratingNinjas span {
+    opacity: 0.25;
+
+    filter:
+        grayscale(1);
+}
+
+.ratingNinjas span.active {
+    opacity: 1;
+
+    filter:
+        grayscale(1)
+        brightness(0);
+}
+
+/* =========================
+   START SCREEN
+========================= */
+
+#startScreen {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    flex-direction: column;
+
+    z-index: 20;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(30,30,30,0.96),
+            rgba(0,0,0,0.99)
+        );
+}
+
+#startScreen h1 {
+    font-size:
+        clamp(
+            50px,
+            9vw,
+            110px
+        );
+
+    letter-spacing: -5px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #ff3333,
+            #ffb300,
+            #7cff00,
+            #00ddff
+        );
+
+    -webkit-background-clip: text;
+
+    color: transparent;
+
+    margin-bottom: 10px;
+}
+
+#startScreen p {
+    color: #aaa;
+
+    font-size: 18px;
+
+    margin-bottom: 30px;
+}
+
+button {
+    border: none;
+
+    padding: 15px 35px;
+
+    border-radius: 50px;
+
+    background: white;
+
+    color: black;
+
+    font-size: 17px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+button:hover {
+    transform: scale(1.07);
+
+    box-shadow:
+        0 0 30px
+        rgba(255,255,255,0.25);
+}
+
+/* =========================
+   MODALS
+========================= */
+
+.modalOverlay {
+    position: absolute;
+
+    inset: 0;
+
+    display: none;
+
+    justify-content: center;
+    align-items: center;
+
+    z-index: 50;
+
+    background:
+        rgba(0,0,0,0.78);
+
+    backdrop-filter:
+        blur(10px);
+}
+
+.modal {
+    position: relative;
+
+    width:
+        min(520px, 90vw);
+
+    padding: 35px;
+
+    border-radius: 25px;
+
+    background: #111;
+
+    border:
+        1px solid
+        rgba(255,255,255,0.15);
+
+    box-shadow:
+        0 20px 80px
+        rgba(0,0,0,0.6);
+
+    text-align: center;
+}
+
+.modal h2 {
+    font-size: 32px;
+
+    margin-bottom: 20px;
+}
+
+.closeButton {
+    position: absolute;
+
+    top: 12px;
+    right: 17px;
+
+    width: 35px;
+    height: 35px;
+
+    padding: 0;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,255,255,0.08);
+
+    color: white;
+
+    font-size: 23px;
+
+    line-height: 35px;
+}
+
+.instructions {
+    text-align: left;
+
+    color: #ccc;
+
+    line-height: 1.8;
+
+    margin-bottom: 25px;
+}
+
+.instructions strong {
+    color: white;
+}
+
+#nameInput {
+    width: 100%;
+
+    padding: 15px;
+
+    border-radius: 12px;
+
+    border: 1px solid #444;
+
+    background: #050505;
+
+    color: white;
+
+    font-size: 18px;
+
+    outline: none;
+
+    margin-bottom: 20px;
+}
+
+#nameInput:focus {
+    border-color: #7cff00;
+}
+
+/* =========================
+   GAME OVER
+========================= */
+
+#gameOver {
+    display: none;
+}
+
+#gameOver h2 {
+    font-size: 60px;
+
+    margin-bottom: 10px;
+}
+
+#resultText {
+    color: #7cff00;
+
+    font-size: 25px;
+
+    margin-bottom: 8px;
+}
+
+#finalScore {
+    font-size: 24px;
+
+    color: #aaa;
+
+    margin-bottom: 25px;
+}
+
+/* =========================
+   RATING
+========================= */
+
+#ratingModal {
+    display: none;
+}
+
+#ratingModal h2 {
+    margin-bottom: 8px;
+}
+
+#ratingModal p {
+    color: #aaa;
+
+    margin-bottom: 22px;
+}
+
+#ninjaRating {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    margin:
+        20px 0
+        28px;
+}
+
+.ninjaChoice {
+    font-size: 42px;
+
+    cursor: pointer;
+
+    opacity: 0.28;
+
+    filter:
+        grayscale(1);
+
+    transition: 0.15s;
+
+    user-select: none;
+}
+
+.ninjaChoice:hover {
+    transform: scale(1.15);
+}
+
+.ninjaChoice.selected {
+    opacity: 1;
+
+    filter:
+        grayscale(1)
+        brightness(0);
+
+    transform: scale(1.05);
+}
+
+#cameraPermission {
+    position: absolute;
+
+    bottom: 20px;
+
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    z-index: 15;
+
+    color: #777;
+
+    font-size: 13px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width: 800px) {
+
+    .sidePanel {
+        width: 145px;
+        padding: 12px;
+    }
+
+    #leaderboard {
+        left: 8px;
+        top: 75px;
+    }
+
+    #ratingsPanel {
+        right: 8px;
+        top: 75px;
+    }
+
+    #hud {
+        top: 15px;
+        gap: 5px;
+    }
+
+    .hudBox {
+        padding:
+            8px 10px;
+
+        font-size: 14px;
+    }
+
+}
+
+</style>
+
 </head>
 
 <body>
 
 <div id="game">
 
-    <video id="camera" autoplay playsinline></video>
+<video
+    id="camera"
+    autoplay
+    playsinline>
+</video>
 
-    <canvas id="gameCanvas"></canvas>
+<canvas
+    id="gameCanvas">
+</canvas>
 
-    <div id="hud">
-        <div class="hudBox">
-            SCORE:
-            <span id="score">0</span>
-        </div>
+<!-- HUD -->
 
-        <div class="hudBox">
-            TIME:
-            <span id="timer">60</span>
-        </div>
+<div id="hud">
 
-        <div class="hudBox">
-            LIVES:
-            <span id="lives">❤️❤️❤️</span>
-        </div>
+    <div class="hudBox">
+        SCORE:
+        <span id="score">0</span>
     </div>
 
-    <div id="startScreen">
+    <div class="hudBox">
+        TIME:
+        <span id="timer">60</span>
+    </div>
 
-        <h1>FRUIT NINJA</h1>
+    <div class="hudBox">
+        LIVES:
+        <span id="lives">
+            ❤️❤️❤️
+        </span>
+    </div>
 
-        <p>
-            Move your hand in front of the camera to slice the fruit 🍉
-        </p>
+</div>
 
-        <button id="startButton">
-            START GAME
+<!-- LEADERBOARD -->
+
+<div
+    id="leaderboard"
+    class="sidePanel">
+
+    <div class="panelTitle">
+        🏆 LEADERBOARD
+    </div>
+
+    <div id="leaderboardRows">
+
+        <div class="rankRow">
+            <span class="rankNumber">
+                1st
+            </span>
+
+            <span class="rankName">
+                ---
+            </span>
+
+            <span class="rankScore">
+                0
+            </span>
+        </div>
+
+        <div class="rankRow">
+            <span class="rankNumber">
+                2nd
+            </span>
+
+            <span class="rankName">
+                ---
+            </span>
+
+            <span class="rankScore">
+                0
+            </span>
+        </div>
+
+        <div class="rankRow">
+            <span class="rankNumber">
+                3rd
+            </span>
+
+            <span class="rankName">
+                ---
+            </span>
+
+            <span class="rankScore">
+                0
+            </span>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- RATINGS -->
+
+<div
+    id="ratingsPanel"
+    class="sidePanel">
+
+    <div class="panelTitle">
+        🥷 AVERAGE RATING
+    </div>
+
+    <div id="averageRating">
+        0.0 / 5
+    </div>
+
+    <div
+        id="averageNinjas"
+        class="ratingNinjas">
+
+        <span>🥷</span>
+        <span>🥷</span>
+        <span>🥷</span>
+        <span>🥷</span>
+        <span>🥷</span>
+
+    </div>
+
+</div>
+
+<!-- START SCREEN -->
+
+<div id="startScreen">
+
+    <h1>
+        FRUIT NINJA
+    </h1>
+
+    <p>
+        Slice fruit with your hand 🖐️
+    </p>
+
+    <button id="startButton">
+        PLAY
+    </button>
+
+</div>
+
+<!-- INSTRUCTIONS -->
+
+<div
+    id="instructionsModal"
+    class="modalOverlay">
+
+    <div class="modal">
+
+        <button
+            class="closeButton"
+            id="closeInstructions">
+            ×
+        </button>
+
+        <h2>
+            🥷 HOW TO PLAY
+        </h2>
+
+        <div class="instructions">
+
+            <p>
+                🖐️ <strong>Show your hand</strong>
+                to the camera.
+            </p>
+
+            <p>
+                🔪 Move your index finger
+                quickly across the fruit
+                to slice it.
+            </p>
+
+            <p>
+                🍎 Fruit =
+                <strong>+10 points</strong>
+            </p>
+
+            <p>
+                💣 Bomb =
+                <strong>lose a life</strong>
+            </p>
+
+            <p>
+                ❤️ You have 3 lives.
+            </p>
+
+            <p>
+                ⏱️ You have 60 seconds.
+            </p>
+
+            <p>
+                🏆 Try to get onto the
+                top 3 leaderboard!
+            </p>
+
+        </div>
+
+        <button id="instructionsContinue">
+            CONTINUE
         </button>
 
     </div>
 
-    <div id="gameOver">
+</div>
 
-        <h2>GAME OVER</h2>
+<!-- NAME -->
+
+<div
+    id="nameModal"
+    class="modalOverlay">
+
+    <div class="modal">
+
+        <h2>
+            👤 ENTER YOUR NAME
+        </h2>
+
+        <p
+            style="
+            color:#888;
+            margin-bottom:20px;
+            ">
+
+            Your score will appear
+            on the leaderboard.
+
+        </p>
+
+        <input
+            id="nameInput"
+            type="text"
+            maxlength="16"
+            placeholder="Your name">
+
+        <button id="nameContinue">
+            START SLICING
+        </button>
+
+    </div>
+
+</div>
+
+<!-- GAME OVER -->
+
+<div
+    id="gameOver"
+    class="modalOverlay">
+
+    <div class="modal">
+
+        <h2 id="gameOverTitle">
+            GAME OVER
+        </h2>
+
+        <div id="resultText">
+            NICE RUN!
+        </div>
 
         <div id="finalScore">
             Score: 0
@@ -238,68 +841,175 @@
 
     </div>
 
-    <div id="cameraPermission">
-        Camera required • Allow camera access to play
+</div>
+
+<!-- RATING -->
+
+<div
+    id="ratingModal"
+    class="modalOverlay">
+
+    <div class="modal">
+
+        <h2>
+            🥷 PLEASE RATE
+        </h2>
+
+        <p>
+            How much did you enjoy
+            the game?
+        </p>
+
+        <div id="ninjaRating">
+
+            <span
+                class="ninjaChoice"
+                data-rating="1">
+                🥷
+            </span>
+
+            <span
+                class="ninjaChoice"
+                data-rating="2">
+                🥷
+            </span>
+
+            <span
+                class="ninjaChoice"
+                data-rating="3">
+                🥷
+            </span>
+
+            <span
+                class="ninjaChoice"
+                data-rating="4">
+                🥷
+            </span>
+
+            <span
+                class="ninjaChoice"
+                data-rating="5">
+                🥷
+            </span>
+
+        </div>
+
+        <button id="submitRating">
+            SUBMIT RATING
+        </button>
+
     </div>
 
 </div>
 
+<div id="cameraPermission">
 
-<!-- MediaPipe -->
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+    Camera required • Allow camera access to play
 
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js"></script>
+</div>
 
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
+<!-- MEDIAPIPE -->
 
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js">
+</script>
 
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js">
+</script>
 
 <script>
 
-const canvas = document.getElementById("gameCanvas");
-const ctx = canvas.getContext("2d");
-
-const video = document.getElementById("camera");
-
-const scoreElement = document.getElementById("score");
-const timerElement = document.getElementById("timer");
-const livesElement = document.getElementById("lives");
-
-const startScreen = document.getElementById("startScreen");
-const gameOverScreen = document.getElementById("gameOver");
-
-const finalScore = document.getElementById("finalScore");
-
-const startButton = document.getElementById("startButton");
-const restartButton = document.getElementById("restartButton");
-
-
-/* -----------------------------
+/* =========================================================
    CANVAS
------------------------------ */
+========================================================= */
+
+const canvas =
+    document.getElementById(
+        "gameCanvas"
+    );
+
+const ctx =
+    canvas.getContext("2d");
+
 
 function resizeCanvas() {
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.width =
+        window.innerWidth;
+
+    canvas.height =
+        window.innerHeight;
 
 }
 
-window.addEventListener("resize", resizeCanvas);
-
 resizeCanvas();
 
+window.addEventListener(
+    "resize",
+    resizeCanvas
+);
 
-/* -----------------------------
-   GAME VARIABLES
------------------------------ */
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const video =
+    document.getElementById(
+        "camera"
+    );
+
+const scoreElement =
+    document.getElementById(
+        "score"
+    );
+
+const timerElement =
+    document.getElementById(
+        "timer"
+    );
+
+const livesElement =
+    document.getElementById(
+        "lives"
+    );
+
+const startScreen =
+    document.getElementById(
+        "startScreen"
+    );
+
+const instructionsModal =
+    document.getElementById(
+        "instructionsModal"
+    );
+
+const nameModal =
+    document.getElementById(
+        "nameModal"
+    );
+
+const gameOver =
+    document.getElementById(
+        "gameOver"
+    );
+
+const ratingModal =
+    document.getElementById(
+        "ratingModal"
+    );
+
+
+/* =========================================================
+   GAME STATE
+========================================================= */
 
 let fruits = [];
 
 let particles = [];
 
 let trail = [];
+
+let slicedHalves = [];
 
 let score = 0;
 
@@ -315,96 +1025,130 @@ let spawnInterval = 850;
 
 let difficulty = 1;
 
-let gameTimer;
+let gameTimer = null;
+
+let playerName = "";
 
 
-/* -----------------------------
+/* =========================================================
+   HAND TRACKING
+========================================================= */
+
+let previousHand = null;
+
+let smoothedHand = null;
+
+let lastSliceTime = 0;
+
+const SLICE_VELOCITY = 10;
+
+const SMOOTHING = 0.65;
+
+
+/* =========================================================
    FRUIT TYPES
------------------------------ */
+========================================================= */
 
 const fruitTypes = [
 
     {
-        name: "watermelon",
-        color: "#36d33b",
-        inner: "#ff3d5a",
-        emoji: "🍉"
+        name: "apple",
+        color: "#e51b23",
+        inner: "#ffcccc"
     },
 
     {
-        name: "apple",
-        color: "#ff3d3d",
-        inner: "#ffdddd",
-        emoji: "🍎"
+        name: "watermelon",
+        color: "#35c84a",
+        inner: "#ff4057"
     },
 
     {
         name: "orange",
-        color: "#ff9d00",
-        inner: "#ffd36b",
-        emoji: "🍊"
+        color: "#ff8c00",
+        inner: "#ffd16a"
     },
 
     {
         name: "lemon",
-        color: "#ffe600",
-        inner: "#fff7a0",
-        emoji: "🍋"
+        color: "#ffe000",
+        inner: "#fff8a5"
     },
 
     {
         name: "kiwi",
-        color: "#78c850",
-        inner: "#d5ff75",
-        emoji: "🥝"
+        color: "#6dbb42",
+        inner: "#d8ff78"
     }
 
 ];
 
 
-/* -----------------------------
-   RANDOM FRUIT
------------------------------ */
+/* =========================================================
+   CREATE FRUIT
+========================================================= */
 
 function createFruit() {
 
     const type =
         fruitTypes[
-            Math.floor(Math.random() * fruitTypes.length)
+            Math.floor(
+                Math.random() *
+                fruitTypes.length
+            )
         ];
 
-    const radius = 35 + Math.random() * 12;
+    const radius =
+        35 +
+        Math.random() * 12;
 
     return {
 
-        x: 100 + Math.random() * (canvas.width - 200),
+        x:
+            100 +
+            Math.random() *
+            (canvas.width - 200),
 
-        y: canvas.height + radius,
+        y:
+            canvas.height +
+            radius,
 
-        radius: radius,
+        radius:
+            radius,
 
-        vx: (Math.random() - 0.5) * 6,
+        vx:
+            (Math.random() - 0.5) * 6,
 
-        vy: -(17 + Math.random() * 5 + difficulty * 0.7),
+        vy:
+            -(17 +
+            Math.random() * 5 +
+            difficulty * 0.7),
 
-        gravity: 0.38,
+        gravity:
+            0.38,
 
-        type: type,
+        type:
+            type,
 
-        sliced: false,
+        sliced:
+            false,
 
-        rotation: Math.random() * Math.PI,
+        rotation:
+            Math.random() *
+            Math.PI,
 
-        rotationSpeed: (Math.random() - 0.5) * 0.15
+        rotationSpeed:
+            (Math.random() - 0.5) *
+            0.15
 
     };
 
 }
 
 
-/* -----------------------------
-   BOMB
------------------------------ */
+/* =========================================================
+   CREATE BOMB
+========================================================= */
 
 function createBomb() {
 
@@ -412,51 +1156,77 @@ function createBomb() {
 
     return {
 
-        x: 100 + Math.random() * (canvas.width - 200),
+        x:
+            100 +
+            Math.random() *
+            (canvas.width - 200),
 
-        y: canvas.height + radius,
+        y:
+            canvas.height +
+            radius,
 
-        radius: radius,
+        radius:
+            radius,
 
-        vx: (Math.random() - 0.5) * 6,
+        vx:
+            (Math.random() - 0.5) * 6,
 
-        vy: -(18 + Math.random() * 4),
+        vy:
+            -(18 +
+            Math.random() * 4),
 
-        gravity: 0.38,
+        gravity:
+            0.38,
 
-        bomb: true,
+        bomb:
+            true,
 
-        sliced: false,
+        sliced:
+            false,
 
-        rotation: 0,
+        rotation:
+            0,
 
-        rotationSpeed: 0.05
+        rotationSpeed:
+            0.05
 
     };
 
 }
 
 
-/* -----------------------------
+/* =========================================================
    SPAWN
------------------------------ */
+========================================================= */
 
 function spawnObjects() {
 
     const count =
-        Math.random() < 0.75
-            ? 1
-            : Math.floor(Math.random() * 3) + 1;
+        Math.random() < 0.7
+        ? 1
+        : Math.floor(
+            Math.random() * 3
+        ) + 1;
 
-    for (let i = 0; i < count; i++) {
+    for (
+        let i = 0;
+        i < count;
+        i++
+    ) {
 
-        if (Math.random() < 0.12) {
+        if (
+            Math.random() < 0.12
+        ) {
 
-            fruits.push(createBomb());
+            fruits.push(
+                createBomb()
+            );
 
         } else {
 
-            fruits.push(createFruit());
+            fruits.push(
+                createFruit()
+            );
 
         }
 
@@ -465,140 +1235,30 @@ function spawnObjects() {
 }
 
 
-/* -----------------------------
+/* =========================================================
    DRAW FRUIT
------------------------------ */
+========================================================= */
 
 function drawFruit(fruit) {
 
     ctx.save();
 
-    ctx.translate(fruit.x, fruit.y);
+    ctx.translate(
+        fruit.x,
+        fruit.y
+    );
 
-    ctx.rotate(fruit.rotation);
+    ctx.rotate(
+        fruit.rotation
+    );
 
     if (fruit.bomb) {
 
-        // bomb body
+        drawBomb(fruit);
 
-        ctx.beginPath();
+    } else {
 
-        ctx.arc(
-            0,
-            0,
-            fruit.radius,
-            0,
-            Math.PI * 2
-        );
-
-        ctx.fillStyle = "#111";
-
-        ctx.fill();
-
-        ctx.strokeStyle = "#555";
-
-        ctx.lineWidth = 4;
-
-        ctx.stroke();
-
-
-        // fuse
-
-        ctx.beginPath();
-
-        ctx.moveTo(15, -30);
-
-        ctx.quadraticCurveTo(
-            30,
-            -50,
-            40,
-            -35
-        );
-
-        ctx.strokeStyle = "#aaa";
-
-        ctx.lineWidth = 4;
-
-        ctx.stroke();
-
-
-        // spark
-
-        ctx.beginPath();
-
-        ctx.arc(
-            42,
-            -37,
-            5,
-            0,
-            Math.PI * 2
-        );
-
-        ctx.fillStyle = "#ffbb00";
-
-        ctx.fill();
-
-    }
-
-    else {
-
-        // glow
-
-        ctx.shadowBlur = 25;
-
-        ctx.shadowColor = fruit.type.color;
-
-
-        ctx.beginPath();
-
-        ctx.arc(
-            0,
-            0,
-            fruit.radius,
-            0,
-            Math.PI * 2
-        );
-
-        ctx.fillStyle = fruit.type.color;
-
-        ctx.fill();
-
-
-        ctx.shadowBlur = 0;
-
-
-        // fruit center
-
-        ctx.beginPath();
-
-        ctx.arc(
-            0,
-            0,
-            fruit.radius * 0.65,
-            0,
-            Math.PI * 2
-        );
-
-        ctx.fillStyle = fruit.type.inner;
-
-        ctx.fill();
-
-
-        // highlight
-
-        ctx.beginPath();
-
-        ctx.arc(
-            -10,
-            -12,
-            7,
-            0,
-            Math.PI * 2
-        );
-
-        ctx.fillStyle = "rgba(255,255,255,0.7)";
-
-        ctx.fill();
+        drawWholeFruit(fruit);
 
     }
 
@@ -607,27 +1267,356 @@ function drawFruit(fruit) {
 }
 
 
-/* -----------------------------
+/* =========================================================
+   DRAW WHOLE FRUIT
+========================================================= */
+
+function drawWholeFruit(fruit) {
+
+    ctx.shadowBlur = 25;
+
+    ctx.shadowColor =
+        fruit.type.color;
+
+    ctx.beginPath();
+
+    ctx.arc(
+        0,
+        0,
+        fruit.radius,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fillStyle =
+        fruit.type.color;
+
+    ctx.fill();
+
+    ctx.shadowBlur = 0;
+
+    ctx.beginPath();
+
+    ctx.arc(
+        0,
+        0,
+        fruit.radius * 0.68,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fillStyle =
+        fruit.type.inner;
+
+    ctx.fill();
+
+
+    /* Apple stem */
+
+    if (
+        fruit.type.name === "apple"
+    ) {
+
+        ctx.strokeStyle =
+            "#542b12";
+
+        ctx.lineWidth = 5;
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            0,
+            -fruit.radius + 4
+        );
+
+        ctx.lineTo(
+            5,
+            -fruit.radius - 12
+        );
+
+        ctx.stroke();
+
+
+        ctx.fillStyle =
+            "#3fb950";
+
+        ctx.beginPath();
+
+        ctx.ellipse(
+            10,
+            -fruit.radius - 8,
+            9,
+            5,
+            -0.4,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fill();
+
+    }
+
+
+    /* Highlight */
+
+    ctx.beginPath();
+
+    ctx.arc(
+        -10,
+        -12,
+        7,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fillStyle =
+        "rgba(255,255,255,0.65)";
+
+    ctx.fill();
+
+}
+
+
+/* =========================================================
+   DRAW BOMB
+========================================================= */
+
+function drawBomb(fruit) {
+
+    ctx.shadowBlur = 20;
+
+    ctx.shadowColor =
+        "#ff2222";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        0,
+        0,
+        fruit.radius,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fillStyle =
+        "#111";
+
+    ctx.fill();
+
+    ctx.shadowBlur = 0;
+
+    ctx.strokeStyle =
+        "#555";
+
+    ctx.lineWidth = 4;
+
+    ctx.stroke();
+
+
+    ctx.strokeStyle =
+        "#aaa";
+
+    ctx.lineWidth = 4;
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        15,
+        -30
+    );
+
+    ctx.quadraticCurveTo(
+        30,
+        -50,
+        40,
+        -35
+    );
+
+    ctx.stroke();
+
+
+    ctx.beginPath();
+
+    ctx.arc(
+        42,
+        -37,
+        5,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fillStyle =
+        "#ffb000";
+
+    ctx.fill();
+
+}
+
+
+/* =========================================================
+   DRAW FRUIT HALF
+========================================================= */
+
+function drawFruitHalf(half) {
+
+    ctx.save();
+
+    ctx.translate(
+        half.x,
+        half.y
+    );
+
+    ctx.rotate(
+        half.rotation
+    );
+
+    const r =
+        half.radius;
+
+
+    ctx.beginPath();
+
+    if (
+        half.side === "left"
+    ) {
+
+        ctx.arc(
+            0,
+            0,
+            r,
+            Math.PI / 2,
+            Math.PI * 1.5
+        );
+
+    } else {
+
+        ctx.arc(
+            0,
+            0,
+            r,
+            -Math.PI / 2,
+            Math.PI / 2
+        );
+
+    }
+
+    ctx.lineTo(
+        0,
+        0
+    );
+
+    ctx.closePath();
+
+    ctx.clip();
+
+
+    ctx.beginPath();
+
+    ctx.arc(
+        0,
+        0,
+        r,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fillStyle =
+        half.color;
+
+    ctx.fill();
+
+
+    ctx.beginPath();
+
+    ctx.arc(
+        0,
+        0,
+        r * 0.68,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fillStyle =
+        half.inner;
+
+    ctx.fill();
+
+
+    ctx.restore();
+
+
+    /* Sliced edge */
+
+    ctx.save();
+
+    ctx.translate(
+        half.x,
+        half.y
+    );
+
+    ctx.rotate(
+        half.rotation
+    );
+
+    ctx.strokeStyle =
+        "rgba(255,255,255,0.9)";
+
+    ctx.lineWidth = 4;
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        0,
+        -r
+    );
+
+    ctx.lineTo(
+        0,
+        r
+    );
+
+    ctx.stroke();
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
    PARTICLES
------------------------------ */
+========================================================= */
 
-function createParticles(x, y, color) {
+function createParticles(
+    x,
+    y,
+    color
+) {
 
-    for (let i = 0; i < 20; i++) {
+    for (
+        let i = 0;
+        i < 25;
+        i++
+    ) {
 
         particles.push({
 
-            x: x,
+            x:
+                x,
 
-            y: y,
+            y:
+                y,
 
-            vx: (Math.random() - 0.5) * 12,
+            vx:
+                (Math.random() - 0.5) * 14,
 
-            vy: (Math.random() - 0.5) * 12,
+            vy:
+                (Math.random() - 0.5) * 14,
 
-            life: 1,
+            life:
+                1,
 
-            color: color
+            color:
+                color
 
         });
 
@@ -638,9 +1627,14 @@ function createParticles(x, y, color) {
 
 function updateParticles() {
 
-    for (let i = particles.length - 1; i >= 0; i--) {
+    for (
+        let i = particles.length - 1;
+        i >= 0;
+        i--
+    ) {
 
-        const p = particles[i];
+        const p =
+            particles[i];
 
         p.x += p.vx;
 
@@ -651,16 +1645,22 @@ function updateParticles() {
         p.life -= 0.025;
 
 
-        if (p.life <= 0) {
+        if (
+            p.life <= 0
+        ) {
 
-            particles.splice(i, 1);
+            particles.splice(
+                i,
+                1
+            );
 
             continue;
 
         }
 
 
-        ctx.globalAlpha = p.life;
+        ctx.globalAlpha =
+            p.life;
 
         ctx.beginPath();
 
@@ -672,7 +1672,8 @@ function updateParticles() {
             Math.PI * 2
         );
 
-        ctx.fillStyle = p.color;
+        ctx.fillStyle =
+            p.color;
 
         ctx.fill();
 
@@ -683,63 +1684,461 @@ function updateParticles() {
 }
 
 
-/* -----------------------------
+/* =========================================================
    TRAIL
------------------------------ */
+========================================================= */
 
 function drawTrail() {
 
-    if (trail.length < 2)
+    if (
+        trail.length < 2
+    )
         return;
 
 
     ctx.save();
 
-    ctx.lineCap = "round";
+    ctx.lineCap =
+        "round";
 
-    ctx.lineJoin = "round";
+    ctx.lineJoin =
+        "round";
 
-    ctx.shadowBlur = 25;
+    ctx.shadowBlur =
+        25;
 
-    ctx.shadowColor = "#ffffff";
+    ctx.shadowColor =
+        "#ffffff";
 
 
-    for (let i = 1; i < trail.length; i++) {
+    for (
+        let i = 1;
+        i < trail.length;
+        i++
+    ) {
 
-        const p1 = trail[i - 1];
+        const p1 =
+            trail[i - 1];
 
-        const p2 = trail[i];
+        const p2 =
+            trail[i];
 
-        const alpha = i / trail.length;
+        const alpha =
+            i / trail.length;
 
-        ctx.globalAlpha = alpha;
+
+        ctx.globalAlpha =
+            alpha;
 
         ctx.beginPath();
 
-        ctx.moveTo(p1.x, p1.y);
+        ctx.moveTo(
+            p1.x,
+            p1.y
+        );
 
-        ctx.lineTo(p2.x, p2.y);
+        ctx.lineTo(
+            p2.x,
+            p2.y
+        );
 
-        ctx.strokeStyle = "#ffffff";
+        ctx.strokeStyle =
+            "#ffffff";
 
-        ctx.lineWidth = 5 + alpha * 7;
+        ctx.lineWidth =
+            4 +
+            alpha * 9;
 
         ctx.stroke();
 
     }
+
 
     ctx.restore();
 
 }
 
 
-/* -----------------------------
-   UPDATE GAME
------------------------------ */
+/* =========================================================
+   POINT TO LINE DISTANCE
+========================================================= */
 
-function updateGame(timestamp) {
+function distanceToSegment(
+    px,
+    py,
+    x1,
+    y1,
+    x2,
+    y2
+) {
 
-    if (!gameRunning)
+    const dx =
+        x2 - x1;
+
+    const dy =
+        y2 - y1;
+
+
+    if (
+        dx === 0 &&
+        dy === 0
+    ) {
+
+        return Math.hypot(
+            px - x1,
+            py - y1
+        );
+
+    }
+
+
+    const t =
+        Math.max(
+            0,
+            Math.min(
+                1,
+                (
+                    (px - x1) * dx +
+                    (py - y1) * dy
+                ) /
+                (dx * dx + dy * dy)
+            )
+        );
+
+
+    const closestX =
+        x1 + t * dx;
+
+    const closestY =
+        y1 + t * dy;
+
+
+    return Math.hypot(
+        px - closestX,
+        py - closestY
+    );
+
+}
+
+
+/* =========================================================
+   SLICE FRUIT
+========================================================= */
+
+function sliceFruit(
+    fruit,
+    x1,
+    y1,
+    x2,
+    y2
+) {
+
+    fruit.sliced = true;
+
+
+    /* Bomb */
+
+    if (
+        fruit.bomb
+    ) {
+
+        createParticles(
+            fruit.x,
+            fruit.y,
+            "#ff3333"
+        );
+
+        lives--;
+
+        updateLives();
+
+
+        fruits.splice(
+            fruits.indexOf(fruit),
+            1
+        );
+
+
+        if (
+            lives <= 0
+        ) {
+
+            endGame();
+
+        }
+
+
+        return;
+
+    }
+
+
+    /* Normal fruit */
+
+    score += 10;
+
+    scoreElement.textContent =
+        score;
+
+
+    createParticles(
+        fruit.x,
+        fruit.y,
+        fruit.type.color
+    );
+
+
+    const directionX =
+        x2 - x1;
+
+    const directionY =
+        y2 - y1;
+
+
+    const length =
+        Math.max(
+            1,
+            Math.hypot(
+                directionX,
+                directionY
+            )
+        );
+
+
+    const nx =
+        directionX / length;
+
+    const ny =
+        directionY / length;
+
+
+    /* Left half */
+
+    slicedHalves.push({
+
+        x:
+            fruit.x,
+
+        y:
+            fruit.y,
+
+        vx:
+            fruit.vx -
+            ny * 3,
+
+        vy:
+            fruit.vy -
+            nx * 3,
+
+        rotation:
+            fruit.rotation,
+
+        rotationSpeed:
+            fruit.rotationSpeed -
+            0.05,
+
+        radius:
+            fruit.radius,
+
+        color:
+            fruit.type.color,
+
+        inner:
+            fruit.type.inner,
+
+        side:
+            "left",
+
+        life:
+            55
+
+    });
+
+
+    /* Right half */
+
+    slicedHalves.push({
+
+        x:
+            fruit.x,
+
+        y:
+            fruit.y,
+
+        vx:
+            fruit.vx +
+            ny * 3,
+
+        vy:
+            fruit.vy +
+            nx * 3,
+
+        rotation:
+            fruit.rotation,
+
+        rotationSpeed:
+            fruit.rotationSpeed +
+            0.05,
+
+        radius:
+            fruit.radius,
+
+        color:
+            fruit.type.color,
+
+        inner:
+            fruit.type.inner,
+
+        side:
+            "right",
+
+        life:
+            55
+
+    });
+
+
+    fruits.splice(
+        fruits.indexOf(fruit),
+        1
+    );
+
+}
+
+
+/* =========================================================
+   UPDATE SLICED HALVES
+========================================================= */
+
+function updateSlicedHalves() {
+
+    for (
+        let i =
+            slicedHalves.length - 1;
+        i >= 0;
+        i--
+    ) {
+
+        const half =
+            slicedHalves[i];
+
+
+        half.x +=
+            half.vx;
+
+        half.y +=
+            half.vy;
+
+        half.vy +=
+            0.35;
+
+        half.rotation +=
+            half.rotationSpeed;
+
+        half.life--;
+
+
+        drawFruitHalf(
+            half
+        );
+
+
+        if (
+            half.life <= 0
+        ) {
+
+            slicedHalves.splice(
+                i,
+                1
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   SLICE LINE
+========================================================= */
+
+function checkSliceLine(
+    x1,
+    y1,
+    x2,
+    y2
+) {
+
+    if (
+        !gameRunning
+    )
+        return;
+
+
+    for (
+        let i =
+            fruits.length - 1;
+        i >= 0;
+        i--
+    ) {
+
+        const fruit =
+            fruits[i];
+
+
+        if (
+            fruit.sliced
+        )
+            continue;
+
+
+        const distance =
+            distanceToSegment(
+                fruit.x,
+                fruit.y,
+                x1,
+                y1,
+                x2,
+                y2
+            );
+
+
+        const hitRadius =
+            fruit.radius + 40;
+
+
+        if (
+            distance <
+            hitRadius
+        ) {
+
+            sliceFruit(
+                fruit,
+                x1,
+                y1,
+                x2,
+                y2
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   GAME LOOP
+========================================================= */
+
+function updateGame(
+    timestamp
+) {
+
+    if (
+        !gameRunning
+    )
         return;
 
 
@@ -751,62 +2150,80 @@ function updateGame(timestamp) {
     );
 
 
-    /* Spawn */
-
-    if (timestamp - lastSpawn > spawnInterval) {
+    if (
+        timestamp -
+        lastSpawn >
+        spawnInterval
+    ) {
 
         spawnObjects();
 
-        lastSpawn = timestamp;
+        lastSpawn =
+            timestamp;
 
     }
 
-
-    /* Difficulty */
 
     difficulty =
         1 +
         (60 - timeLeft) / 10;
 
+
     spawnInterval =
         Math.max(
             350,
-            850 - difficulty * 70
+            850 -
+            difficulty * 70
         );
 
 
-    /* Fruits */
+    for (
+        let i =
+            fruits.length - 1;
+        i >= 0;
+        i--
+    ) {
 
-    for (let i = fruits.length - 1; i >= 0; i--) {
-
-        const fruit = fruits[i];
-
-        fruit.x += fruit.vx;
-
-        fruit.y += fruit.vy;
-
-        fruit.vy += fruit.gravity;
-
-        fruit.rotation += fruit.rotationSpeed;
+        const fruit =
+            fruits[i];
 
 
-        drawFruit(fruit);
+        fruit.x +=
+            fruit.vx;
+
+        fruit.y +=
+            fruit.vy;
+
+        fruit.vy +=
+            fruit.gravity;
+
+        fruit.rotation +=
+            fruit.rotationSpeed;
 
 
-        /* Missed */
+        drawFruit(
+            fruit
+        );
+
 
         if (
             fruit.y >
             canvas.height + 100
         ) {
 
-            if (!fruit.bomb && !fruit.sliced) {
+            if (
+                !fruit.bomb &&
+                !fruit.sliced
+            ) {
 
                 lives--;
 
                 updateLives();
 
-                if (lives <= 0) {
+
+                if (
+                    lives <= 0
+                ) {
 
                     endGame();
 
@@ -814,129 +2231,51 @@ function updateGame(timestamp) {
 
             }
 
-            fruits.splice(i, 1);
+
+            fruits.splice(
+                i,
+                1
+            );
 
         }
 
     }
 
 
-    /* Particles */
+    updateSlicedHalves();
 
     updateParticles();
-
-
-    /* Trail */
 
     drawTrail();
 
 
-    /* Remove old trail */
+    const now =
+        Date.now();
 
-    const now = Date.now();
 
-    trail = trail.filter(
-        point => now - point.time < 180
+    trail =
+        trail.filter(
+            point =>
+                now -
+                point.time <
+                180
+        );
+
+
+    requestAnimationFrame(
+        updateGame
     );
 
-
-    requestAnimationFrame(updateGame);
-
 }
 
 
-/* -----------------------------
-   SLICE DETECTION
------------------------------ */
-
-function checkSlice(x, y) {
-
-    if (!gameRunning)
-        return;
-
-
-    for (let i = fruits.length - 1; i >= 0; i--) {
-
-        const fruit = fruits[i];
-
-        if (fruit.sliced)
-            continue;
-
-
-        const dx = x - fruit.x;
-
-        const dy = y - fruit.y;
-
-        const distance =
-            Math.sqrt(dx * dx + dy * dy);
-
-
-        if (distance < fruit.radius + 30) {
-
-            fruit.sliced = true;
-
-
-            if (fruit.bomb) {
-
-                // Bomb hit
-
-                createParticles(
-                    fruit.x,
-                    fruit.y,
-                    "#ff3b3b"
-                );
-
-                lives--;
-
-                updateLives();
-
-                fruits.splice(i, 1);
-
-
-                if (lives <= 0) {
-
-                    endGame();
-
-                }
-
-            }
-
-            else {
-
-                score += 10;
-
-                scoreElement.textContent =
-                    score;
-
-
-                createParticles(
-                    fruit.x,
-                    fruit.y,
-                    fruit.type.color
-                );
-
-
-                fruits.splice(i, 1);
-
-            }
-
-        }
-
-    }
-
-}
-
-
-/* -----------------------------
+/* =========================================================
    HAND TRACKING
------------------------------ */
+========================================================= */
 
-let previousHand = null;
-
-let lastSliceTime = 0;
-
-
-function onResults(results) {
+function onResults(
+    results
+) {
 
     if (
         !results.multiHandLandmarks ||
@@ -944,6 +2283,8 @@ function onResults(results) {
     ) {
 
         previousHand = null;
+
+        smoothedHand = null;
 
         return;
 
@@ -954,70 +2295,109 @@ function onResults(results) {
         results.multiHandLandmarks[0];
 
 
-    /*
-        MediaPipe landmark 8
-        = index fingertip
-    */
+    /* Index fingertip */
 
     const fingertip =
         hand[8];
 
 
-    /*
-        Convert camera coordinates
-        to screen coordinates.
-
-        Camera is mirrored, therefore
-        x is inverted.
-    */
-
-    const x =
+    let x =
         (1 - fingertip.x) *
         canvas.width;
 
-    const y =
+    let y =
         fingertip.y *
         canvas.height;
 
 
+    /* Smooth tracking */
+
+    if (
+        !smoothedHand
+    ) {
+
+        smoothedHand = {
+            x: x,
+            y: y
+        };
+
+    } else {
+
+        smoothedHand.x =
+            smoothedHand.x *
+            0.65 +
+            x *
+            0.35;
+
+        smoothedHand.y =
+            smoothedHand.y *
+            0.65 +
+            y *
+            0.35;
+
+    }
+
+
+    x =
+        smoothedHand.x;
+
+    y =
+        smoothedHand.y;
+
+
+    /* Trail */
+
     trail.push({
 
-        x: x,
+        x:
+            x,
 
-        y: y,
+        y:
+            y,
 
-        time: Date.now()
+        time:
+            Date.now()
 
     });
 
 
-    if (previousHand) {
+    /* Slice detection */
+
+    if (
+        previousHand
+    ) {
 
         const dx =
-            x - previousHand.x;
+            x -
+            previousHand.x;
 
         const dy =
-            y - previousHand.y;
+            y -
+            previousHand.y;
 
 
         const velocity =
-            Math.sqrt(
-                dx * dx +
-                dy * dy
+            Math.hypot(
+                dx,
+                dy
             );
 
 
-        /*
-            Fast movement =
-            slicing gesture
-        */
-
         if (
-            velocity > 25 &&
-            Date.now() - lastSliceTime > 50
+            velocity >
+            10 &&
+            Date.now() -
+            lastSliceTime >
+            35
         ) {
 
-            checkSlice(x, y);
+            checkSliceLine(
+                previousHand.x,
+                previousHand.y,
+                x,
+                y
+            );
+
 
             lastSliceTime =
                 Date.now();
@@ -1028,71 +2408,100 @@ function onResults(results) {
 
 
     previousHand = {
-        x: x,
-        y: y
+
+        x:
+            x,
+
+        y:
+            y
+
     };
 
 }
 
 
-/* -----------------------------
+/* =========================================================
    MEDIAPIPE
------------------------------ */
+========================================================= */
 
-const hands = new Hands({
+const hands =
+    new Hands({
 
-    locateFile: (file) => {
+        locateFile:
+            file => {
 
-        return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
+                return `
+https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}
+                `;
 
-    }
+            }
 
-});
+    });
 
 
 hands.setOptions({
 
-    maxNumHands: 1,
+    maxNumHands:
+        1,
 
-    modelComplexity: 1,
+    modelComplexity:
+        1,
 
-    minDetectionConfidence: 0.6,
+    minDetectionConfidence:
+        0.45,
 
-    minTrackingConfidence: 0.6
+    minTrackingConfidence:
+        0.45,
+
+    selfieMode:
+        false
 
 });
 
 
-hands.onResults(onResults);
+hands.onResults(
+    onResults
+);
 
 
-/* -----------------------------
+/* =========================================================
    CAMERA
------------------------------ */
+========================================================= */
 
-let camera;
+let camera = null;
 
 
 async function startCamera() {
 
-    camera = new Camera(
-        video,
-        {
+    if (
+        camera
+    )
+        return;
 
-            onFrame: async () => {
 
-                await hands.send({
-                    image: video
-                });
+    camera =
+        new Camera(
+            video,
+            {
 
-            },
+                onFrame:
+                    async () => {
 
-            width: 1280,
+                        await hands.send({
+                            image:
+                                video
+                        });
 
-            height: 720
+                    },
 
-        }
-    );
+                width:
+                    1280,
+
+                height:
+                    720
+
+            }
+        );
 
 
     camera.start();
@@ -1100,71 +2509,559 @@ async function startCamera() {
 }
 
 
-/* -----------------------------
+/* =========================================================
    LIVES
------------------------------ */
+========================================================= */
 
 function updateLives() {
 
     livesElement.textContent =
-        "❤️".repeat(lives);
+        "❤️".repeat(
+            Math.max(
+                0,
+                lives
+            )
+        );
 
 }
 
 
-/* -----------------------------
+/* =========================================================
    TIMER
------------------------------ */
+========================================================= */
 
 function startTimer() {
 
-    clearInterval(gameTimer);
+    clearInterval(
+        gameTimer
+    );
 
-    timeLeft = 60;
+
+    timeLeft =
+        60;
+
 
     timerElement.textContent =
         timeLeft;
 
 
-    gameTimer = setInterval(() => {
+    gameTimer =
+        setInterval(
+            () => {
 
-        if (!gameRunning)
-            return;
-
-
-        timeLeft--;
-
-        timerElement.textContent =
-            timeLeft;
+                if (
+                    !gameRunning
+                )
+                    return;
 
 
-        if (timeLeft <= 0) {
+                timeLeft--;
 
-            endGame();
 
-        }
+                timerElement.textContent =
+                    timeLeft;
 
-    }, 1000);
+
+                if (
+                    timeLeft <= 0
+                ) {
+
+                    endGame();
+
+                }
+
+            },
+            1000
+        );
 
 }
 
 
-/* -----------------------------
+/* =========================================================
+   LEADERBOARD
+========================================================= */
+
+function getLeaderboard() {
+
+    return JSON.parse(
+        localStorage.getItem(
+            "fruitNinjaLeaderboard"
+        ) || "[]"
+    );
+
+}
+
+
+function saveScore() {
+
+    const leaderboard =
+        getLeaderboard();
+
+
+    leaderboard.push({
+
+        name:
+            playerName,
+
+        score:
+            score
+
+    });
+
+
+    leaderboard.sort(
+        (a, b) =>
+            b.score -
+            a.score
+    );
+
+
+    const topThree =
+        leaderboard.slice(
+            0,
+            3
+        );
+
+
+    localStorage.setItem(
+        "fruitNinjaLeaderboard",
+        JSON.stringify(
+            topThree
+        )
+    );
+
+
+    updateLeaderboard();
+
+}
+
+
+function updateLeaderboard() {
+
+    const leaderboard =
+        getLeaderboard();
+
+
+    const rows =
+        document.getElementById(
+            "leaderboardRows"
+        );
+
+
+    rows.innerHTML = "";
+
+
+    for (
+        let i = 0;
+        i < 3;
+        i++
+    ) {
+
+        const player =
+            leaderboard[i];
+
+
+        const row =
+            document.createElement(
+                "div"
+            );
+
+
+        row.className =
+            "rankRow";
+
+
+        const rank =
+            i === 0
+            ? "1st"
+            : i === 1
+            ? "2nd"
+            : "3rd";
+
+
+        row.innerHTML = `
+
+            <span class="rankNumber">
+                ${rank}
+            </span>
+
+            <span class="rankName">
+                ${
+                    player
+                    ? escapeHTML(
+                        player.name
+                    )
+                    : "---"
+                }
+            </span>
+
+            <span class="rankScore">
+                ${
+                    player
+                    ? player.score
+                    : 0
+                }
+            </span>
+
+        `;
+
+
+        rows.appendChild(
+            row
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHTML(
+    text
+) {
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+
+    div.textContent =
+        text;
+
+
+    return div.innerHTML;
+
+}
+
+
+/* =========================================================
+   RATINGS
+========================================================= */
+
+function getRatings() {
+
+    return JSON.parse(
+        localStorage.getItem(
+            "fruitNinjaRatings"
+        ) || "[]"
+    );
+
+}
+
+
+function updateAverageRating() {
+
+    const ratings =
+        getRatings();
+
+
+    const average =
+        ratings.length === 0
+        ? 0
+        :
+        ratings.reduce(
+            (a, b) =>
+                a + b,
+            0
+        ) /
+        ratings.length;
+
+
+    document.getElementById(
+        "averageRating"
+    ).textContent =
+        average.toFixed(1) +
+        " / 5";
+
+
+    const ninjaElements =
+        document.querySelectorAll(
+            "#averageNinjas span"
+        );
+
+
+    const rounded =
+        Math.round(
+            average
+        );
+
+
+    ninjaElements.forEach(
+        (ninja, index) => {
+
+            ninja.classList.toggle(
+                "active",
+                index < rounded
+            );
+
+        }
+    );
+
+}
+
+
+function saveRating(
+    rating
+) {
+
+    const ratings =
+        getRatings();
+
+
+    ratings.push(
+        rating
+    );
+
+
+    localStorage.setItem(
+        "fruitNinjaRatings",
+        JSON.stringify(
+            ratings
+        )
+    );
+
+
+    updateAverageRating();
+
+}
+
+
+/* =========================================================
+   RATING SELECTION
+========================================================= */
+
+let selectedRating = 0;
+
+
+document
+    .querySelectorAll(
+        ".ninjaChoice"
+    )
+    .forEach(
+        ninja => {
+
+            ninja.addEventListener(
+                "click",
+                () => {
+
+                    selectedRating =
+                        Number(
+                            ninja.dataset.rating
+                        );
+
+
+                    document
+                        .querySelectorAll(
+                            ".ninjaChoice"
+                        )
+                        .forEach(
+                            (
+                                item,
+                                index
+                            ) => {
+
+                                item.classList.toggle(
+                                    "selected",
+                                    index <
+                                    selectedRating
+                                );
+
+                            }
+                        );
+
+                }
+            );
+
+        }
+    );
+
+
+/* =========================================================
+   FIRST PLAY BUTTON
+========================================================= */
+
+document
+    .getElementById(
+        "startButton"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            startScreen.style.display =
+                "none";
+
+            instructionsModal.style.display =
+                "flex";
+
+        }
+    );
+
+
+/* =========================================================
+   INSTRUCTIONS → NAME
+========================================================= */
+
+function openNameScreen() {
+
+    instructionsModal.style.display =
+        "none";
+
+
+    nameModal.style.display =
+        "flex";
+
+
+    /*
+        VERY IMPORTANT:
+
+        Clear the name every time
+        somebody reaches this screen.
+    */
+
+    const input =
+        document.getElementById(
+            "nameInput"
+        );
+
+
+    input.value = "";
+
+    playerName = "";
+
+
+    setTimeout(
+        () => {
+
+            input.focus();
+
+        },
+        100
+    );
+
+}
+
+
+/* X button */
+
+document
+    .getElementById(
+        "closeInstructions"
+    )
+    .addEventListener(
+        "click",
+        openNameScreen
+    );
+
+
+/* Continue button */
+
+document
+    .getElementById(
+        "instructionsContinue"
+    )
+    .addEventListener(
+        "click",
+        openNameScreen
+    );
+
+
+/* =========================================================
+   NAME → GAME
+========================================================= */
+
+function beginGameFromName() {
+
+    const input =
+        document.getElementById(
+            "nameInput"
+        );
+
+
+    playerName =
+        input.value.trim();
+
+
+    if (
+        playerName.length === 0
+    ) {
+
+        playerName =
+            "Ninja";
+
+    }
+
+
+    nameModal.style.display =
+        "none";
+
+
+    startGame();
+
+}
+
+
+document
+    .getElementById(
+        "nameContinue"
+    )
+    .addEventListener(
+        "click",
+        beginGameFromName
+    );
+
+
+document
+    .getElementById(
+        "nameInput"
+    )
+    .addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                beginGameFromName();
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
    START GAME
------------------------------ */
+========================================================= */
 
 async function startGame() {
 
     startScreen.style.display =
         "none";
 
-    gameOverScreen.style.display =
+    instructionsModal.style.display =
+        "none";
+
+    nameModal.style.display =
+        "none";
+
+    gameOver.style.display =
+        "none";
+
+    ratingModal.style.display =
         "none";
 
 
     fruits = [];
 
     particles = [];
+
+    slicedHalves = [];
 
     trail = [];
 
@@ -1177,12 +3074,23 @@ async function startGame() {
     scoreElement.textContent =
         "0";
 
+
     updateLives();
 
 
-    gameRunning = true;
+    gameRunning =
+        true;
 
-    lastSpawn = performance.now();
+
+    lastSpawn =
+        performance.now();
+
+
+    previousHand =
+        null;
+
+    smoothedHand =
+        null;
 
 
     startTimer();
@@ -1196,11 +3104,14 @@ async function startGame() {
 
     catch (error) {
 
-        alert(
-            "Camera access is required to play!"
+        console.error(
+            error
         );
 
-        console.error(error);
+
+        alert(
+            "Please allow camera access to play."
+        );
 
     }
 
@@ -1212,47 +3123,288 @@ async function startGame() {
 }
 
 
-/* -----------------------------
+/* =========================================================
    GAME OVER
------------------------------ */
+========================================================= */
 
 function endGame() {
 
-    if (!gameRunning)
+    if (
+        !gameRunning
+    )
         return;
 
 
-    gameRunning = false;
+    gameRunning =
+        false;
 
-    clearInterval(gameTimer);
+
+    clearInterval(
+        gameTimer
+    );
 
 
-    finalScore.textContent =
+    /*
+        Save the score immediately.
+    */
+
+    saveScore();
+
+
+    const title =
+        document.getElementById(
+            "gameOverTitle"
+        );
+
+
+    const result =
+        document.getElementById(
+            "resultText"
+        );
+
+
+    if (
+        score >= 100
+    ) {
+
+        title.textContent =
+            "🎉 YOU WON!";
+
+        result.textContent =
+            "🏆 You earned a prize!";
+
+    }
+
+    else {
+
+        title.textContent =
+            "GAME OVER";
+
+        result.textContent =
+            "🥷 NICE RUN!";
+
+    }
+
+
+    document.getElementById(
+        "finalScore"
+    ).textContent =
         "Score: " + score;
 
 
-    gameOverScreen.style.display =
+    gameOver.style.display =
         "flex";
+
+
+    /*
+        Wait 2 seconds,
+        then show rating.
+    */
+
+    setTimeout(
+        () => {
+
+            gameOver.style.display =
+                "none";
+
+
+            selectedRating =
+                0;
+
+
+            document
+                .querySelectorAll(
+                    ".ninjaChoice"
+                )
+                .forEach(
+                    ninja => {
+
+                        ninja.classList.remove(
+                            "selected"
+                        );
+
+                    }
+                );
+
+
+            ratingModal.style.display =
+                "flex";
+
+        },
+        2000
+    );
 
 }
 
 
-/* -----------------------------
-   BUTTONS
------------------------------ */
+/* =========================================================
+   SUBMIT RATING → INSTRUCTIONS
+========================================================= */
 
-startButton.addEventListener(
-    "click",
-    startGame
-);
+document
+    .getElementById(
+        "submitRating"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            /*
+                Don't continue without
+                a rating.
+            */
+
+            if (
+                selectedRating === 0
+            ) {
+
+                return;
+
+            }
 
 
-restartButton.addEventListener(
-    "click",
-    startGame
-);
+            /*
+                Save rating.
+            */
+
+            saveRating(
+                selectedRating
+            );
+
+
+            /*
+                Close rating.
+            */
+
+            ratingModal.style.display =
+                "none";
+
+
+            /*
+                Reset rating.
+            */
+
+            selectedRating =
+                0;
+
+
+            document
+                .querySelectorAll(
+                    ".ninjaChoice"
+                )
+                .forEach(
+                    ninja => {
+
+                        ninja.classList.remove(
+                            "selected"
+                        );
+
+                    }
+                );
+
+
+            /*
+                Reset the player name.
+
+                This is important because
+                multiple people will use
+                the same device.
+            */
+
+            playerName =
+                "";
+
+
+            document.getElementById(
+                "nameInput"
+            ).value =
+                "";
+
+
+            /*
+                NEW PLAYER:
+
+                Go straight to
+                instructions.
+
+                NOT the old PLAY screen.
+            */
+
+            instructionsModal.style.display =
+                "flex";
+
+        }
+    );
+
+
+/* =========================================================
+   PLAY AGAIN BUTTON
+========================================================= */
+
+document
+    .getElementById(
+        "restartButton"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            /*
+                Clear everything related
+                to previous player.
+            */
+
+            playerName =
+                "";
+
+
+            document.getElementById(
+                "nameInput"
+            ).value =
+                "";
+
+
+            gameOver.style.display =
+                "none";
+
+
+            /*
+                Start next player
+                from instructions.
+            */
+
+            instructionsModal.style.display =
+                "flex";
+
+        }
+    );
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+updateLeaderboard();
+
+updateAverageRating();
 
 </script>
 
+</div>
+
 </body>
+
 </html>
+```
+
+### The important part now
+
+After Player 1 finishes:
+
+**Game → result → 2 sec → rating → submit → instructions**
+
+Then Player 2 sees a **completely blank name field**:
+
+**Instructions → ✕ → ENTER YOUR NAME → START SLICING**
+
+Meanwhile Player 1's **score remains on the leaderboard** and their rating remains included in the **average rating**. 🥷🏆
