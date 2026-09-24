@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -456,22 +455,42 @@ button:hover {
 }
 
 /* =========================================================
-   HAND INDICATOR
+   LARGE KNIFE CURSOR
 ========================================================= */
 
 #handIndicator {
     position: absolute;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    border: 3px solid white;
-    box-shadow:
-        0 0 15px white,
-        0 0 30px #fff;
+    width: 90px;
+    height: 90px;
     pointer-events: none;
-    z-index: 12;
+    z-index: 25;
     display: none;
+    transform: translate(-50%, -50%) rotate(-25deg);
+    transform-origin: center center;
+    font-size: 82px;
+    line-height: 90px;
+    text-align: center;
+    filter:
+        drop-shadow(0 0 8px rgba(255,255,255,0.9))
+        drop-shadow(0 0 18px rgba(255,255,255,0.55));
+    user-select: none;
+}
+
+#handIndicator::after {
+    content: "";
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    left: 50%;
+    top: 50%;
     transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(
+        circle,
+        rgba(255,255,255,0.08),
+        rgba(255,255,255,0)
+    );
+    pointer-events: none;
 }
 
 #cameraPermission {
@@ -527,7 +546,7 @@ button:hover {
 
 <canvas id="gameCanvas"></canvas>
 
-<div id="handIndicator"></div>
+<div id="handIndicator">🔪</div>
 
 
 <!-- =====================================================
@@ -1063,6 +1082,12 @@ let lastSliceTime = 0;
 let swipeActive = false;
 
 let previousHandPoint = null;
+
+let previousKnifePoint = null;
+let knifeAngle = -25;
+
+const KNIFE_CUT_RADIUS = 105;
+const KNIFE_SMOOTHING = 0.32;
 
 
 /*
@@ -2362,72 +2387,40 @@ function checkSwipeAgainstFruits(
    EXTRA NEAR-FINGER DETECTION
 ========================================================= */
 
-function checkNearbyFruit(
-    x,
-    y
-) {
-
-    if (
-        !gameRunning
-    ) {
-
+function checkNearbyFruit(x, y) {
+    if (!gameRunning) {
         return;
-
     }
 
+    for (let i = fruits.length - 1; i >= 0; i--) {
+        const fruit = fruits[i];
 
-    for (
-        let i = fruits.length - 1;
-        i >= 0;
-        i--
-    ) {
-
-        const fruit =
-            fruits[i];
-
-
-        if (
-            fruit.sliced
-        ) {
-
+        if (fruit.sliced) {
             continue;
-
         }
 
+        const distance = Math.hypot(
+            fruit.x - x,
+            fruit.y - y
+        );
 
-        const distance =
-            Math.hypot(
-                fruit.x - x,
-                fruit.y - y
-            );
+        const fruitRadius = fruit.bomb
+            ? Math.max(fruit.width, fruit.height) / 2
+            : fruit.radius;
 
+        const totalHitRadius =
+            fruitRadius + KNIFE_CUT_RADIUS;
 
-        const detectionSize =
-            fruit.bomb
-            ?
-            65
-            :
-            fruit.radius + 48;
-
-
-        if (
-            distance <
-            detectionSize &&
-            swipeActive
-        ) {
-
+        if (distance <= totalHitRadius) {
             sliceFruit(
                 fruit,
-                x - 25,
+                x - 80,
                 y,
-                x + 25,
+                x + 80,
                 y
             );
-
         }
-
     }
-
 }
 
 
@@ -2823,6 +2816,39 @@ function updateGame(
 }
 
 
+
+/* =========================================================
+   KNIFE CURSOR
+========================================================= */
+
+function updateKnife(x, y) {
+    handIndicator.style.display = "block";
+
+    if (previousKnifePoint) {
+        const dx = x - previousKnifePoint.x;
+        const dy = y - previousKnifePoint.y;
+        const movement = Math.hypot(dx, dy);
+
+        if (movement > 3) {
+            const targetAngle = Math.atan2(dy, dx) * 180 / Math.PI;
+
+            // Smooth the angle, including wrap-around.
+            let delta = targetAngle - knifeAngle;
+            while (delta > 180) delta -= 360;
+            while (delta < -180) delta += 360;
+
+            knifeAngle += delta * KNIFE_SMOOTHING;
+        }
+    }
+
+    handIndicator.style.left = x + "px";
+    handIndicator.style.top = y + "px";
+    handIndicator.style.transform =
+        `translate(-50%, -50%) rotate(${knifeAngle}deg)`;
+
+    previousKnifePoint = { x, y };
+}
+
 /* =========================================================
    MEDIAPIPE HAND RESULTS
 ========================================================= */
@@ -2986,6 +3012,12 @@ function onResults(
         smoothedHand.y;
 
 
+    updateKnife(
+        x,
+        y
+    );
+
+
     lastHandSeen =
         Date.now();
 
@@ -3091,7 +3123,7 @@ function onResults(
 
         if (
             movement >
-            5
+            3
         ) {
 
             swipeActive =
@@ -4135,6 +4167,8 @@ function endGame(
 
     handIndicator.style.display =
         "none";
+    previousKnifePoint = null;
+    knifeAngle = -25;
 
 
     if (
@@ -4419,4 +4453,3 @@ updateAverageRating();
 
 </body>
 </html>
-```
