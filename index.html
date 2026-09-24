@@ -3,11 +3,8 @@
 <html lang="en">
 
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Fruit Ninja — Hand Slice</title>
 
@@ -50,8 +47,12 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
+
     transform: scaleX(-1);
-    opacity: 0.10;
+
+    opacity: 0.12;
+
+    z-index: 1;
 }
 
 /* =========================
@@ -61,8 +62,11 @@ body {
 #gameCanvas {
     position: absolute;
     inset: 0;
+
     width: 100%;
     height: 100%;
+
+    z-index: 2;
 }
 
 /* =========================
@@ -71,14 +75,17 @@ body {
 
 #hud {
     position: absolute;
+
     top: 20px;
     left: 50%;
+
     transform: translateX(-50%);
 
     display: flex;
     gap: 15px;
 
     z-index: 10;
+
     pointer-events: none;
 }
 
@@ -88,13 +95,13 @@ body {
     border-radius: 14px;
 
     background:
-        rgba(0,0,0,0.55);
+        rgba(0,0,0,0.60);
 
     backdrop-filter: blur(10px);
 
     border:
         1px solid
-        rgba(255,255,255,0.14);
+        rgba(255,255,255,0.15);
 
     font-size: 20px;
     font-weight: bold;
@@ -121,14 +128,14 @@ body {
 
     top: 25px;
 
-    width: 190px;
+    width: 195px;
 
     padding: 18px;
 
     border-radius: 18px;
 
     background:
-        rgba(0,0,0,0.45);
+        rgba(0,0,0,0.48);
 
     backdrop-filter: blur(12px);
 
@@ -150,14 +157,12 @@ body {
 .panelTitle {
     text-align: center;
 
-    font-size: 16px;
+    font-size: 15px;
     font-weight: bold;
 
     letter-spacing: 1px;
 
     margin-bottom: 15px;
-
-    color: #ffffff;
 }
 
 .rankRow {
@@ -181,6 +186,7 @@ body {
 
 .rankName {
     flex: 1;
+
     margin-left: 8px;
 
     overflow: hidden;
@@ -192,6 +198,7 @@ body {
 
 .rankScore {
     color: #7cff00;
+
     font-weight: bold;
 }
 
@@ -210,14 +217,13 @@ body {
 
     gap: 3px;
 
-    font-size: 21px;
+    font-size: 20px;
 }
 
 .ratingNinjas span {
     opacity: 0.25;
 
-    filter:
-        grayscale(1);
+    filter: grayscale(1);
 }
 
 .ratingNinjas span.active {
@@ -234,6 +240,7 @@ body {
 
 #startScreen {
     position: absolute;
+
     inset: 0;
 
     display: flex;
@@ -334,8 +341,7 @@ button:hover {
     background:
         rgba(0,0,0,0.78);
 
-    backdrop-filter:
-        blur(10px);
+    backdrop-filter: blur(10px);
 }
 
 .modal {
@@ -411,7 +417,8 @@ button:hover {
 
     border-radius: 12px;
 
-    border: 1px solid #444;
+    border:
+        1px solid #444;
 
     background: #050505;
 
@@ -495,8 +502,7 @@ button:hover {
 
     opacity: 0.28;
 
-    filter:
-        grayscale(1);
+    filter: grayscale(1);
 
     transition: 0.15s;
 
@@ -535,6 +541,34 @@ button:hover {
 }
 
 /* =========================
+   HAND INDICATOR
+========================= */
+
+#handIndicator {
+    position: absolute;
+
+    width: 22px;
+    height: 22px;
+
+    border-radius: 50%;
+
+    border:
+        3px solid white;
+
+    box-shadow:
+        0 0 18px white;
+
+    pointer-events: none;
+
+    z-index: 12;
+
+    display: none;
+
+    transform:
+        translate(-50%, -50%);
+}
+
+/* =========================
    MOBILE
 ========================= */
 
@@ -542,6 +576,7 @@ button:hover {
 
     .sidePanel {
         width: 145px;
+
         padding: 12px;
     }
 
@@ -557,6 +592,7 @@ button:hover {
 
     #hud {
         top: 15px;
+
         gap: 5px;
     }
 
@@ -566,11 +602,9 @@ button:hover {
 
         font-size: 14px;
     }
-
 }
 
 </style>
-
 </head>
 
 <body>
@@ -586,6 +620,10 @@ button:hover {
 <canvas
     id="gameCanvas">
 </canvas>
+
+<div
+    id="handIndicator">
+</div>
 
 <!-- HUD -->
 
@@ -603,9 +641,7 @@ button:hover {
 
     <div class="hudBox">
         LIVES:
-        <span id="lives">
-            ❤️❤️❤️
-        </span>
+        <span id="lives">❤️❤️❤️❤️❤️</span>
     </div>
 
 </div>
@@ -621,49 +657,6 @@ button:hover {
     </div>
 
     <div id="leaderboardRows">
-
-        <div class="rankRow">
-            <span class="rankNumber">
-                1st
-            </span>
-
-            <span class="rankName">
-                ---
-            </span>
-
-            <span class="rankScore">
-                0
-            </span>
-        </div>
-
-        <div class="rankRow">
-            <span class="rankNumber">
-                2nd
-            </span>
-
-            <span class="rankName">
-                ---
-            </span>
-
-            <span class="rankScore">
-                0
-            </span>
-        </div>
-
-        <div class="rankRow">
-            <span class="rankNumber">
-                3rd
-            </span>
-
-            <span class="rankName">
-                ---
-            </span>
-
-            <span class="rankScore">
-                0
-            </span>
-        </div>
-
     </div>
 
 </div>
@@ -696,7 +689,7 @@ button:hover {
 
 </div>
 
-<!-- START SCREEN -->
+<!-- START -->
 
 <div id="startScreen">
 
@@ -735,14 +728,12 @@ button:hover {
         <div class="instructions">
 
             <p>
-                🖐️ <strong>Show your hand</strong>
-                to the camera.
+                🖐️ Show your hand to the camera.
             </p>
 
             <p>
-                🔪 Move your index finger
-                quickly across the fruit
-                to slice it.
+                🔪 Swipe your index finger
+                across fruit to slice it.
             </p>
 
             <p>
@@ -752,20 +743,23 @@ button:hover {
 
             <p>
                 💣 Bomb =
-                <strong>lose a life</strong>
+                <strong>lose 1 life</strong>
             </p>
 
             <p>
-                ❤️ You have 3 lives.
+                ❤️ You have
+                <strong>5 lives</strong>.
             </p>
 
             <p>
-                ⏱️ You have 60 seconds.
+                ⏱️ You have
+                <strong>60 seconds</strong>.
             </p>
 
             <p>
-                🏆 Try to get onto the
-                top 3 leaderboard!
+                🏆 Reach
+                <strong>300 points</strong>
+                to win!
             </p>
 
         </div>
@@ -903,18 +897,14 @@ button:hover {
 </div>
 
 <div id="cameraPermission">
-
     Camera required • Allow camera access to play
-
 </div>
 
 <!-- MEDIAPIPE -->
 
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js">
-</script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js">
-</script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
 
 <script>
 
@@ -998,6 +988,11 @@ const ratingModal =
         "ratingModal"
     );
 
+const handIndicator =
+    document.getElementById(
+        "handIndicator"
+    );
+
 
 /* =========================================================
    GAME STATE
@@ -1013,7 +1008,7 @@ let slicedHalves = [];
 
 let score = 0;
 
-let lives = 3;
+let lives = 5;
 
 let timeLeft = 60;
 
@@ -1021,7 +1016,7 @@ let gameRunning = false;
 
 let lastSpawn = 0;
 
-let spawnInterval = 850;
+let spawnInterval = 800;
 
 let difficulty = 1;
 
@@ -1029,24 +1024,43 @@ let gameTimer = null;
 
 let playerName = "";
 
+let gameAnimationFrame = null;
+
+let resultTimeout = null;
+
 
 /* =========================================================
-   HAND TRACKING
+   HAND TRACKING STATE
 ========================================================= */
 
 let previousHand = null;
 
 let smoothedHand = null;
 
+let handHistory = [];
+
 let lastSliceTime = 0;
 
-const SLICE_VELOCITY = 10;
+let lastHandSeen = 0;
 
-const SMOOTHING = 0.65;
+
+/*
+    The old version required one large
+    frame-to-frame jump.
+
+    This version calculates movement
+    across several recent frames.
+*/
+
+const SWIPE_DISTANCE = 35;
+
+const SLICE_COOLDOWN = 55;
+
+const HAND_HISTORY_TIME = 140;
 
 
 /* =========================================================
-   FRUIT TYPES
+   FRUITS
 ========================================================= */
 
 const fruitTypes = [
@@ -1054,7 +1068,7 @@ const fruitTypes = [
     {
         name: "apple",
         color: "#e51b23",
-        inner: "#ffcccc"
+        inner: "#ffd0d0"
     },
 
     {
@@ -1113,8 +1127,7 @@ function createFruit() {
             canvas.height +
             radius,
 
-        radius:
-            radius,
+        radius,
 
         vx:
             (Math.random() - 0.5) * 6,
@@ -1122,16 +1135,14 @@ function createFruit() {
         vy:
             -(17 +
             Math.random() * 5 +
-            difficulty * 0.7),
+            difficulty * 0.5),
 
         gravity:
             0.38,
 
-        type:
-            type,
+        type,
 
-        sliced:
-            false,
+        sliced: false,
 
         rotation:
             Math.random() *
@@ -1147,7 +1158,7 @@ function createFruit() {
 
 
 /* =========================================================
-   CREATE BOMB
+   BOMB
 ========================================================= */
 
 function createBomb() {
@@ -1165,8 +1176,7 @@ function createBomb() {
             canvas.height +
             radius,
 
-        radius:
-            radius,
+        radius,
 
         vx:
             (Math.random() - 0.5) * 6,
@@ -1178,17 +1188,13 @@ function createBomb() {
         gravity:
             0.38,
 
-        bomb:
-            true,
+        bomb: true,
 
-        sliced:
-            false,
+        sliced: false,
 
-        rotation:
-            0,
+        rotation: 0,
 
-        rotationSpeed:
-            0.05
+        rotationSpeed: 0.05
 
     };
 
@@ -1202,11 +1208,12 @@ function createBomb() {
 function spawnObjects() {
 
     const count =
-        Math.random() < 0.7
+        Math.random() < 0.65
         ? 1
         : Math.floor(
             Math.random() * 3
         ) + 1;
+
 
     for (
         let i = 0;
@@ -1252,13 +1259,19 @@ function drawFruit(fruit) {
         fruit.rotation
     );
 
-    if (fruit.bomb) {
+    if (
+        fruit.bomb
+    ) {
 
-        drawBomb(fruit);
+        drawBomb(
+            fruit
+        );
 
     } else {
 
-        drawWholeFruit(fruit);
+        drawWholeFruit(
+            fruit
+        );
 
     }
 
@@ -1268,7 +1281,7 @@ function drawFruit(fruit) {
 
 
 /* =========================================================
-   DRAW WHOLE FRUIT
+   WHOLE FRUIT
 ========================================================= */
 
 function drawWholeFruit(fruit) {
@@ -1294,6 +1307,7 @@ function drawWholeFruit(fruit) {
     ctx.fill();
 
     ctx.shadowBlur = 0;
+
 
     ctx.beginPath();
 
@@ -1378,7 +1392,7 @@ function drawWholeFruit(fruit) {
 
 
 /* =========================================================
-   DRAW BOMB
+   BOMB
 ========================================================= */
 
 function drawBomb(fruit) {
@@ -1454,7 +1468,7 @@ function drawBomb(fruit) {
 
 
 /* =========================================================
-   DRAW FRUIT HALF
+   FRUIT HALF
 ========================================================= */
 
 function drawFruitHalf(half) {
@@ -1469,6 +1483,7 @@ function drawFruitHalf(half) {
     ctx.rotate(
         half.rotation
     );
+
 
     const r =
         half.radius;
@@ -1545,7 +1560,7 @@ function drawFruitHalf(half) {
     ctx.restore();
 
 
-    /* Sliced edge */
+    /* Cut edge */
 
     ctx.save();
 
@@ -1600,23 +1615,21 @@ function createParticles(
 
         particles.push({
 
-            x:
-                x,
+            x,
 
-            y:
-                y,
+            y,
 
             vx:
-                (Math.random() - 0.5) * 14,
+                (Math.random() - 0.5) *
+                14,
 
             vy:
-                (Math.random() - 0.5) * 14,
+                (Math.random() - 0.5) *
+                14,
 
-            life:
-                1,
+            life: 1,
 
-            color:
-                color
+            color
 
         });
 
@@ -1628,7 +1641,8 @@ function createParticles(
 function updateParticles() {
 
     for (
-        let i = particles.length - 1;
+        let i =
+            particles.length - 1;
         i >= 0;
         i--
     ) {
@@ -1636,13 +1650,18 @@ function updateParticles() {
         const p =
             particles[i];
 
-        p.x += p.vx;
 
-        p.y += p.vy;
+        p.x +=
+            p.vx;
 
-        p.vy += 0.25;
+        p.y +=
+            p.vy;
 
-        p.life -= 0.025;
+        p.vy +=
+            0.25;
+
+        p.life -=
+            0.025;
 
 
         if (
@@ -1677,7 +1696,8 @@ function updateParticles() {
 
         ctx.fill();
 
-        ctx.globalAlpha = 1;
+        ctx.globalAlpha =
+            1;
 
     }
 
@@ -1723,6 +1743,7 @@ function drawTrail() {
         const p2 =
             trail[i];
 
+
         const alpha =
             i / trail.length;
 
@@ -1760,7 +1781,7 @@ function drawTrail() {
 
 
 /* =========================================================
-   POINT TO LINE DISTANCE
+   DISTANCE TO LINE
 ========================================================= */
 
 function distanceToSegment(
@@ -1807,10 +1828,12 @@ function distanceToSegment(
 
 
     const closestX =
-        x1 + t * dx;
+        x1 +
+        t * dx;
 
     const closestY =
-        y1 + t * dy;
+        y1 +
+        t * dy;
 
 
     return Math.hypot(
@@ -1822,7 +1845,7 @@ function distanceToSegment(
 
 
 /* =========================================================
-   SLICE FRUIT
+   SLICE
 ========================================================= */
 
 function sliceFruit(
@@ -1833,10 +1856,17 @@ function sliceFruit(
     y2
 ) {
 
-    fruit.sliced = true;
+    if (
+        fruit.sliced
+    )
+        return;
 
 
-    /* Bomb */
+    fruit.sliced =
+        true;
+
+
+    /* BOMB */
 
     if (
         fruit.bomb
@@ -1847,6 +1877,7 @@ function sliceFruit(
             fruit.y,
             "#ff3333"
         );
+
 
         lives--;
 
@@ -1873,9 +1904,24 @@ function sliceFruit(
     }
 
 
-    /* Normal fruit */
+    /* FRUIT */
 
     score += 10;
+
+
+    /*
+        Never allow score to go
+        above the target.
+    */
+
+    if (
+        score > 300
+    ) {
+
+        score = 300;
+
+    }
+
 
     scoreElement.textContent =
         score;
@@ -1906,13 +1952,15 @@ function sliceFruit(
 
 
     const nx =
-        directionX / length;
+        directionX /
+        length;
 
     const ny =
-        directionY / length;
+        directionY /
+        length;
 
 
-    /* Left half */
+    /* LEFT */
 
     slicedHalves.push({
 
@@ -1955,7 +2003,7 @@ function sliceFruit(
     });
 
 
-    /* Right half */
+    /* RIGHT */
 
     slicedHalves.push({
 
@@ -2003,11 +2051,34 @@ function sliceFruit(
         1
     );
 
+
+    /*
+        EXACT WIN CONDITION.
+
+        300 = immediate win.
+    */
+
+    if (
+        score >= 300
+    ) {
+
+        score =
+            300;
+
+        scoreElement.textContent =
+            "300";
+
+        endGame(
+            true
+        );
+
+    }
+
 }
 
 
 /* =========================================================
-   UPDATE SLICED HALVES
+   UPDATE HALVES
 ========================================================= */
 
 function updateSlicedHalves() {
@@ -2104,8 +2175,14 @@ function checkSliceLine(
             );
 
 
+        /*
+            Large hitbox makes
+            slicing much easier.
+        */
+
         const hitRadius =
-            fruit.radius + 40;
+            fruit.radius +
+            55;
 
 
         if (
@@ -2166,14 +2243,15 @@ function updateGame(
 
     difficulty =
         1 +
-        (60 - timeLeft) / 10;
+        (60 - timeLeft) /
+        15;
 
 
     spawnInterval =
         Math.max(
-            350,
-            850 -
-            difficulty * 70
+            330,
+            800 -
+            difficulty * 55
         );
 
 
@@ -2211,26 +2289,12 @@ function updateGame(
             canvas.height + 100
         ) {
 
-            if (
-                !fruit.bomb &&
-                !fruit.sliced
-            ) {
+            /*
+                Missing fruit does NOT
+                remove a life.
 
-                lives--;
-
-                updateLives();
-
-
-                if (
-                    lives <= 0
-                ) {
-
-                    endGame();
-
-                }
-
-            }
-
+                Only bombs do.
+            */
 
             fruits.splice(
                 i,
@@ -2262,9 +2326,10 @@ function updateGame(
         );
 
 
-    requestAnimationFrame(
-        updateGame
-    );
+    gameAnimationFrame =
+        requestAnimationFrame(
+            updateGame
+        );
 
 }
 
@@ -2278,13 +2343,58 @@ function onResults(
 ) {
 
     if (
+        !gameRunning
+    ) {
+
+        handIndicator.style.display =
+            "none";
+
+        previousHand =
+            null;
+
+        smoothedHand =
+            null;
+
+        handHistory =
+            [];
+
+        return;
+
+    }
+
+
+    if (
         !results.multiHandLandmarks ||
         results.multiHandLandmarks.length === 0
     ) {
 
-        previousHand = null;
+        /*
+            Don't immediately destroy
+            tracking state.
 
-        smoothedHand = null;
+            This prevents tiny detection
+            gaps from breaking the swipe.
+        */
+
+        if (
+            Date.now() -
+            lastHandSeen >
+            250
+        ) {
+
+            previousHand =
+                null;
+
+            smoothedHand =
+                null;
+
+            handHistory =
+                [];
+
+            handIndicator.style.display =
+                "none";
+
+        }
 
         return;
 
@@ -2295,14 +2405,23 @@ function onResults(
         results.multiHandLandmarks[0];
 
 
-    /* Index fingertip */
+    /*
+        MediaPipe landmark 8 =
+        index fingertip.
+    */
 
     const fingertip =
         hand[8];
 
 
+    /*
+        Mirror X because the
+        camera is mirrored visually.
+    */
+
     let x =
-        (1 - fingertip.x) *
+        (1 -
+            fingertip.x) *
         canvas.width;
 
     let y =
@@ -2310,30 +2429,32 @@ function onResults(
         canvas.height;
 
 
-    /* Smooth tracking */
+    /*
+        STRONGER SMOOTHING
+    */
 
     if (
         !smoothedHand
     ) {
 
         smoothedHand = {
-            x: x,
-            y: y
+            x,
+            y
         };
 
     } else {
 
         smoothedHand.x =
             smoothedHand.x *
-            0.65 +
+            0.55 +
             x *
-            0.35;
+            0.45;
 
         smoothedHand.y =
             smoothedHand.y *
-            0.65 +
+            0.55 +
             y *
-            0.35;
+            0.45;
 
     }
 
@@ -2345,38 +2466,90 @@ function onResults(
         smoothedHand.y;
 
 
-    /* Trail */
+    lastHandSeen =
+        Date.now();
 
-    trail.push({
 
-        x:
-            x,
+    /*
+        Visible finger indicator.
+    */
 
-        y:
-            y,
+    handIndicator.style.display =
+        "block";
 
-        time:
-            Date.now()
+    handIndicator.style.left =
+        x + "px";
+
+    handIndicator.style.top =
+        y + "px";
+
+
+    /*
+        Add to hand history.
+    */
+
+    const now =
+        Date.now();
+
+
+    handHistory.push({
+
+        x,
+        y,
+        time: now
 
     });
 
 
-    /* Slice detection */
+    handHistory =
+        handHistory.filter(
+            point =>
+                now -
+                point.time <
+                HAND_HISTORY_TIME
+        );
+
+
+    /*
+        Add glowing trail.
+    */
+
+    trail.push({
+
+        x,
+        y,
+        time: now
+
+    });
+
+
+    /*
+        Calculate movement over
+        several frames.
+
+        This is much more reliable
+        than only checking the last
+        frame.
+    */
 
     if (
-        previousHand
+        handHistory.length >= 2
     ) {
+
+        const oldest =
+            handHistory[0];
+
 
         const dx =
             x -
-            previousHand.x;
+            oldest.x;
 
         const dy =
             y -
-            previousHand.y;
+            oldest.y;
 
 
-        const velocity =
+        const distance =
             Math.hypot(
                 dx,
                 dy
@@ -2384,23 +2557,41 @@ function onResults(
 
 
         if (
-            velocity >
-            10 &&
-            Date.now() -
-            lastSliceTime >
-            35
+            distance >=
+            SWIPE_DISTANCE
         ) {
 
-            checkSliceLine(
-                previousHand.x,
-                previousHand.y,
-                x,
-                y
-            );
+            if (
+                now -
+                lastSliceTime >=
+                SLICE_COOLDOWN
+            ) {
+
+                checkSliceLine(
+                    oldest.x,
+                    oldest.y,
+                    x,
+                    y
+                );
 
 
-            lastSliceTime =
-                Date.now();
+                lastSliceTime =
+                    now;
+
+
+                /*
+                    Keep only recent
+                    points so the same
+                    movement isn't repeatedly
+                    registered.
+                */
+
+                handHistory =
+                    handHistory.slice(
+                        -2
+                    );
+
+            }
 
         }
 
@@ -2409,11 +2600,8 @@ function onResults(
 
     previousHand = {
 
-        x:
-            x,
-
-        y:
-            y
+        x,
+        y
 
     };
 
@@ -2430,9 +2618,10 @@ const hands =
         locateFile:
             file => {
 
-                return `
-https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}
-                `;
+                return (
+                    "https://cdn.jsdelivr.net/npm/@mediapipe/hands/" +
+                    file
+                );
 
             }
 
@@ -2447,14 +2636,16 @@ hands.setOptions({
     modelComplexity:
         1,
 
+    /*
+        LOWER thresholds =
+        easier hand detection.
+    */
+
     minDetectionConfidence:
-        0.45,
+        0.35,
 
     minTrackingConfidence:
-        0.45,
-
-    selfieMode:
-        false
+        0.35
 
 });
 
@@ -2542,7 +2733,17 @@ function startTimer() {
 
 
     timerElement.textContent =
-        timeLeft;
+        "60";
+
+
+    /*
+        Use real elapsed time rather
+        than assuming every interval
+        fires exactly on time.
+    */
+
+    const timerStart =
+        performance.now();
 
 
     gameTimer =
@@ -2555,7 +2756,21 @@ function startTimer() {
                     return;
 
 
-                timeLeft--;
+                const elapsed =
+                    Math.floor(
+                        (
+                            performance.now() -
+                            timerStart
+                        ) / 1000
+                    );
+
+
+                timeLeft =
+                    Math.max(
+                        0,
+                        60 -
+                        elapsed
+                    );
 
 
                 timerElement.textContent =
@@ -2566,12 +2781,14 @@ function startTimer() {
                     timeLeft <= 0
                 ) {
 
-                    endGame();
+                    endGame(
+                        false
+                    );
 
                 }
 
             },
-            1000
+            100
         );
 
 }
@@ -2601,7 +2818,8 @@ function saveScore() {
     leaderboard.push({
 
         name:
-            playerName,
+            playerName ||
+            "Ninja",
 
         score:
             score
@@ -2791,11 +3009,15 @@ function updateAverageRating() {
 
 
     ninjaElements.forEach(
-        (ninja, index) => {
+        (
+            ninja,
+            index
+        ) => {
 
             ninja.classList.toggle(
                 "active",
-                index < rounded
+                index <
+                rounded
             );
 
         }
@@ -2834,7 +3056,8 @@ function saveRating(
    RATING SELECTION
 ========================================================= */
 
-let selectedRating = 0;
+let selectedRating =
+    0;
 
 
 document
@@ -2881,7 +3104,7 @@ document
 
 
 /* =========================================================
-   FIRST PLAY BUTTON
+   START SCREEN
 ========================================================= */
 
 document
@@ -2917,11 +3140,13 @@ function openNameScreen() {
 
 
     /*
-        VERY IMPORTANT:
-
-        Clear the name every time
-        somebody reaches this screen.
+        Always clear previous
+        player's name.
     */
+
+    playerName =
+        "";
+
 
     const input =
         document.getElementById(
@@ -2929,9 +3154,8 @@ function openNameScreen() {
         );
 
 
-    input.value = "";
-
-    playerName = "";
+    input.value =
+        "";
 
 
     setTimeout(
@@ -2946,8 +3170,6 @@ function openNameScreen() {
 }
 
 
-/* X button */
-
 document
     .getElementById(
         "closeInstructions"
@@ -2957,8 +3179,6 @@ document
         openNameScreen
     );
 
-
-/* Continue button */
 
 document
     .getElementById(
@@ -2982,18 +3202,23 @@ function beginGameFromName() {
         );
 
 
-    playerName =
+    const enteredName =
         input.value.trim();
 
 
     if (
-        playerName.length === 0
+        enteredName.length === 0
     ) {
 
-        playerName =
-            "Ninja";
+        input.focus();
+
+        return;
 
     }
+
+
+    playerName =
+        enteredName;
 
 
     nameModal.style.display =
@@ -3057,6 +3282,22 @@ async function startGame() {
         "none";
 
 
+    clearTimeout(
+        resultTimeout
+    );
+
+
+    if (
+        gameAnimationFrame
+    ) {
+
+        cancelAnimationFrame(
+            gameAnimationFrame
+        );
+
+    }
+
+
     fruits = [];
 
     particles = [];
@@ -3065,17 +3306,37 @@ async function startGame() {
 
     trail = [];
 
+    handHistory = [];
 
-    score = 0;
 
-    lives = 3;
+    score =
+        0;
+
+    lives =
+        5;
+
+    timeLeft =
+        60;
 
 
     scoreElement.textContent =
         "0";
 
+    timerElement.textContent =
+        "60";
+
 
     updateLives();
+
+
+    previousHand =
+        null;
+
+    smoothedHand =
+        null;
+
+    lastSliceTime =
+        0;
 
 
     gameRunning =
@@ -3084,13 +3345,6 @@ async function startGame() {
 
     lastSpawn =
         performance.now();
-
-
-    previousHand =
-        null;
-
-    smoothedHand =
-        null;
 
 
     startTimer();
@@ -3102,7 +3356,9 @@ async function startGame() {
 
     }
 
-    catch (error) {
+    catch (
+        error
+    ) {
 
         console.error(
             error
@@ -3110,24 +3366,34 @@ async function startGame() {
 
 
         alert(
-            "Please allow camera access to play."
+            "Camera access is required. Please allow camera access and reload the page."
         );
+
+
+        gameRunning =
+            false;
+
+
+        return;
 
     }
 
 
-    requestAnimationFrame(
-        updateGame
-    );
+    gameAnimationFrame =
+        requestAnimationFrame(
+            updateGame
+        );
 
 }
 
 
 /* =========================================================
-   GAME OVER
+   END GAME
 ========================================================= */
 
-function endGame() {
+function endGame(
+    won = false
+) {
 
     if (
         !gameRunning
@@ -3144,9 +3410,38 @@ function endGame() {
     );
 
 
+    if (
+        gameAnimationFrame
+    ) {
+
+        cancelAnimationFrame(
+            gameAnimationFrame
+        );
+
+    }
+
+
+    handIndicator.style.display =
+        "none";
+
+
     /*
-        Save the score immediately.
+        If the player somehow reaches
+        300, force exactly 300.
     */
+
+    if (
+        score >= 300
+    ) {
+
+        score =
+            300;
+
+        won =
+            true;
+
+    }
+
 
     saveScore();
 
@@ -3164,14 +3459,14 @@ function endGame() {
 
 
     if (
-        score >= 100
+        won
     ) {
 
         title.textContent =
             "🎉 YOU WON!";
 
         result.textContent =
-            "🏆 You earned a prize!";
+            "🏆 300 POINTS — YOU EARNED A PRIZE!";
 
     }
 
@@ -3189,7 +3484,8 @@ function endGame() {
     document.getElementById(
         "finalScore"
     ).textContent =
-        "Score: " + score;
+        "Score: " +
+        score;
 
 
     gameOver.style.display =
@@ -3197,48 +3493,50 @@ function endGame() {
 
 
     /*
-        Wait 2 seconds,
-        then show rating.
+        Exactly 2 seconds after
+        the result appears,
+        show rating.
     */
 
-    setTimeout(
-        () => {
+    resultTimeout =
+        setTimeout(
+            () => {
 
-            gameOver.style.display =
-                "none";
-
-
-            selectedRating =
-                0;
+                gameOver.style.display =
+                    "none";
 
 
-            document
-                .querySelectorAll(
-                    ".ninjaChoice"
-                )
-                .forEach(
-                    ninja => {
-
-                        ninja.classList.remove(
-                            "selected"
-                        );
-
-                    }
-                );
+                selectedRating =
+                    0;
 
 
-            ratingModal.style.display =
-                "flex";
+                document
+                    .querySelectorAll(
+                        ".ninjaChoice"
+                    )
+                    .forEach(
+                        ninja => {
 
-        },
-        2000
-    );
+                            ninja.classList.remove(
+                                "selected"
+                            );
+
+                        }
+                    );
+
+
+                ratingModal.style.display =
+                    "flex";
+
+            },
+            2000
+        );
 
 }
 
 
 /* =========================================================
-   SUBMIT RATING → INSTRUCTIONS
+   SUBMIT RATING
 ========================================================= */
 
 document
@@ -3249,11 +3547,6 @@ document
         "click",
         () => {
 
-            /*
-                Don't continue without
-                a rating.
-            */
-
             if (
                 selectedRating === 0
             ) {
@@ -3263,26 +3556,14 @@ document
             }
 
 
-            /*
-                Save rating.
-            */
-
             saveRating(
                 selectedRating
             );
 
 
-            /*
-                Close rating.
-            */
-
             ratingModal.style.display =
                 "none";
 
-
-            /*
-                Reset rating.
-            */
 
             selectedRating =
                 0;
@@ -3304,11 +3585,9 @@ document
 
 
             /*
-                Reset the player name.
+                IMPORTANT:
 
-                This is important because
-                multiple people will use
-                the same device.
+                Clear previous player.
             */
 
             playerName =
@@ -3322,12 +3601,8 @@ document
 
 
             /*
-                NEW PLAYER:
-
-                Go straight to
+                New player goes to
                 instructions.
-
-                NOT the old PLAY screen.
             */
 
             instructionsModal.style.display =
@@ -3338,7 +3613,7 @@ document
 
 
 /* =========================================================
-   PLAY AGAIN BUTTON
+   PLAY AGAIN
 ========================================================= */
 
 document
@@ -3348,11 +3623,6 @@ document
     .addEventListener(
         "click",
         () => {
-
-            /*
-                Clear everything related
-                to previous player.
-            */
 
             playerName =
                 "";
@@ -3368,43 +3638,17 @@ document
                 "none";
 
 
-            /*
-                Start next player
-                from instructions.
-            */
-
             instructionsModal.style.display =
                 "flex";
 
         }
     );
-
-
 /* =========================================================
    INITIALIZE
 ========================================================= */
-
 updateLeaderboard();
-
 updateAverageRating();
-
 </script>
-
 </div>
-
 </body>
-
 </html>
-```
-
-### The important part now
-
-After Player 1 finishes:
-
-**Game → result → 2 sec → rating → submit → instructions**
-
-Then Player 2 sees a **completely blank name field**:
-
-**Instructions → ✕ → ENTER YOUR NAME → START SLICING**
-
-Meanwhile Player 1's **score remains on the leaderboard** and their rating remains included in the **average rating**. 🥷🏆
