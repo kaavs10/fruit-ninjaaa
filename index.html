@@ -3,22 +3,12 @@
 <html lang="en">
 
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Fruit Ninja — Hand Slice</title>
 
-
 <style>
-
-/* =========================================================
-   GLOBAL
-========================================================= */
 
 * {
     box-sizing: border-box;
@@ -26,32 +16,18 @@
     padding: 0;
 }
 
-
 body {
-
     overflow: hidden;
-
     background: #050505;
-
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
+    font-family: Arial, Helvetica, sans-serif;
     color: white;
-
 }
 
-
 #game {
-
     position: relative;
-
     width: 100vw;
     height: 100vh;
-
     overflow: hidden;
-
     background:
         radial-gradient(
             circle at center,
@@ -59,353 +35,165 @@ body {
             #070707 65%,
             #000000 100%
         );
-
 }
-
-
-/* =========================================================
-   CAMERA
-========================================================= */
 
 #camera {
-
     position: absolute;
-
     width: 100%;
     height: 100%;
-
     object-fit: cover;
-
     transform: scaleX(-1);
-
     opacity: 0.12;
-
     z-index: 1;
-
 }
-
-
-/* =========================================================
-   CANVAS
-========================================================= */
 
 #gameCanvas {
-
     position: absolute;
-
     inset: 0;
-
     width: 100%;
     height: 100%;
-
     z-index: 2;
-
 }
-
-
-/* =========================================================
-   HUD
-========================================================= */
 
 #hud {
-
     position: absolute;
-
     top: 20px;
-
     left: 50%;
-
-    transform:
-        translateX(-50%);
-
+    transform: translateX(-50%);
     display: flex;
-
     gap: 15px;
-
     z-index: 10;
-
     pointer-events: none;
-
 }
-
 
 .hudBox {
-
-    padding:
-        10px 20px;
-
+    padding: 10px 20px;
     border-radius: 14px;
-
-    background:
-        rgba(
-            0,
-            0,
-            0,
-            0.60
-        );
-
-    backdrop-filter:
-        blur(10px);
-
-    border:
-        1px solid
-        rgba(
-            255,
-            255,
-            255,
-            0.15
-        );
-
+    background: rgba(0,0,0,0.60);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.15);
     font-size: 20px;
-
     font-weight: bold;
-
 }
-
 
 #score {
-
     color: #7cff00;
-
 }
-
 
 #timer {
-
     color: #55ddff;
-
 }
-
 
 #lives {
-
     color: #ff4444;
-
 }
-
 
 /* =========================================================
    SIDE PANELS
 ========================================================= */
 
 .sidePanel {
-
     position: absolute;
-
     top: 25px;
-
-    width: 195px;
-
+    width: 205px;
     padding: 18px;
-
     border-radius: 18px;
-
-    background:
-        rgba(
-            0,
-            0,
-            0,
-            0.48
-        );
-
-    backdrop-filter:
-        blur(12px);
-
-    border:
-        1px solid
-        rgba(
-            255,
-            255,
-            255,
-            0.12
-        );
-
+    background: rgba(0,0,0,0.48);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.12);
     z-index: 9;
-
 }
-
 
 #leaderboard {
-
     left: 20px;
-
 }
-
 
 #ratingsPanel {
-
     right: 20px;
-
 }
-
 
 .panelTitle {
-
     text-align: center;
-
     font-size: 15px;
-
     font-weight: bold;
-
     letter-spacing: 1px;
-
     margin-bottom: 15px;
-
 }
-
 
 .rankRow {
-
     display: flex;
-
     justify-content: space-between;
-
     align-items: center;
-
-    padding:
-        9px 4px;
-
-    border-bottom:
-        1px solid
-        rgba(
-            255,
-            255,
-            255,
-            0.08
-        );
-
+    padding: 9px 4px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
     font-size: 14px;
-
 }
-
 
 .rankNumber {
-
     font-weight: bold;
-
+    width: 32px;
 }
-
 
 .rankName {
-
     flex: 1;
-
-    margin-left: 8px;
-
+    margin-left: 5px;
     overflow: hidden;
-
     text-overflow: ellipsis;
-
     white-space: nowrap;
-
 }
 
-
-.rankScore {
-
-    color: #7cff00;
-
+.rankTime {
+    color: #55ddff;
     font-weight: bold;
-
+    white-space: nowrap;
 }
-
 
 #averageRating {
-
     text-align: center;
-
     font-size: 27px;
-
     margin-bottom: 12px;
-
 }
-
 
 .ratingNinjas {
-
     display: flex;
-
     justify-content: center;
-
     gap: 3px;
-
     font-size: 20px;
-
 }
-
 
 .ratingNinjas span {
-
     opacity: 0.25;
-
-    filter:
-        grayscale(1);
-
+    filter: grayscale(1);
 }
-
 
 .ratingNinjas span.active {
-
     opacity: 1;
-
-    filter:
-        grayscale(1)
-        brightness(0);
-
+    filter: grayscale(1) brightness(0);
 }
-
 
 /* =========================================================
    START SCREEN
 ========================================================= */
 
 #startScreen {
-
     position: absolute;
-
     inset: 0;
-
     display: flex;
-
     justify-content: center;
-
     align-items: center;
-
     flex-direction: column;
-
     z-index: 20;
-
     background:
         radial-gradient(
             circle,
-            rgba(
-                30,
-                30,
-                30,
-                0.96
-            ),
-            rgba(
-                0,
-                0,
-                0,
-                0.99
-            )
+            rgba(30,30,30,0.96),
+            rgba(0,0,0,0.99)
         );
-
 }
 
-
 #startScreen h1 {
-
-    font-size:
-        clamp(
-            50px,
-            9vw,
-            110px
-        );
-
+    font-size: clamp(50px,9vw,110px);
     letter-spacing: -5px;
-
     background:
         linear-gradient(
             90deg,
@@ -414,589 +202,289 @@ body {
             #7cff00,
             #00ddff
         );
-
-    -webkit-background-clip:
-        text;
-
+    -webkit-background-clip: text;
     color: transparent;
-
     margin-bottom: 10px;
-
 }
-
 
 #startScreen p {
-
     color: #aaa;
-
     font-size: 18px;
-
     margin-bottom: 30px;
-
 }
-
 
 button {
-
     border: none;
-
-    padding:
-        15px 35px;
-
+    padding: 15px 35px;
     border-radius: 50px;
-
     background: white;
-
     color: black;
-
     font-size: 17px;
-
     font-weight: bold;
-
     cursor: pointer;
-
-    transition:
-        0.2s;
-
+    transition: 0.2s;
 }
-
 
 button:hover {
-
-    transform:
-        scale(1.07);
-
-    box-shadow:
-        0 0 30px
-        rgba(
-            255,
-            255,
-            255,
-            0.25
-        );
-
+    transform: scale(1.07);
+    box-shadow: 0 0 30px rgba(255,255,255,0.25);
 }
-
 
 /* =========================================================
    MODALS
 ========================================================= */
 
 .modalOverlay {
-
     position: absolute;
-
     inset: 0;
-
     display: none;
-
     justify-content: center;
-
     align-items: center;
-
     z-index: 50;
-
-    background:
-        rgba(
-            0,
-            0,
-            0,
-            0.78
-        );
-
-    backdrop-filter:
-        blur(10px);
-
+    background: rgba(0,0,0,0.78);
+    backdrop-filter: blur(10px);
 }
-
 
 .modal {
-
     position: relative;
-
-    width:
-        min(
-            520px,
-            90vw
-        );
-
+    width: min(520px,90vw);
     padding: 35px;
-
     border-radius: 25px;
-
     background: #111;
-
-    border:
-        1px solid
-        rgba(
-            255,
-            255,
-            255,
-            0.15
-        );
-
-    box-shadow:
-        0 20px 80px
-        rgba(
-            0,
-            0,
-            0,
-            0.6
-        );
-
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: 0 20px 80px rgba(0,0,0,0.6);
     text-align: center;
-
 }
-
 
 .modal h2 {
-
     font-size: 32px;
-
     margin-bottom: 20px;
-
 }
-
 
 .closeButton {
-
     position: absolute;
-
     top: 12px;
-
     right: 17px;
-
     width: 35px;
-
     height: 35px;
-
     padding: 0;
-
     border-radius: 50%;
-
-    background:
-        rgba(
-            255,
-            255,
-            255,
-            0.08
-        );
-
+    background: rgba(255,255,255,0.08);
     color: white;
-
     font-size: 23px;
-
     line-height: 35px;
-
 }
-
 
 .instructions {
-
     text-align: left;
-
     color: #ccc;
-
     line-height: 1.8;
-
     margin-bottom: 25px;
-
 }
-
 
 .instructions p {
-
     margin-bottom: 4px;
-
 }
-
 
 .instructions strong {
-
     color: white;
-
 }
-
 
 #nameInput {
-
     width: 100%;
-
     padding: 15px;
-
     border-radius: 12px;
-
-    border:
-        1px solid #444;
-
+    border: 1px solid #444;
     background: #050505;
-
     color: white;
-
     font-size: 18px;
-
     outline: none;
-
     margin-bottom: 20px;
-
 }
-
 
 #nameInput:focus {
-
-    border-color:
-        #7cff00;
-
+    border-color: #7cff00;
 }
-
 
 /* =========================================================
    GAME OVER
 ========================================================= */
 
 #gameOver h2 {
-
     font-size: 60px;
-
     margin-bottom: 10px;
-
 }
-
 
 #resultText {
-
     color: #7cff00;
-
-    font-size: 25px;
-
+    font-size: 23px;
     margin-bottom: 8px;
-
 }
-
 
 #finalScore {
-
     font-size: 24px;
-
     color: #aaa;
-
     margin-bottom: 25px;
-
 }
-
 
 /* =========================================================
    RATING
 ========================================================= */
 
 #ratingModal h2 {
-
     margin-bottom: 8px;
-
 }
-
 
 #ratingModal p {
-
     color: #aaa;
-
     margin-bottom: 22px;
-
 }
-
 
 #ninjaRating {
-
     display: flex;
-
     justify-content: center;
-
     gap: 10px;
-
-    margin:
-        20px 0
-        28px;
-
+    margin: 20px 0 28px;
 }
-
 
 .ninjaChoice {
-
     font-size: 42px;
-
     cursor: pointer;
-
     opacity: 0.28;
-
-    filter:
-        grayscale(1);
-
-    transition:
-        0.15s;
-
+    filter: grayscale(1);
+    transition: 0.15s;
     user-select: none;
-
 }
-
 
 .ninjaChoice:hover {
-
-    transform:
-        scale(1.15);
-
+    transform: scale(1.15);
 }
-
 
 .ninjaChoice.selected {
-
     opacity: 1;
-
-    filter:
-        grayscale(1)
-        brightness(0);
-
-    transform:
-        scale(1.05);
-
+    filter: grayscale(1) brightness(0);
+    transform: scale(1.05);
 }
 
-
 /* =========================================================
-   FINGER INDICATOR
+   FINGER
 ========================================================= */
 
 #handIndicator {
-
     position: absolute;
-
     width: 24px;
-
     height: 24px;
-
     border-radius: 50%;
-
-    border:
-        3px solid white;
-
+    border: 3px solid white;
     box-shadow:
         0 0 20px white,
         0 0 35px white;
-
     pointer-events: none;
-
     z-index: 12;
-
     display: none;
-
-    transform:
-        translate(
-            -50%,
-            -50%
-        );
-
+    transform: translate(-50%,-50%);
 }
-
 
 #cameraPermission {
-
     position: absolute;
-
     bottom: 20px;
-
     left: 50%;
-
-    transform:
-        translateX(-50%);
-
+    transform: translateX(-50%);
     z-index: 15;
-
     color: #777;
-
     font-size: 13px;
-
 }
 
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media(
-    max-width: 800px
-) {
+@media(max-width:800px) {
 
     .sidePanel {
-
         width: 145px;
-
         padding: 12px;
-
     }
-
 
     #leaderboard {
-
         left: 8px;
-
         top: 75px;
-
     }
-
 
     #ratingsPanel {
-
         right: 8px;
-
         top: 75px;
-
     }
-
 
     #hud {
-
         top: 15px;
-
         gap: 5px;
-
     }
 
-
     .hudBox {
-
-        padding:
-            8px 10px;
-
+        padding: 8px 10px;
         font-size: 14px;
-
     }
 
 }
 
 </style>
-
 </head>
-
 
 <body>
 
-
 <div id="game">
 
+<video id="camera" autoplay playsinline></video>
 
-<!-- ======================================================
-     CAMERA
-====================================================== -->
+<canvas id="gameCanvas"></canvas>
 
-<video
-    id="camera"
-    autoplay
-    playsinline>
-</video>
+<div id="handIndicator"></div>
 
-
-<!-- ======================================================
-     GAME CANVAS
-====================================================== -->
-
-<canvas
-    id="gameCanvas">
-</canvas>
-
-
-<!-- ======================================================
-     FINGER INDICATOR
-====================================================== -->
-
-<div
-    id="handIndicator">
-</div>
-
-
-<!-- ======================================================
-     HUD
-====================================================== -->
+<!-- HUD -->
 
 <div id="hud">
 
     <div class="hudBox">
-
         SCORE:
-        <span id="score">
-            0
-        </span>
-
+        <span id="score">0</span>
     </div>
 
-
     <div class="hudBox">
-
         TIME:
-        <span id="timer">
-            60
-        </span>
-
+        <span id="timer">60</span>
     </div>
-
 
     <div class="hudBox">
-
         LIVES:
-        <span id="lives">
-            ❤️❤️❤️❤️❤️
-        </span>
-
+        <span id="lives">❤️❤️❤️❤️❤️</span>
     </div>
 
 </div>
 
 
-<!-- ======================================================
-     LEADERBOARD
-====================================================== -->
+<!-- LEADERBOARD -->
 
-<div
-    id="leaderboard"
-    class="sidePanel">
+<div id="leaderboard" class="sidePanel">
 
     <div class="panelTitle">
-
-        🏆 LEADERBOARD
-
+        🏆 FASTEST NINJAS
     </div>
 
-
-    <div
-        id="leaderboardRows">
-    </div>
+    <div id="leaderboardRows"></div>
 
 </div>
 
 
-<!-- ======================================================
-     RATINGS
-====================================================== -->
+<!-- RATINGS -->
 
-<div
-    id="ratingsPanel"
-    class="sidePanel">
+<div id="ratingsPanel" class="sidePanel">
 
     <div class="panelTitle">
-
         🥷 AVERAGE RATING
-
     </div>
-
 
     <div id="averageRating">
-
         0.0 / 5
-
     </div>
 
-
-    <div
-        id="averageNinjas"
-        class="ratingNinjas">
+    <div id="averageNinjas" class="ratingNinjas">
 
         <span>🥷</span>
         <span>🥷</span>
@@ -1009,124 +497,81 @@ button:hover {
 </div>
 
 
-<!-- ======================================================
-     START SCREEN
-====================================================== -->
+<!-- START -->
 
 <div id="startScreen">
 
-    <h1>
-        FRUIT NINJA
-    </h1>
-
+    <h1>FRUIT NINJA</h1>
 
     <p>
         Slice fruit with your hand 🖐️
     </p>
 
-
-    <button
-        id="startButton">
-
+    <button id="startButton">
         PLAY
-
     </button>
 
 </div>
 
 
-<!-- ======================================================
-     INSTRUCTIONS
-====================================================== -->
+<!-- INSTRUCTIONS -->
 
-<div
-    id="instructionsModal"
-    class="modalOverlay">
+<div id="instructionsModal" class="modalOverlay">
 
     <div class="modal">
-
 
         <button
             class="closeButton"
             id="closeInstructions">
-
             ×
-
         </button>
 
-
         <h2>
-
             🥷 HOW TO PLAY
-
         </h2>
-
 
         <div class="instructions">
 
             <p>
-                🖐️ Show your hand
-                to the camera.
+                🖐️ Show your hand to the camera.
             </p>
-
 
             <p>
                 🔪 Swipe your
-                <strong>
-                    index finger
-                </strong>
+                <strong>index finger</strong>
                 across fruit.
             </p>
 
-
             <p>
                 🍎 Fruit =
-                <strong>
-                    +10 points
-                </strong>
+                <strong>+10 points</strong>
             </p>
-
 
             <p>
-                💣 Bomb =
-                <strong>
-                    lose 1 life
-                </strong>
+                💣 TNT =
+                <strong>lose 1 life</strong>
             </p>
-
 
             <p>
                 ❤️ You have
-                <strong>
-                    5 lives
-                </strong>
+                <strong>5 lives</strong>
             </p>
-
 
             <p>
                 ⏱️ You have
-                <strong>
-                    60 seconds
-                </strong>
+                <strong>60 seconds</strong>
             </p>
-
 
             <p>
                 🏆 Reach
-                <strong>
-                    300 points
-                </strong>
+                <strong>500 points</strong>
                 to win!
             </p>
 
         </div>
 
-
-        <button
-            id="instructionsContinue">
-
+        <button id="instructionsContinue">
             CONTINUE
-
         </button>
 
     </div>
@@ -1134,35 +579,20 @@ button:hover {
 </div>
 
 
-<!-- ======================================================
-     NAME
-====================================================== -->
+<!-- NAME -->
 
-<div
-    id="nameModal"
-    class="modalOverlay">
+<div id="nameModal" class="modalOverlay">
 
     <div class="modal">
 
-
         <h2>
-
             👤 ENTER YOUR NAME
-
         </h2>
 
-
-        <p
-            style="
-            color:#888;
-            margin-bottom:20px;
-            ">
-
-            Your score will appear
+        <p style="color:#888;margin-bottom:20px;">
+            Your completion time will appear
             on the leaderboard.
-
         </p>
-
 
         <input
             id="nameInput"
@@ -1171,12 +601,8 @@ button:hover {
             placeholder="Your name"
         >
 
-
-        <button
-            id="nameContinue">
-
+        <button id="nameContinue">
             START SLICING
-
         </button>
 
     </div>
@@ -1184,44 +610,26 @@ button:hover {
 </div>
 
 
-<!-- ======================================================
-     GAME OVER
-====================================================== -->
+<!-- GAME OVER -->
 
-<div
-    id="gameOver"
-    class="modalOverlay">
+<div id="gameOver" class="modalOverlay">
 
     <div class="modal">
 
-
-        <h2
-            id="gameOverTitle">
-
+        <h2 id="gameOverTitle">
             GAME OVER
-
         </h2>
-
 
         <div id="resultText">
-
             NICE RUN!
-
         </div>
-
 
         <div id="finalScore">
-
             Score: 0
-
         </div>
 
-
-        <button
-            id="restartButton">
-
+        <button id="restartButton">
             PLAY AGAIN
-
         </button>
 
     </div>
@@ -1229,87 +637,46 @@ button:hover {
 </div>
 
 
-<!-- ======================================================
-     RATING
-====================================================== -->
+<!-- RATING -->
 
-<div
-    id="ratingModal"
-    class="modalOverlay">
+<div id="ratingModal" class="modalOverlay">
 
     <div class="modal">
 
-
         <h2>
-
             🥷 PLEASE RATE
-
         </h2>
 
-
         <p>
-
-            How much did you enjoy
-            the game?
-
+            How much did you enjoy the game?
         </p>
-
 
         <div id="ninjaRating">
 
-
-            <span
-                class="ninjaChoice"
-                data-rating="1">
-
+            <span class="ninjaChoice" data-rating="1">
                 🥷
-
             </span>
 
-
-            <span
-                class="ninjaChoice"
-                data-rating="2">
-
+            <span class="ninjaChoice" data-rating="2">
                 🥷
-
             </span>
 
-
-            <span
-                class="ninjaChoice"
-                data-rating="3">
-
+            <span class="ninjaChoice" data-rating="3">
                 🥷
-
             </span>
 
-
-            <span
-                class="ninjaChoice"
-                data-rating="4">
-
+            <span class="ninjaChoice" data-rating="4">
                 🥷
-
             </span>
 
-
-            <span
-                class="ninjaChoice"
-                data-rating="5">
-
+            <span class="ninjaChoice" data-rating="5">
                 🥷
-
             </span>
 
         </div>
 
-
-        <button
-            id="submitRating">
-
+        <button id="submitRating">
             SUBMIT RATING
-
         </button>
 
     </div>
@@ -1318,23 +685,13 @@ button:hover {
 
 
 <div id="cameraPermission">
-
-    Camera required • Allow camera
-    access to play
-
+    Camera required • Allow camera access to play
 </div>
 
 
-<!-- ======================================================
-     MEDIAPIPE
-====================================================== -->
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js">
-</script>
-
-
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js">
-</script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
 
 
 <script>
@@ -1344,15 +701,10 @@ button:hover {
 ========================================================= */
 
 const canvas =
-    document.getElementById(
-        "gameCanvas"
-    );
-
+    document.getElementById("gameCanvas");
 
 const ctx =
-    canvas.getContext(
-        "2d"
-    );
+    canvas.getContext("2d");
 
 
 function resizeCanvas() {
@@ -1368,7 +720,6 @@ function resizeCanvas() {
 
 resizeCanvas();
 
-
 window.addEventListener(
     "resize",
     resizeCanvas
@@ -1380,63 +731,34 @@ window.addEventListener(
 ========================================================= */
 
 const video =
-    document.getElementById(
-        "camera"
-    );
-
+    document.getElementById("camera");
 
 const scoreElement =
-    document.getElementById(
-        "score"
-    );
-
+    document.getElementById("score");
 
 const timerElement =
-    document.getElementById(
-        "timer"
-    );
-
+    document.getElementById("timer");
 
 const livesElement =
-    document.getElementById(
-        "lives"
-    );
-
+    document.getElementById("lives");
 
 const startScreen =
-    document.getElementById(
-        "startScreen"
-    );
-
+    document.getElementById("startScreen");
 
 const instructionsModal =
-    document.getElementById(
-        "instructionsModal"
-    );
-
+    document.getElementById("instructionsModal");
 
 const nameModal =
-    document.getElementById(
-        "nameModal"
-    );
-
+    document.getElementById("nameModal");
 
 const gameOver =
-    document.getElementById(
-        "gameOver"
-    );
-
+    document.getElementById("gameOver");
 
 const ratingModal =
-    document.getElementById(
-        "ratingModal"
-    );
-
+    document.getElementById("ratingModal");
 
 const handIndicator =
-    document.getElementById(
-        "handIndicator"
-    );
+    document.getElementById("handIndicator");
 
 
 /* =========================================================
@@ -1474,8 +796,24 @@ let gameAnimationFrame = null;
 let resultTimeout = null;
 
 
+/*
+    IMPORTANT:
+    Records the exact moment the game began.
+*/
+
+let gameStartTime = 0;
+
+
+/*
+    Records completion time when
+    player reaches 500.
+*/
+
+let completionTime = 0;
+
+
 /* =========================================================
-   HAND TRACKING STATE
+   HAND SETTINGS
 ========================================================= */
 
 let handHistory = [];
@@ -1489,44 +827,15 @@ let lastSliceTime = 0;
 let swipeActive = false;
 
 
-/*
-    IMPROVED SETTINGS
-*/
-
 const HAND_SMOOTHING = 0.30;
-
-
-/*
-    Lower = easier swipe.
-*/
 
 const SWIPE_DISTANCE = 22;
 
-
-/*
-    Remember recent movement.
-*/
-
 const HAND_HISTORY_TIME = 220;
-
-
-/*
-    Minimum movement speed.
-*/
 
 const MIN_SWIPE_SPEED = 0.08;
 
-
-/*
-    Bigger = easier cutting.
-*/
-
 const SLICE_HITBOX = 75;
-
-
-/*
-    Prevent repeated slicing.
-*/
 
 const SLICE_COOLDOWN = 45;
 
@@ -1540,35 +849,31 @@ const fruitTypes = [
     {
         name: "apple",
         color: "#e51b23",
-        inner: "#ffd0d0"
+        inner: "#ffd6d6"
     },
-
 
     {
         name: "watermelon",
-        color: "#35c84a",
-        inner: "#ff4057"
+        color: "#329447",
+        inner: "#f23848"
     },
-
 
     {
         name: "orange",
         color: "#ff8c00",
-        inner: "#ffd16a"
+        inner: "#ffd36b"
     },
-
 
     {
         name: "lemon",
         color: "#ffe000",
-        inner: "#fff8a5"
+        inner: "#fff6a0"
     },
 
-
     {
-        name: "kiwi",
-        color: "#6dbb42",
-        inner: "#d8ff78"
+        name: "banana",
+        color: "#ffe33b",
+        inner: "#fff09a"
     }
 
 ];
@@ -1588,68 +893,42 @@ function createFruit() {
             )
         ];
 
-
     const radius =
         35 +
-        Math.random() *
-        12;
-
+        Math.random() * 12;
 
     return {
 
         x:
             100 +
             Math.random() *
-            (
-                canvas.width -
-                200
-            ),
-
+            (canvas.width - 200),
 
         y:
             canvas.height +
             radius,
 
-
         radius,
 
-
         vx:
-            (
-                Math.random() -
-                0.5
-            ) * 6,
-
+            (Math.random() - 0.5) * 6,
 
         vy:
-            -(
-                17 +
-                Math.random() * 5 +
-                difficulty * 0.5
-            ),
-
+            -(17 + Math.random() * 5 + difficulty * 0.5),
 
         gravity:
             0.38,
 
-
         type,
-
 
         sliced:
             false,
 
-
         rotation:
-            Math.random() *
-            Math.PI,
-
+            Math.random() * Math.PI,
 
         rotationSpeed:
-            (
-                Math.random() -
-                0.5
-            ) * 0.15
+            (Math.random() - 0.5) * 0.15
 
     };
 
@@ -1657,65 +936,50 @@ function createFruit() {
 
 
 /* =========================================================
-   CREATE BOMB
+   CREATE TNT BOMB
 ========================================================= */
 
 function createBomb() {
 
-    const radius = 38;
-
-
     return {
 
         x:
             100 +
             Math.random() *
-            (
-                canvas.width -
-                200
-            ),
-
+            (canvas.width - 200),
 
         y:
-            canvas.height +
-            radius,
+            canvas.height + 55,
 
+        radius:
+            42,
 
-        radius,
+        width:
+            76,
 
+        height:
+            58,
 
         vx:
-            (
-                Math.random() -
-                0.5
-            ) * 6,
-
+            (Math.random() - 0.5) * 6,
 
         vy:
-            -(
-                18 +
-                Math.random() * 4
-            ),
-
+            -(18 + Math.random() * 4),
 
         gravity:
             0.38,
 
-
         bomb:
             true,
-
 
         sliced:
             false,
 
-
         rotation:
-            0,
-
+            (Math.random() - 0.5) * 0.15,
 
         rotationSpeed:
-            0.05
+            (Math.random() - 0.5) * 0.04
 
     };
 
@@ -1723,7 +987,7 @@ function createBomb() {
 
 
 /* =========================================================
-   SPAWN OBJECTS
+   SPAWN
 ========================================================= */
 
 function spawnObjects() {
@@ -1731,8 +995,7 @@ function spawnObjects() {
     const count =
         Math.random() < 0.65
         ? 1
-        :
-        Math.floor(
+        : Math.floor(
             Math.random() * 3
         ) + 1;
 
@@ -1742,6 +1005,10 @@ function spawnObjects() {
         i < count;
         i++
     ) {
+
+        /*
+            TNT chance
+        */
 
         if (
             Math.random() < 0.12
@@ -1768,40 +1035,29 @@ function spawnObjects() {
    DRAW FRUIT
 ========================================================= */
 
-function drawFruit(
-    fruit
-) {
+function drawFruit(fruit) {
 
     ctx.save();
-
 
     ctx.translate(
         fruit.x,
         fruit.y
     );
 
-
     ctx.rotate(
         fruit.rotation
     );
 
 
-    if (
-        fruit.bomb
-    ) {
+    if (fruit.bomb) {
 
-        drawBomb(
-            fruit
-        );
+        drawBomb(fruit);
 
     } else {
 
-        drawWholeFruit(
-            fruit
-        );
+        drawWholeFruit(fruit);
 
     }
-
 
     ctx.restore();
 
@@ -1809,23 +1065,60 @@ function drawFruit(
 
 
 /* =========================================================
-   DRAW WHOLE FRUIT
+   DRAW FRUIT
 ========================================================= */
 
-function drawWholeFruit(
-    fruit
-) {
+function drawWholeFruit(fruit) {
 
-    ctx.shadowBlur =
-        25;
+    const type =
+        fruit.type;
 
+
+    /*
+        BANANA
+    */
+
+    if (
+        type.name === "banana"
+    ) {
+
+        drawBanana(
+            fruit
+        );
+
+        return;
+
+    }
+
+
+    /*
+        WATERMELON
+    */
+
+    if (
+        type.name === "watermelon"
+    ) {
+
+        drawWatermelon(
+            fruit
+        );
+
+        return;
+
+    }
+
+
+    /*
+        NORMAL ROUND FRUITS
+    */
+
+    ctx.shadowBlur = 22;
 
     ctx.shadowColor =
-        fruit.type.color;
+        type.color;
 
 
     ctx.beginPath();
-
 
     ctx.arc(
         0,
@@ -1835,81 +1128,69 @@ function drawWholeFruit(
         Math.PI * 2
     );
 
-
     ctx.fillStyle =
-        fruit.type.color;
-
+        type.color;
 
     ctx.fill();
 
+    ctx.shadowBlur = 0;
 
-    ctx.shadowBlur =
-        0;
 
+    /*
+        INNER FRUIT
+    */
 
     ctx.beginPath();
-
 
     ctx.arc(
         0,
         0,
-        fruit.radius * 0.68,
+        fruit.radius * 0.72,
         0,
         Math.PI * 2
     );
 
-
     ctx.fillStyle =
-        fruit.type.inner;
-
+        type.inner;
 
     ctx.fill();
 
 
     /*
-        APPLE STEM
+        APPLE DETAILS
     */
 
     if (
-        fruit.type.name ===
-        "apple"
+        type.name === "apple"
     ) {
 
         ctx.strokeStyle =
-            "#542b12";
+            "#4b2614";
 
-
-        ctx.lineWidth =
-            5;
-
+        ctx.lineWidth = 5;
 
         ctx.beginPath();
-
 
         ctx.moveTo(
             0,
             -fruit.radius + 4
         );
 
-
         ctx.lineTo(
             5,
             -fruit.radius - 12
         );
 
-
         ctx.stroke();
 
 
         ctx.fillStyle =
-            "#3fb950";
-
+            "#3c9e45";
 
         ctx.beginPath();
 
-
         ctx.ellipse(
-            10,
+            11,
             -fruit.radius - 8,
             9,
             5,
@@ -1918,18 +1199,92 @@ function drawWholeFruit(
             Math.PI * 2
         );
 
-
         ctx.fill();
 
     }
 
 
     /*
-        HIGHLIGHT
+        ORANGE SEGMENTS
+    */
+
+    if (
+        type.name === "orange"
+    ) {
+
+        ctx.strokeStyle =
+            "rgba(255,255,255,0.45)";
+
+        ctx.lineWidth = 2;
+
+        for (
+            let i = 0;
+            i < 8;
+            i++
+        ) {
+
+            const angle =
+                (
+                    Math.PI * 2 / 8
+                ) * i;
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                0,
+                0
+            );
+
+            ctx.lineTo(
+                Math.cos(angle) *
+                fruit.radius *
+                0.68,
+
+                Math.sin(angle) *
+                fruit.radius *
+                0.68
+            );
+
+            ctx.stroke();
+
+        }
+
+    }
+
+
+    /*
+        LEMON HIGHLIGHT
+    */
+
+    if (
+        type.name === "lemon"
+    ) {
+
+        ctx.strokeStyle =
+            "rgba(255,255,255,0.5)";
+
+        ctx.lineWidth = 3;
+
+        ctx.beginPath();
+
+        ctx.arc(
+            -8,
+            -10,
+            7,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.stroke();
+
+    }
+
+
+    /*
+        GENERAL HIGHLIGHT
     */
 
     ctx.beginPath();
-
 
     ctx.arc(
         -10,
@@ -1939,10 +1294,8 @@ function drawWholeFruit(
         Math.PI * 2
     );
 
-
     ctx.fillStyle =
-        "rgba(255,255,255,0.65)";
-
+        "rgba(255,255,255,0.55)";
 
     ctx.fill();
 
@@ -1950,173 +1303,26 @@ function drawWholeFruit(
 
 
 /* =========================================================
-   DRAW BOMB
+   WATERMELON
 ========================================================= */
 
-function drawBomb(
-    fruit
-) {
-
-    ctx.shadowBlur =
-        20;
-
-
-    ctx.shadowColor =
-        "#ff2222";
-
-
-    ctx.beginPath();
-
-
-    ctx.arc(
-        0,
-        0,
-        fruit.radius,
-        0,
-        Math.PI * 2
-    );
-
-
-    ctx.fillStyle =
-        "#111";
-
-
-    ctx.fill();
-
-
-    ctx.shadowBlur =
-        0;
-
-
-    ctx.strokeStyle =
-        "#555";
-
-
-    ctx.lineWidth =
-        4;
-
-
-    ctx.stroke();
-
-
-    ctx.strokeStyle =
-        "#aaa";
-
-
-    ctx.lineWidth =
-        4;
-
-
-    ctx.beginPath();
-
-
-    ctx.moveTo(
-        15,
-        -30
-    );
-
-
-    ctx.quadraticCurveTo(
-        30,
-        -50,
-        40,
-        -35
-    );
-
-
-    ctx.stroke();
-
-
-    ctx.beginPath();
-
-
-    ctx.arc(
-        42,
-        -37,
-        5,
-        0,
-        Math.PI * 2
-    );
-
-
-    ctx.fillStyle =
-        "#ffb000";
-
-
-    ctx.fill();
-
-}
-
-
-/* =========================================================
-   DRAW FRUIT HALF
-========================================================= */
-
-function drawFruitHalf(
-    half
-) {
-
-    ctx.save();
-
-
-    ctx.translate(
-        half.x,
-        half.y
-    );
-
-
-    ctx.rotate(
-        half.rotation
-    );
-
+function drawWatermelon(fruit) {
 
     const r =
-        half.radius;
+        fruit.radius;
+
+
+    /*
+        GREEN OUTER RIND
+    */
+
+    ctx.shadowBlur = 20;
+
+    ctx.shadowColor =
+        "#29943d";
 
 
     ctx.beginPath();
-
-
-    if (
-        half.side ===
-        "left"
-    ) {
-
-        ctx.arc(
-            0,
-            0,
-            r,
-            Math.PI / 2,
-            Math.PI * 1.5
-        );
-
-    } else {
-
-        ctx.arc(
-            0,
-            0,
-            r,
-            -Math.PI / 2,
-            Math.PI / 2
-        );
-
-    }
-
-
-    ctx.lineTo(
-        0,
-        0
-    );
-
-
-    ctx.closePath();
-
-
-    ctx.clip();
-
-
-    ctx.beginPath();
-
 
     ctx.arc(
         0,
@@ -2126,81 +1332,354 @@ function drawFruitHalf(
         Math.PI * 2
     );
 
-
     ctx.fillStyle =
-        half.color;
-
+        "#319947";
 
     ctx.fill();
 
+    ctx.shadowBlur = 0;
+
+
+    /*
+        LIGHT GREEN INNER RIND
+    */
 
     ctx.beginPath();
-
 
     ctx.arc(
         0,
         0,
-        r * 0.68,
+        r * 0.84,
         0,
         Math.PI * 2
     );
 
-
     ctx.fillStyle =
-        half.inner;
-
+        "#9acb4b";
 
     ctx.fill();
 
 
-    ctx.restore();
-
-
     /*
-        CUT EDGE
+        RED CENTRE
     */
-
-    ctx.save();
-
-
-    ctx.translate(
-        half.x,
-        half.y
-    );
-
-
-    ctx.rotate(
-        half.rotation
-    );
-
-
-    ctx.strokeStyle =
-        "rgba(255,255,255,0.9)";
-
-
-    ctx.lineWidth =
-        4;
-
 
     ctx.beginPath();
 
-
-    ctx.moveTo(
+    ctx.arc(
         0,
-        -r
+        0,
+        r * 0.70,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fillStyle =
+        "#f23848";
+
+    ctx.fill();
+
+
+    /*
+        BLACK SEEDS
+    */
+
+    ctx.fillStyle =
+        "#111";
+
+
+    const seeds = [
+
+        [-13,-16],
+        [3,-18],
+        [17,-8],
+        [-20,0],
+        [-4,-2],
+        [12,4],
+        [-14,16],
+        [4,17],
+        [20,14]
+
+    ];
+
+
+    seeds.forEach(
+        function(seed) {
+
+            ctx.beginPath();
+
+            ctx.ellipse(
+                seed[0],
+                seed[1],
+                3,
+                6,
+                0.2,
+                0,
+                Math.PI * 2
+            );
+
+            ctx.fill();
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   BANANA
+========================================================= */
+
+function drawBanana(fruit) {
+
+    const r =
+        fruit.radius;
+
+
+    ctx.shadowBlur = 18;
+
+    ctx.shadowColor =
+        "#ffd900";
+
+
+    /*
+        OUTER CURVE
+    */
+
+    ctx.beginPath();
+
+    ctx.arc(
+        0,
+        0,
+        r * 1.25,
+        Math.PI * 0.15,
+        Math.PI * 0.92
     );
 
 
-    ctx.lineTo(
-        0,
-        r
-    );
+    ctx.lineWidth =
+        r * 0.42;
 
+    ctx.strokeStyle =
+        "#ffe33b";
+
+    ctx.lineCap =
+        "round";
 
     ctx.stroke();
 
 
-    ctx.restore();
+    ctx.shadowBlur = 0;
+
+
+    /*
+        INNER BANANA HIGHLIGHT
+    */
+
+    ctx.beginPath();
+
+    ctx.arc(
+        0,
+        0,
+        r * 1.25,
+        Math.PI * 0.15,
+        Math.PI * 0.92
+    );
+
+    ctx.lineWidth =
+        r * 0.13;
+
+    ctx.strokeStyle =
+        "#fff19a";
+
+    ctx.stroke();
+
+
+    /*
+        BROWN TIPS
+    */
+
+    ctx.fillStyle =
+        "#68400c";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        -r * 1.19,
+        r * 0.18,
+        5,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+
+    ctx.beginPath();
+
+    ctx.arc(
+        r * 0.95,
+        -r * 0.70,
+        5,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+}
+
+
+/* =========================================================
+   TNT BOMB
+========================================================= */
+
+function drawBomb(bomb) {
+
+    /*
+        FUSE
+    */
+
+    ctx.strokeStyle =
+        "#d19b42";
+
+    ctx.lineWidth = 5;
+
+    ctx.lineCap =
+        "round";
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        bomb.width * 0.22,
+        -bomb.height * 0.47
+    );
+
+    ctx.quadraticCurveTo(
+        bomb.width * 0.36,
+        -bomb.height * 0.80,
+        bomb.width * 0.52,
+        -bomb.height * 0.62
+    );
+
+    ctx.stroke();
+
+
+    /*
+        FUSE SPARK
+    */
+
+    ctx.fillStyle =
+        "#ffb300";
+
+    ctx.shadowBlur = 15;
+
+    ctx.shadowColor =
+        "#ff5500";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        bomb.width * 0.52,
+        -bomb.height * 0.62,
+        6,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+    ctx.shadowBlur = 0;
+
+
+    /*
+        DARK RED TNT BLOCK
+    */
+
+    ctx.fillStyle =
+        "#741b1b";
+
+    ctx.strokeStyle =
+        "#a83232";
+
+    ctx.lineWidth = 4;
+
+
+    ctx.beginPath();
+
+    ctx.roundRect(
+        -bomb.width / 2,
+        -bomb.height / 2,
+        bomb.width,
+        bomb.height,
+        7
+    );
+
+    ctx.fill();
+
+    ctx.stroke();
+
+
+    /*
+        BLACK TNT TEXT
+    */
+
+    ctx.fillStyle =
+        "#050505";
+
+    ctx.font =
+        "bold 25px Arial";
+
+    ctx.textAlign =
+        "center";
+
+    ctx.textBaseline =
+        "middle";
+
+    ctx.fillText(
+        "TNT",
+        0,
+        2
+    );
+
+
+    /*
+        LITTLE SIDE LINES
+    */
+
+    ctx.strokeStyle =
+        "#3d0808";
+
+    ctx.lineWidth = 3;
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        -bomb.width * 0.4,
+        -bomb.height * 0.28
+    );
+
+    ctx.lineTo(
+        bomb.width * 0.4,
+        -bomb.height * 0.28
+    );
+
+    ctx.stroke();
+
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        -bomb.width * 0.4,
+        bomb.height * 0.28
+    );
+
+    ctx.lineTo(
+        bomb.width * 0.4,
+        bomb.height * 0.28
+    );
+
+    ctx.stroke();
 
 }
 
@@ -2228,16 +1707,12 @@ function createParticles(
             y: y,
 
             vx:
-                (
-                    Math.random() -
-                    0.5
-                ) * 14,
+                (Math.random() - 0.5) *
+                14,
 
             vy:
-                (
-                    Math.random() -
-                    0.5
-                ) * 14,
+                (Math.random() - 0.5) *
+                14,
 
             life: 1,
 
@@ -2253,8 +1728,7 @@ function createParticles(
 function updateParticles() {
 
     for (
-        let i =
-            particles.length - 1;
+        let i = particles.length - 1;
         i >= 0;
         i--
     ) {
@@ -2262,22 +1736,13 @@ function updateParticles() {
         const p =
             particles[i];
 
+        p.x += p.vx;
 
-        p.x +=
-            p.vx;
+        p.y += p.vy;
 
+        p.vy += 0.25;
 
-        p.y +=
-            p.vy;
-
-
-        p.vy +=
-            0.25;
-
-
-        p.life -=
-            0.025;
-
+        p.life -= 0.025;
 
         if (
             p.life <= 0
@@ -2292,13 +1757,10 @@ function updateParticles() {
 
         }
 
-
         ctx.globalAlpha =
             p.life;
 
-
         ctx.beginPath();
-
 
         ctx.arc(
             p.x,
@@ -2308,13 +1770,10 @@ function updateParticles() {
             Math.PI * 2
         );
 
-
         ctx.fillStyle =
             p.color;
 
-
         ctx.fill();
-
 
         ctx.globalAlpha =
             1;
@@ -2325,88 +1784,168 @@ function updateParticles() {
 
 
 /* =========================================================
-   DRAW HAND TRAIL
+   FRUIT HALVES
 ========================================================= */
 
-function drawTrail() {
+function drawFruitHalf(half) {
+
+    ctx.save();
+
+    ctx.translate(
+        half.x,
+        half.y
+    );
+
+    ctx.rotate(
+        half.rotation
+    );
+
+
+    /*
+        BANANA HALF
+    */
 
     if (
-        trail.length <
-        2
+        half.type === "banana"
     ) {
+
+        ctx.beginPath();
+
+        ctx.arc(
+            0,
+            0,
+            half.radius,
+            Math.PI * 0.15,
+            Math.PI * 0.92
+        );
+
+        ctx.lineWidth =
+            half.radius * 0.42;
+
+        ctx.strokeStyle =
+            half.color;
+
+        ctx.lineCap =
+            "round";
+
+        ctx.stroke();
+
+        ctx.restore();
 
         return;
 
     }
 
 
-    ctx.save();
+    /*
+        ROUND FRUIT HALF
+    */
 
+    ctx.beginPath();
 
-    ctx.lineCap =
-        "round";
-
-
-    ctx.lineJoin =
-        "round";
-
-
-    ctx.shadowBlur =
-        25;
-
-
-    ctx.shadowColor =
-        "#ffffff";
-
-
-    for (
-        let i = 1;
-        i < trail.length;
-        i++
+    if (
+        half.side === "left"
     ) {
 
-        const p1 =
-            trail[i - 1];
-
-
-        const p2 =
-            trail[i];
-
-
-        const alpha =
-            i /
-            trail.length;
-
-
-        ctx.globalAlpha =
-            alpha;
-
-
-        ctx.beginPath();
-
-
-        ctx.moveTo(
-            p1.x,
-            p1.y
+        ctx.arc(
+            0,
+            0,
+            half.radius,
+            Math.PI / 2,
+            Math.PI * 1.5
         );
 
+    } else {
 
-        ctx.lineTo(
-            p2.x,
-            p2.y
+        ctx.arc(
+            0,
+            0,
+            half.radius,
+            -Math.PI / 2,
+            Math.PI / 2
         );
 
+    }
 
-        ctx.strokeStyle =
-            "#ffffff";
+    ctx.lineTo(
+        0,
+        0
+    );
+
+    ctx.closePath();
+
+    ctx.clip();
 
 
-        ctx.lineWidth =
-            4 +
-            alpha * 9;
+    ctx.beginPath();
+
+    ctx.arc(
+        0,
+        0,
+        half.radius,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fillStyle =
+        half.color;
+
+    ctx.fill();
 
 
-        ctx.stroke();
+    ctx.beginPath();
+
+    ctx.arc(
+        0,
+        0,
+        half.radius * 0.70,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fillStyle =
+        half.inner;
+
+    ctx.fill();
+
+
+    /*
+        WATERMELON SEEDS
+    */
+
+    if (
+        half.type === "watermelon"
+    ) {
+
+        ctx.fillStyle =
+            "#111";
+
+        [
+            [-10,-12],
+            [5,-15],
+            [-8,3],
+            [8,6],
+            [-2,15]
+
+        ].forEach(
+            function(seed) {
+
+                ctx.beginPath();
+
+                ctx.ellipse(
+                    seed[0],
+                    seed[1],
+                    3,
+                    6,
+                    0.2,
+                    0,
+                    Math.PI * 2
+                );
+
+                ctx.fill();
+
+            }
+        );
 
     }
 
@@ -2417,14 +1956,13 @@ function drawTrail() {
 
 
 /* =========================================================
-   UPDATE SLICED HALVES
+   UPDATE HALVES
 ========================================================= */
 
 function updateSlicedHalves() {
 
     for (
-        let i =
-            slicedHalves.length - 1;
+        let i = slicedHalves.length - 1;
         i >= 0;
         i--
     ) {
@@ -2432,30 +1970,20 @@ function updateSlicedHalves() {
         const half =
             slicedHalves[i];
 
+        half.x += half.vx;
 
-        half.x +=
-            half.vx;
+        half.y += half.vy;
 
-
-        half.y +=
-            half.vy;
-
-
-        half.vy +=
-            0.35;
-
+        half.vy += 0.35;
 
         half.rotation +=
             half.rotationSpeed;
 
-
         half.life--;
-
 
         drawFruitHalf(
             half
         );
-
 
         if (
             half.life <= 0
@@ -2474,7 +2002,327 @@ function updateSlicedHalves() {
 
 
 /* =========================================================
-   SLICE FRUIT
+   TRAIL
+========================================================= */
+
+function drawTrail() {
+
+    if (
+        trail.length < 2
+    ) {
+
+        return;
+
+    }
+
+    ctx.save();
+
+    ctx.lineCap =
+        "round";
+
+    ctx.lineJoin =
+        "round";
+
+    ctx.shadowBlur =
+        25;
+
+    ctx.shadowColor =
+        "#ffffff";
+
+
+    for (
+        let i = 1;
+        i < trail.length;
+        i++
+    ) {
+
+        const p1 =
+            trail[i - 1];
+
+        const p2 =
+            trail[i];
+
+        const alpha =
+            i /
+            trail.length;
+
+        ctx.globalAlpha =
+            alpha;
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            p1.x,
+            p1.y
+        );
+
+        ctx.lineTo(
+            p2.x,
+            p2.y
+        );
+
+        ctx.strokeStyle =
+            "#ffffff";
+
+        ctx.lineWidth =
+            4 + alpha * 9;
+
+        ctx.stroke();
+
+    }
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   DISTANCE TO SWIPE
+========================================================= */
+
+function distanceToSegment(
+    px,
+    py,
+    x1,
+    y1,
+    x2,
+    y2
+) {
+
+    const dx =
+        x2 - x1;
+
+    const dy =
+        y2 - y1;
+
+
+    if (
+        dx === 0 &&
+        dy === 0
+    ) {
+
+        return Math.hypot(
+            px - x1,
+            py - y1
+        );
+
+    }
+
+
+    const lengthSquared =
+        dx * dx +
+        dy * dy;
+
+
+    let t =
+        (
+            (px - x1) * dx +
+            (py - y1) * dy
+        ) /
+        lengthSquared;
+
+
+    t =
+        Math.max(
+            0,
+            Math.min(
+                1,
+                t
+            )
+        );
+
+
+    const closestX =
+        x1 + t * dx;
+
+    const closestY =
+        y1 + t * dy;
+
+
+    return Math.hypot(
+        px - closestX,
+        py - closestY
+    );
+
+}
+
+
+/* =========================================================
+   CHECK SWIPE
+========================================================= */
+
+function checkSwipeAgainstFruits(
+    start,
+    end
+) {
+
+    if (
+        !gameRunning
+    ) {
+
+        return;
+
+    }
+
+
+    for (
+        let i = fruits.length - 1;
+        i >= 0;
+        i--
+    ) {
+
+        const fruit =
+            fruits[i];
+
+
+        if (
+            fruit.sliced
+        ) {
+
+            continue;
+
+        }
+
+
+        const distance =
+            distanceToSegment(
+                fruit.x,
+                fruit.y,
+                start.x,
+                start.y,
+                end.x,
+                end.y
+            );
+
+
+        /*
+            TNT uses its rectangular
+            dimensions.
+        */
+
+        let hitDistance;
+
+
+        if (
+            fruit.bomb
+        ) {
+
+            hitDistance =
+                Math.max(
+                    fruit.width,
+                    fruit.height
+                ) / 2 +
+                SLICE_HITBOX;
+
+        } else {
+
+            hitDistance =
+                fruit.radius +
+                SLICE_HITBOX;
+
+        }
+
+
+        if (
+            distance <=
+            hitDistance
+        ) {
+
+            sliceFruit(
+                fruit,
+                start.x,
+                start.y,
+                end.x,
+                end.y
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   NEARBY DETECTION
+========================================================= */
+
+function checkNearbyFruit(
+    x,
+    y
+) {
+
+    if (
+        !gameRunning
+    ) {
+
+        return;
+
+    }
+
+
+    for (
+        let i = fruits.length - 1;
+        i >= 0;
+        i--
+    ) {
+
+        const fruit =
+            fruits[i];
+
+
+        if (
+            fruit.sliced
+        ) {
+
+            continue;
+
+        }
+
+
+        const distance =
+            Math.hypot(
+                fruit.x - x,
+                fruit.y - y
+            );
+
+
+        const detectionSize =
+            fruit.bomb
+            ?
+            50
+            :
+            fruit.radius + 45;
+
+
+        if (
+            distance <
+            detectionSize
+        ) {
+
+            if (
+                swipeActive
+            ) {
+
+                sliceFruit(
+                    fruit,
+                    x - 20,
+                    y,
+                    x + 20,
+                    y
+                );
+
+            }
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   SLICE
 ========================================================= */
 
 function sliceFruit(
@@ -2499,7 +2347,7 @@ function sliceFruit(
 
 
     /*
-        BOMB
+        TNT
     */
 
     if (
@@ -2514,7 +2362,6 @@ function sliceFruit(
 
 
         lives--;
-
 
         updateLives();
 
@@ -2554,24 +2401,21 @@ function sliceFruit(
 
 
     /*
-        FRUIT
+        +10
     */
 
-    score +=
-        10;
+    score += 10;
 
 
     /*
-        HARD MAX:
-        300
+        HARD MAX 500
     */
 
     if (
-        score > 300
+        score > 500
     ) {
 
-        score =
-            300;
+        score = 500;
 
     }
 
@@ -2590,7 +2434,6 @@ function sliceFruit(
     const directionX =
         x2 - x1;
 
-
     const directionY =
         y2 - y1;
 
@@ -2608,7 +2451,6 @@ function sliceFruit(
     const nx =
         directionX /
         length;
-
 
     const ny =
         directionY /
@@ -2650,6 +2492,9 @@ function sliceFruit(
 
         inner:
             fruit.type.inner,
+
+        type:
+            fruit.type.name,
 
         side:
             "left",
@@ -2696,6 +2541,9 @@ function sliceFruit(
         inner:
             fruit.type.inner,
 
+        type:
+            fruit.type.name,
+
         side:
             "right",
 
@@ -2724,19 +2572,31 @@ function sliceFruit(
 
 
     /*
-        EXACT WIN CONDITION.
+        500 = INSTANT WIN
     */
 
     if (
-        score >= 300
+        score >= 500
     ) {
 
         score =
-            300;
-
+            500;
 
         scoreElement.textContent =
-            "300";
+            "500";
+
+
+        /*
+            Calculate actual
+            completion time.
+        */
+
+        completionTime =
+            (
+                performance.now() -
+                gameStartTime
+            ) /
+            1000;
 
 
         endGame(
@@ -2785,7 +2645,6 @@ function updateGame(
 
         spawnObjects();
 
-
         lastSpawn =
             timestamp;
 
@@ -2807,20 +2666,18 @@ function updateGame(
 
     spawnInterval =
         Math.max(
-            330,
+            300,
             800 -
-            difficulty *
-            55
+            difficulty * 55
         );
 
 
     /*
-        UPDATE FRUITS
+        FRUITS
     */
 
     for (
-        let i =
-            fruits.length - 1;
+        let i = fruits.length - 1;
         i >= 0;
         i--
     ) {
@@ -2832,14 +2689,11 @@ function updateGame(
         fruit.x +=
             fruit.vx;
 
-
         fruit.y +=
             fruit.vy;
 
-
         fruit.vy +=
             fruit.gravity;
-
 
         fruit.rotation +=
             fruit.rotationSpeed;
@@ -2851,17 +2705,13 @@ function updateGame(
 
 
         /*
-            Remove objects that
-            leave the screen.
-
-            Missing fruit DOES NOT
+            Missed fruit does NOT
             cost a life.
         */
 
         if (
             fruit.y >
-            canvas.height +
-            100
+            canvas.height + 120
         ) {
 
             fruits.splice(
@@ -2880,10 +2730,6 @@ function updateGame(
 
     drawTrail();
 
-
-    /*
-        Keep trail short.
-    */
 
     const now =
         Date.now();
@@ -2907,234 +2753,7 @@ function updateGame(
 
 
 /* =========================================================
-   IMPROVED HAND DETECTION
-========================================================= */
-
-function distanceToSegment(
-    px,
-    py,
-    x1,
-    y1,
-    x2,
-    y2
-) {
-
-    const dx =
-        x2 -
-        x1;
-
-
-    const dy =
-        y2 -
-        y1;
-
-
-    if (
-        dx === 0 &&
-        dy === 0
-    ) {
-
-        return Math.hypot(
-            px - x1,
-            py - y1
-        );
-
-    }
-
-
-    const lengthSquared =
-        dx * dx +
-        dy * dy;
-
-
-    let t =
-        (
-            (
-                px - x1
-            ) * dx +
-            (
-                py - y1
-            ) * dy
-        ) /
-        lengthSquared;
-
-
-    t =
-        Math.max(
-            0,
-            Math.min(
-                1,
-                t
-            )
-        );
-
-
-    const closestX =
-        x1 +
-        t * dx;
-
-
-    const closestY =
-        y1 +
-        t * dy;
-
-
-    return Math.hypot(
-        px - closestX,
-        py - closestY
-    );
-
-}
-
-
-/* =========================================================
-   CHECK SWIPE AGAINST FRUITS
-========================================================= */
-
-function checkSwipeAgainstFruits(
-    start,
-    end
-) {
-
-    if (
-        !gameRunning
-    ) {
-
-        return;
-
-    }
-
-
-    for (
-        let i =
-            fruits.length - 1;
-        i >= 0;
-        i--
-    ) {
-
-        const fruit =
-            fruits[i];
-
-
-        if (
-            fruit.sliced
-        ) {
-
-            continue;
-
-        }
-
-
-        const distance =
-            distanceToSegment(
-                fruit.x,
-                fruit.y,
-                start.x,
-                start.y,
-                end.x,
-                end.y
-            );
-
-
-        const hitDistance =
-            fruit.radius +
-            SLICE_HITBOX;
-
-
-        if (
-            distance <=
-            hitDistance
-        ) {
-
-            sliceFruit(
-                fruit,
-                start.x,
-                start.y,
-                end.x,
-                end.y
-            );
-
-        }
-
-    }
-
-}
-
-
-/* =========================================================
-   CLOSE RANGE FRUIT DETECTION
-========================================================= */
-
-function checkNearbyFruit(
-    x,
-    y
-) {
-
-    if (
-        !gameRunning
-    ) {
-
-        return;
-
-    }
-
-
-    for (
-        let i =
-            fruits.length - 1;
-        i >= 0;
-        i--
-    ) {
-
-        const fruit =
-            fruits[i];
-
-
-        if (
-            fruit.sliced
-        ) {
-
-            continue;
-
-        }
-
-
-        const distance =
-            Math.hypot(
-                fruit.x - x,
-                fruit.y - y
-            );
-
-
-        if (
-            distance <
-            fruit.radius +
-            45
-        ) {
-
-            if (
-                swipeActive
-            ) {
-
-                sliceFruit(
-                    fruit,
-                    x - 20,
-                    y,
-                    x + 20,
-                    y
-                );
-
-            }
-
-        }
-
-    }
-
-}
-
-
-/* =========================================================
-   IMPROVED MEDIAPIPE RESULTS
+   HAND TRACKING
 ========================================================= */
 
 function onResults(
@@ -3148,38 +2767,21 @@ function onResults(
         handIndicator.style.display =
             "none";
 
+        handHistory = [];
 
-        handHistory =
-            [];
+        smoothedHand = null;
 
-
-        smoothedHand =
-            null;
-
-
-        swipeActive =
-            false;
-
+        swipeActive = false;
 
         return;
 
     }
 
 
-    /*
-        NO HAND
-    */
-
     if (
         !results.multiHandLandmarks ||
         results.multiHandLandmarks.length === 0
     ) {
-
-        /*
-            Small grace period so that
-            one missed frame doesn't destroy
-            the swipe.
-        */
 
         if (
             Date.now() -
@@ -3187,62 +2789,35 @@ function onResults(
             350
         ) {
 
-            handHistory =
-                [];
+            handHistory = [];
 
+            smoothedHand = null;
 
-            smoothedHand =
-                null;
-
-
-            swipeActive =
-                false;
-
+            swipeActive = false;
 
             handIndicator.style.display =
                 "none";
 
         }
 
-
         return;
 
     }
 
 
-    /*
-        HAND FOUND
-    */
-
     const hand =
         results.multiHandLandmarks[0];
 
 
-    /*
-        MediaPipe landmarks:
-
-        8 = index fingertip
-        6 = index middle joint
-        5 = index knuckle
-    */
-
     const fingertip =
         hand[8];
-
-
-    const indexJoint =
-        hand[6];
-
 
     const indexKnuckle =
         hand[5];
 
 
     /*
-        Convert coordinates.
-
-        X is reversed because the
-        camera is mirrored.
+        Mirrored X.
     */
 
     let x =
@@ -3259,7 +2834,7 @@ function onResults(
 
 
     /*
-        Finger stability check.
+        Basic landmark sanity check.
     */
 
     const fingerLength =
@@ -3271,14 +2846,6 @@ function onResults(
             fingertip.y
         );
 
-
-    /*
-        Don't reject the hand too
-        aggressively.
-
-        Only ignore completely
-        broken landmarks.
-    */
 
     if (
         fingerLength <
@@ -3293,7 +2860,7 @@ function onResults(
 
 
     /*
-        SMOOTH FINGER POSITION
+        SMOOTHING
     */
 
     if (
@@ -3301,11 +2868,8 @@ function onResults(
     ) {
 
         smoothedHand = {
-
-            x: x,
-
-            y: y
-
+            x,
+            y
         };
 
     } else {
@@ -3331,7 +2895,6 @@ function onResults(
     x =
         smoothedHand.x;
 
-
     y =
         smoothedHand.y;
 
@@ -3341,35 +2904,31 @@ function onResults(
 
 
     /*
-        FINGER INDICATOR
+        FINGER CURSOR
     */
 
     handIndicator.style.display =
         "block";
 
-
     handIndicator.style.left =
         x + "px";
-
 
     handIndicator.style.top =
         y + "px";
 
 
-    /*
-        SAVE POSITION
-    */
-
     const now =
         Date.now();
 
 
+    /*
+        HISTORY
+    */
+
     handHistory.push({
 
-        x: x,
-
-        y: y,
-
+        x,
+        y,
         time: now
 
     });
@@ -3390,10 +2949,8 @@ function onResults(
 
     trail.push({
 
-        x: x,
-
-        y: y,
-
+        x,
+        y,
         time: now
 
     });
@@ -3413,27 +2970,21 @@ function onResults(
     */
 
     if (
-        handHistory.length >=
-        2
+        handHistory.length >= 2
     ) {
 
         const start =
             handHistory[0];
 
-
         const end = {
-
-            x: x,
-
-            y: y
-
+            x,
+            y
         };
 
 
         const dx =
             end.x -
             start.x;
-
 
         const dy =
             end.y -
@@ -3490,11 +3041,6 @@ function onResults(
             }
 
 
-            /*
-                Prevent the exact same
-                swipe from firing forever.
-            */
-
             handHistory =
                 handHistory.slice(
                     -2
@@ -3508,13 +3054,8 @@ function onResults(
         }
 
 
-        /*
-            Extra close-range check.
-        */
-
         if (
-            distance >
-            8
+            distance > 8
         ) {
 
             checkNearbyFruit(
@@ -3530,7 +3071,7 @@ function onResults(
 
 
 /* =========================================================
-   MEDIAPIPE HANDS
+   MEDIAPIPE
 ========================================================= */
 
 const hands =
@@ -3554,24 +3095,11 @@ hands.setOptions({
     maxNumHands:
         1,
 
-
     modelComplexity:
         1,
 
-
-    /*
-        LOWER =
-        easier hand detection.
-    */
-
     minDetectionConfidence:
         0.30,
-
-
-    /*
-        LOWER =
-        easier continuous tracking.
-    */
 
     minTrackingConfidence:
         0.30
@@ -3614,15 +3142,11 @@ async function startCamera() {
                 height:
                     720,
 
-
                 onFrame:
                     async function() {
 
                         await hands.send({
-
-                            image:
-                                video
-
+                            image: video
                         });
 
                     }
@@ -3672,12 +3196,6 @@ function startTimer() {
         "60";
 
 
-    /*
-        Real elapsed time is used,
-        so browser timing delays don't
-        make the timer inaccurate.
-    */
-
     const timerStart =
         performance.now();
 
@@ -3718,8 +3236,7 @@ function startTimer() {
 
 
                 if (
-                    timeLeft <=
-                    0
+                    timeLeft <= 0
                 ) {
 
                     endGame(
@@ -3737,6 +3254,7 @@ function startTimer() {
 
 /* =========================================================
    LEADERBOARD
+   FASTEST 500-POINT COMPLETION
 ========================================================= */
 
 function getLeaderboard() {
@@ -3745,8 +3263,7 @@ function getLeaderboard() {
 
         localStorage.getItem(
             "fruitNinjaLeaderboard"
-        )
-        ||
+        ) ||
         "[]"
 
     );
@@ -3754,7 +3271,21 @@ function getLeaderboard() {
 }
 
 
-function saveScore() {
+function saveCompletionTime() {
+
+    /*
+        Only people who actually
+        reached 500 enter leaderboard.
+    */
+
+    if (
+        completionTime <= 0
+    ) {
+
+        return;
+
+    }
+
 
     const leaderboard =
         getLeaderboard();
@@ -3766,23 +3297,35 @@ function saveScore() {
             playerName ||
             "Ninja",
 
-        score:
-            score
+        time:
+            Number(
+                completionTime.toFixed(
+                    2
+                )
+            )
 
     });
 
 
+    /*
+        FASTEST TIME FIRST
+    */
+
     leaderboard.sort(
-        function(a, b) {
+        function(a,b) {
 
             return (
-                b.score -
-                a.score
+                a.time -
+                b.time
             );
 
         }
     );
 
+
+    /*
+        ONLY TOP 3
+    */
 
     const topThree =
         leaderboard.slice(
@@ -3806,6 +3349,10 @@ function saveScore() {
 
 }
 
+
+/* =========================================================
+   DISPLAY LEADERBOARD
+========================================================= */
 
 function updateLeaderboard() {
 
@@ -3877,7 +3424,6 @@ function updateLeaderboard() {
 
             </span>
 
-
             <span
                 class="rankName">
 
@@ -3893,16 +3439,15 @@ function updateLeaderboard() {
 
             </span>
 
-
             <span
-                class="rankScore">
+                class="rankTime">
 
                 ${
                     player
                     ?
-                    player.score
+                    player.time + "s"
                     :
-                    0
+                    "--"
                 }
 
             </span>
@@ -3952,8 +3497,7 @@ function getRatings() {
 
         localStorage.getItem(
             "fruitNinjaRatings"
-        )
-        ||
+        ) ||
         "[]"
 
     );
@@ -3998,7 +3542,7 @@ function updateAverageRating() {
         " / 5";
 
 
-    const ninjaElements =
+    const ninjas =
         document.querySelectorAll(
             "#averageNinjas span"
         );
@@ -4010,19 +3554,15 @@ function updateAverageRating() {
         );
 
 
-    ninjaElements.forEach(
+    ninjas.forEach(
         function(
             ninja,
             index
         ) {
 
             ninja.classList.toggle(
-
                 "active",
-
-                index <
-                rounded
-
+                index < rounded
             );
 
         }
@@ -4096,12 +3636,9 @@ document
                             ) {
 
                                 item.classList.toggle(
-
                                     "selected",
-
                                     index <
                                     selectedRating
-
                                 );
 
                             }
@@ -4115,7 +3652,7 @@ document
 
 
 /* =========================================================
-   START → INSTRUCTIONS
+   START SCREEN
 ========================================================= */
 
 document
@@ -4129,7 +3666,6 @@ document
             startScreen.style.display =
                 "none";
 
-
             instructionsModal.style.display =
                 "flex";
 
@@ -4138,7 +3674,7 @@ document
 
 
 /* =========================================================
-   INSTRUCTIONS → NAME
+   INSTRUCTIONS
 ========================================================= */
 
 function openNameScreen() {
@@ -4152,28 +3688,27 @@ function openNameScreen() {
 
 
     /*
-        ALWAYS clear the previous
-        player's name.
+        IMPORTANT:
+        Every player starts with
+        an empty name field.
     */
 
     playerName =
         "";
 
 
-    const input =
-        document.getElementById(
-            "nameInput"
-        );
-
-
-    input.value =
+    document.getElementById(
+        "nameInput"
+    ).value =
         "";
 
 
     setTimeout(
         function() {
 
-            input.focus();
+            document.getElementById(
+                "nameInput"
+            ).focus();
 
         },
         100
@@ -4203,7 +3738,7 @@ document
 
 
 /* =========================================================
-   NAME → GAME
+   NAME
 ========================================================= */
 
 function beginGameFromName() {
@@ -4219,8 +3754,7 @@ function beginGameFromName() {
 
 
     if (
-        enteredName.length ===
-        0
+        enteredName.length === 0
     ) {
 
         input.focus();
@@ -4283,18 +3817,14 @@ async function startGame() {
     startScreen.style.display =
         "none";
 
-
     instructionsModal.style.display =
         "none";
-
 
     nameModal.style.display =
         "none";
 
-
     gameOver.style.display =
         "none";
-
 
     ratingModal.style.display =
         "none";
@@ -4317,7 +3847,7 @@ async function startGame() {
 
 
     /*
-        RESET EVERYTHING
+        RESET
     */
 
     fruits = [];
@@ -4331,21 +3861,19 @@ async function startGame() {
     handHistory = [];
 
 
-    score =
+    score = 0;
+
+    lives = 5;
+
+    timeLeft = 60;
+
+
+    completionTime =
         0;
-
-
-    lives =
-        5;
-
-
-    timeLeft =
-        60;
 
 
     scoreElement.textContent =
         "0";
-
 
     timerElement.textContent =
         "60";
@@ -4355,20 +3883,17 @@ async function startGame() {
 
 
     /*
-        RESET HAND TRACKING
+        RESET HAND
     */
 
     smoothedHand =
         null;
 
-
     lastHandSeen =
         0;
 
-
     lastSliceTime =
         0;
-
 
     swipeActive =
         false;
@@ -4376,6 +3901,15 @@ async function startGame() {
 
     gameRunning =
         true;
+
+
+    /*
+        THIS IS THE START
+        OF THE 60 SECOND RUN.
+    */
+
+    gameStartTime =
+        performance.now();
 
 
     lastSpawn =
@@ -4391,9 +3925,7 @@ async function startGame() {
 
     }
 
-    catch (
-        error
-    ) {
+    catch(error) {
 
         console.error(
             error
@@ -4464,25 +3996,21 @@ function endGame(
 
 
     /*
-        HARD 300 LIMIT
+        500 IS THE ONLY
+        WINNING SCORE.
     */
 
     if (
-        score >=
-        300
+        score >= 500
     ) {
 
         score =
-            300;
-
+            500;
 
         won =
             true;
 
     }
-
-
-    saveScore();
 
 
     const title =
@@ -4501,12 +4029,45 @@ function endGame(
         won
     ) {
 
+        /*
+            Save completion time.
+        */
+
+        if (
+            completionTime <= 0
+        ) {
+
+            completionTime =
+                (
+                    performance.now() -
+                    gameStartTime
+                ) /
+                1000;
+
+        }
+
+
+        /*
+            Save ONLY winners.
+        */
+
+        saveCompletionTime();
+
+
         title.textContent =
             "🎉 YOU WON!";
 
 
         result.textContent =
-            "🏆 300 POINTS — YOU EARNED A PRIZE!";
+            "🏆 500 POINTS — YOU EARNED A PRIZE!";
+
+
+        document.getElementById(
+            "finalScore"
+        ).textContent =
+            "Completed in " +
+            completionTime.toFixed(2) +
+            " seconds";
 
     } else {
 
@@ -4517,14 +4078,14 @@ function endGame(
         result.textContent =
             "🥷 NICE RUN!";
 
+
+        document.getElementById(
+            "finalScore"
+        ).textContent =
+            "Score: " +
+            score;
+
     }
-
-
-    document.getElementById(
-        "finalScore"
-    ).textContent =
-        "Score: " +
-        score;
 
 
     gameOver.style.display =
@@ -4533,7 +4094,7 @@ function endGame(
 
     /*
         EXACTLY 2 SECONDS
-        BEFORE RATING.
+        BEFORE RATING POPUP.
     */
 
     resultTimeout =
@@ -4586,8 +4147,7 @@ document
         function() {
 
             if (
-                selectedRating ===
-                0
+                selectedRating === 0
             ) {
 
                 return;
@@ -4624,7 +4184,8 @@ document
 
 
             /*
-                CLEAR PREVIOUS PLAYER.
+                IMPORTANT:
+                New player = new name.
             */
 
             playerName =
@@ -4638,11 +4199,8 @@ document
 
 
             /*
-                GO BACK TO
-                INSTRUCTIONS.
-
-                NOT directly into the
-                next player's game.
+                RETURN TO
+                ORIGINAL INSTRUCTIONS.
             */
 
             instructionsModal.style.display =
@@ -4653,7 +4211,7 @@ document
 
 
 /* =========================================================
-   PLAY AGAIN BUTTON
+   PLAY AGAIN
 ========================================================= */
 
 document
@@ -4698,6 +4256,5 @@ updateAverageRating();
 </div>
 
 </body>
-
 </html>
 ```
