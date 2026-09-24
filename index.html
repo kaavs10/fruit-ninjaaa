@@ -1,14 +1,24 @@
-
+```html
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
 <title>Fruit Ninja — Hand Slice</title>
 
+
 <style>
+
+/* =========================================================
+   GLOBAL
+========================================================= */
 
 * {
     box-sizing: border-box;
@@ -16,17 +26,30 @@
     padding: 0;
 }
 
+
 body {
+
     overflow: hidden;
+
     background: #050505;
-    font-family: Arial, Helvetica, sans-serif;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
     color: white;
+
 }
 
+
 #game {
+
     position: relative;
+
     width: 100vw;
     height: 100vh;
+
     overflow: hidden;
 
     background:
@@ -36,16 +59,21 @@ body {
             #070707 65%,
             #000000 100%
         );
+
 }
 
-/* =========================
+
+/* =========================================================
    CAMERA
-========================= */
+========================================================= */
 
 #camera {
+
     position: absolute;
+
     width: 100%;
     height: 100%;
+
     object-fit: cover;
 
     transform: scaleX(-1);
@@ -53,77 +81,115 @@ body {
     opacity: 0.12;
 
     z-index: 1;
+
 }
 
-/* =========================
+
+/* =========================================================
    CANVAS
-========================= */
+========================================================= */
 
 #gameCanvas {
+
     position: absolute;
+
     inset: 0;
 
     width: 100%;
     height: 100%;
 
     z-index: 2;
+
 }
 
-/* =========================
+
+/* =========================================================
    HUD
-========================= */
+========================================================= */
 
 #hud {
+
     position: absolute;
 
     top: 20px;
+
     left: 50%;
 
-    transform: translateX(-50%);
+    transform:
+        translateX(-50%);
 
     display: flex;
+
     gap: 15px;
 
     z-index: 10;
 
     pointer-events: none;
+
 }
 
+
 .hudBox {
-    padding: 10px 20px;
+
+    padding:
+        10px 20px;
 
     border-radius: 14px;
 
     background:
-        rgba(0,0,0,0.60);
+        rgba(
+            0,
+            0,
+            0,
+            0.60
+        );
 
-    backdrop-filter: blur(10px);
+    backdrop-filter:
+        blur(10px);
 
     border:
         1px solid
-        rgba(255,255,255,0.15);
+        rgba(
+            255,
+            255,
+            255,
+            0.15
+        );
 
     font-size: 20px;
+
     font-weight: bold;
+
 }
+
 
 #score {
+
     color: #7cff00;
+
 }
+
 
 #timer {
+
     color: #55ddff;
+
 }
+
 
 #lives {
+
     color: #ff4444;
+
 }
 
-/* =========================
+
+/* =========================================================
    SIDE PANELS
-========================= */
+========================================================= */
 
 .sidePanel {
+
     position: absolute;
 
     top: 25px;
@@ -135,56 +201,93 @@ body {
     border-radius: 18px;
 
     background:
-        rgba(0,0,0,0.48);
+        rgba(
+            0,
+            0,
+            0,
+            0.48
+        );
 
-    backdrop-filter: blur(12px);
+    backdrop-filter:
+        blur(12px);
 
     border:
         1px solid
-        rgba(255,255,255,0.12);
+        rgba(
+            255,
+            255,
+            255,
+            0.12
+        );
 
     z-index: 9;
+
 }
+
 
 #leaderboard {
+
     left: 20px;
+
 }
+
 
 #ratingsPanel {
+
     right: 20px;
+
 }
 
+
 .panelTitle {
+
     text-align: center;
 
     font-size: 15px;
+
     font-weight: bold;
 
     letter-spacing: 1px;
 
     margin-bottom: 15px;
+
 }
 
+
 .rankRow {
+
     display: flex;
 
     justify-content: space-between;
+
     align-items: center;
 
-    padding: 9px 4px;
+    padding:
+        9px 4px;
 
     border-bottom:
         1px solid
-        rgba(255,255,255,0.08);
+        rgba(
+            255,
+            255,
+            255,
+            0.08
+        );
 
     font-size: 14px;
+
 }
+
 
 .rankNumber {
+
     font-weight: bold;
+
 }
 
+
 .rankName {
+
     flex: 1;
 
     margin-left: 8px;
@@ -194,23 +297,32 @@ body {
     text-overflow: ellipsis;
 
     white-space: nowrap;
+
 }
 
+
 .rankScore {
+
     color: #7cff00;
 
     font-weight: bold;
+
 }
 
+
 #averageRating {
+
     text-align: center;
 
     font-size: 27px;
 
     margin-bottom: 12px;
+
 }
 
+
 .ratingNinjas {
+
     display: flex;
 
     justify-content: center;
@@ -218,27 +330,37 @@ body {
     gap: 3px;
 
     font-size: 20px;
+
 }
+
 
 .ratingNinjas span {
+
     opacity: 0.25;
 
-    filter: grayscale(1);
+    filter:
+        grayscale(1);
+
 }
 
+
 .ratingNinjas span.active {
+
     opacity: 1;
 
     filter:
         grayscale(1)
         brightness(0);
+
 }
 
-/* =========================
+
+/* =========================================================
    START SCREEN
-========================= */
+========================================================= */
 
 #startScreen {
+
     position: absolute;
 
     inset: 0;
@@ -246,6 +368,7 @@ body {
     display: flex;
 
     justify-content: center;
+
     align-items: center;
 
     flex-direction: column;
@@ -255,12 +378,25 @@ body {
     background:
         radial-gradient(
             circle,
-            rgba(30,30,30,0.96),
-            rgba(0,0,0,0.99)
+            rgba(
+                30,
+                30,
+                30,
+                0.96
+            ),
+            rgba(
+                0,
+                0,
+                0,
+                0.99
+            )
         );
+
 }
 
+
 #startScreen h1 {
+
     font-size:
         clamp(
             50px,
@@ -279,25 +415,33 @@ body {
             #00ddff
         );
 
-    -webkit-background-clip: text;
+    -webkit-background-clip:
+        text;
 
     color: transparent;
 
     margin-bottom: 10px;
+
 }
 
+
 #startScreen p {
+
     color: #aaa;
 
     font-size: 18px;
 
     margin-bottom: 30px;
+
 }
 
+
 button {
+
     border: none;
 
-    padding: 15px 35px;
+    padding:
+        15px 35px;
 
     border-radius: 50px;
 
@@ -311,22 +455,35 @@ button {
 
     cursor: pointer;
 
-    transition: 0.2s;
+    transition:
+        0.2s;
+
 }
 
+
 button:hover {
-    transform: scale(1.07);
+
+    transform:
+        scale(1.07);
 
     box-shadow:
         0 0 30px
-        rgba(255,255,255,0.25);
+        rgba(
+            255,
+            255,
+            255,
+            0.25
+        );
+
 }
 
-/* =========================
+
+/* =========================================================
    MODALS
-========================= */
+========================================================= */
 
 .modalOverlay {
+
     position: absolute;
 
     inset: 0;
@@ -334,21 +491,34 @@ button:hover {
     display: none;
 
     justify-content: center;
+
     align-items: center;
 
     z-index: 50;
 
     background:
-        rgba(0,0,0,0.78);
+        rgba(
+            0,
+            0,
+            0,
+            0.78
+        );
 
-    backdrop-filter: blur(10px);
+    backdrop-filter:
+        blur(10px);
+
 }
 
+
 .modal {
+
     position: relative;
 
     width:
-        min(520px, 90vw);
+        min(
+            520px,
+            90vw
+        );
 
     padding: 35px;
 
@@ -358,28 +528,46 @@ button:hover {
 
     border:
         1px solid
-        rgba(255,255,255,0.15);
+        rgba(
+            255,
+            255,
+            255,
+            0.15
+        );
 
     box-shadow:
         0 20px 80px
-        rgba(0,0,0,0.6);
+        rgba(
+            0,
+            0,
+            0,
+            0.6
+        );
 
     text-align: center;
+
 }
 
+
 .modal h2 {
+
     font-size: 32px;
 
     margin-bottom: 20px;
+
 }
 
+
 .closeButton {
+
     position: absolute;
 
     top: 12px;
+
     right: 17px;
 
     width: 35px;
+
     height: 35px;
 
     padding: 0;
@@ -387,16 +575,24 @@ button:hover {
     border-radius: 50%;
 
     background:
-        rgba(255,255,255,0.08);
+        rgba(
+            255,
+            255,
+            255,
+            0.08
+        );
 
     color: white;
 
     font-size: 23px;
 
     line-height: 35px;
+
 }
 
+
 .instructions {
+
     text-align: left;
 
     color: #ccc;
@@ -404,13 +600,26 @@ button:hover {
     line-height: 1.8;
 
     margin-bottom: 25px;
+
 }
+
+
+.instructions p {
+
+    margin-bottom: 4px;
+
+}
+
 
 .instructions strong {
+
     color: white;
+
 }
 
+
 #nameInput {
+
     width: 100%;
 
     padding: 15px;
@@ -429,61 +638,75 @@ button:hover {
     outline: none;
 
     margin-bottom: 20px;
+
 }
+
 
 #nameInput:focus {
-    border-color: #7cff00;
+
+    border-color:
+        #7cff00;
+
 }
 
-/* =========================
+
+/* =========================================================
    GAME OVER
-========================= */
-
-#gameOver {
-    display: none;
-}
+========================================================= */
 
 #gameOver h2 {
+
     font-size: 60px;
 
     margin-bottom: 10px;
+
 }
 
+
 #resultText {
+
     color: #7cff00;
 
     font-size: 25px;
 
     margin-bottom: 8px;
+
 }
 
+
 #finalScore {
+
     font-size: 24px;
 
     color: #aaa;
 
     margin-bottom: 25px;
+
 }
 
-/* =========================
+
+/* =========================================================
    RATING
-========================= */
-
-#ratingModal {
-    display: none;
-}
+========================================================= */
 
 #ratingModal h2 {
+
     margin-bottom: 8px;
+
 }
 
+
 #ratingModal p {
+
     color: #aaa;
 
     margin-bottom: 22px;
+
 }
 
+
 #ninjaRating {
+
     display: flex;
 
     justify-content: center;
@@ -493,37 +716,89 @@ button:hover {
     margin:
         20px 0
         28px;
+
 }
 
+
 .ninjaChoice {
+
     font-size: 42px;
 
     cursor: pointer;
 
     opacity: 0.28;
 
-    filter: grayscale(1);
+    filter:
+        grayscale(1);
 
-    transition: 0.15s;
+    transition:
+        0.15s;
 
     user-select: none;
+
 }
+
 
 .ninjaChoice:hover {
-    transform: scale(1.15);
+
+    transform:
+        scale(1.15);
+
 }
 
+
 .ninjaChoice.selected {
+
     opacity: 1;
 
     filter:
         grayscale(1)
         brightness(0);
 
-    transform: scale(1.05);
+    transform:
+        scale(1.05);
+
 }
 
+
+/* =========================================================
+   FINGER INDICATOR
+========================================================= */
+
+#handIndicator {
+
+    position: absolute;
+
+    width: 24px;
+
+    height: 24px;
+
+    border-radius: 50%;
+
+    border:
+        3px solid white;
+
+    box-shadow:
+        0 0 20px white,
+        0 0 35px white;
+
+    pointer-events: none;
+
+    z-index: 12;
+
+    display: none;
+
+    transform:
+        translate(
+            -50%,
+            -50%
+        );
+
+}
+
+
 #cameraPermission {
+
     position: absolute;
 
     bottom: 20px;
@@ -538,78 +813,79 @@ button:hover {
     color: #777;
 
     font-size: 13px;
+
 }
 
-/* =========================
-   HAND INDICATOR
-========================= */
 
-#handIndicator {
-    position: absolute;
-
-    width: 22px;
-    height: 22px;
-
-    border-radius: 50%;
-
-    border:
-        3px solid white;
-
-    box-shadow:
-        0 0 18px white;
-
-    pointer-events: none;
-
-    z-index: 12;
-
-    display: none;
-
-    transform:
-        translate(-50%, -50%);
-}
-
-/* =========================
+/* =========================================================
    MOBILE
-========================= */
+========================================================= */
 
-@media(max-width: 800px) {
+@media(
+    max-width: 800px
+) {
 
     .sidePanel {
+
         width: 145px;
 
         padding: 12px;
+
     }
+
 
     #leaderboard {
+
         left: 8px;
+
         top: 75px;
+
     }
+
 
     #ratingsPanel {
+
         right: 8px;
+
         top: 75px;
+
     }
 
+
     #hud {
+
         top: 15px;
 
         gap: 5px;
+
     }
 
+
     .hudBox {
+
         padding:
             8px 10px;
 
         font-size: 14px;
+
     }
+
 }
 
 </style>
+
 </head>
+
 
 <body>
 
+
 <div id="game">
+
+
+<!-- ======================================================
+     CAMERA
+====================================================== -->
 
 <video
     id="camera"
@@ -617,63 +893,106 @@ button:hover {
     playsinline>
 </video>
 
+
+<!-- ======================================================
+     GAME CANVAS
+====================================================== -->
+
 <canvas
     id="gameCanvas">
 </canvas>
+
+
+<!-- ======================================================
+     FINGER INDICATOR
+====================================================== -->
 
 <div
     id="handIndicator">
 </div>
 
-<!-- HUD -->
+
+<!-- ======================================================
+     HUD
+====================================================== -->
 
 <div id="hud">
 
     <div class="hudBox">
+
         SCORE:
-        <span id="score">0</span>
+        <span id="score">
+            0
+        </span>
+
     </div>
 
+
     <div class="hudBox">
+
         TIME:
-        <span id="timer">60</span>
+        <span id="timer">
+            60
+        </span>
+
     </div>
 
+
     <div class="hudBox">
+
         LIVES:
-        <span id="lives">❤️❤️❤️❤️❤️</span>
+        <span id="lives">
+            ❤️❤️❤️❤️❤️
+        </span>
+
     </div>
 
 </div>
 
-<!-- LEADERBOARD -->
+
+<!-- ======================================================
+     LEADERBOARD
+====================================================== -->
 
 <div
     id="leaderboard"
     class="sidePanel">
 
     <div class="panelTitle">
+
         🏆 LEADERBOARD
+
     </div>
 
-    <div id="leaderboardRows">
+
+    <div
+        id="leaderboardRows">
     </div>
 
 </div>
 
-<!-- RATINGS -->
+
+<!-- ======================================================
+     RATINGS
+====================================================== -->
 
 <div
     id="ratingsPanel"
     class="sidePanel">
 
     <div class="panelTitle">
+
         🥷 AVERAGE RATING
+
     </div>
 
+
     <div id="averageRating">
+
         0.0 / 5
+
     </div>
+
 
     <div
         id="averageNinjas"
@@ -689,7 +1008,10 @@ button:hover {
 
 </div>
 
-<!-- START -->
+
+<!-- ======================================================
+     START SCREEN
+====================================================== -->
 
 <div id="startScreen">
 
@@ -697,17 +1019,25 @@ button:hover {
         FRUIT NINJA
     </h1>
 
+
     <p>
         Slice fruit with your hand 🖐️
     </p>
 
-    <button id="startButton">
+
+    <button
+        id="startButton">
+
         PLAY
+
     </button>
 
 </div>
 
-<!-- INSTRUCTIONS -->
+
+<!-- ======================================================
+     INSTRUCTIONS
+====================================================== -->
 
 <div
     id="instructionsModal"
@@ -715,64 +1045,98 @@ button:hover {
 
     <div class="modal">
 
+
         <button
             class="closeButton"
             id="closeInstructions">
+
             ×
+
         </button>
 
+
         <h2>
+
             🥷 HOW TO PLAY
+
         </h2>
+
 
         <div class="instructions">
 
             <p>
-                🖐️ Show your hand to the camera.
+                🖐️ Show your hand
+                to the camera.
             </p>
 
+
             <p>
-                🔪 Swipe your index finger
-                across fruit to slice it.
+                🔪 Swipe your
+                <strong>
+                    index finger
+                </strong>
+                across fruit.
             </p>
+
 
             <p>
                 🍎 Fruit =
-                <strong>+10 points</strong>
+                <strong>
+                    +10 points
+                </strong>
             </p>
+
 
             <p>
                 💣 Bomb =
-                <strong>lose 1 life</strong>
+                <strong>
+                    lose 1 life
+                </strong>
             </p>
+
 
             <p>
                 ❤️ You have
-                <strong>5 lives</strong>.
+                <strong>
+                    5 lives
+                </strong>
             </p>
+
 
             <p>
                 ⏱️ You have
-                <strong>60 seconds</strong>.
+                <strong>
+                    60 seconds
+                </strong>
             </p>
+
 
             <p>
                 🏆 Reach
-                <strong>300 points</strong>
+                <strong>
+                    300 points
+                </strong>
                 to win!
             </p>
 
         </div>
 
-        <button id="instructionsContinue">
+
+        <button
+            id="instructionsContinue">
+
             CONTINUE
+
         </button>
 
     </div>
 
 </div>
 
-<!-- NAME -->
+
+<!-- ======================================================
+     NAME
+====================================================== -->
 
 <div
     id="nameModal"
@@ -780,9 +1144,13 @@ button:hover {
 
     <div class="modal">
 
+
         <h2>
+
             👤 ENTER YOUR NAME
+
         </h2>
+
 
         <p
             style="
@@ -795,21 +1163,30 @@ button:hover {
 
         </p>
 
+
         <input
             id="nameInput"
             type="text"
             maxlength="16"
-            placeholder="Your name">
+            placeholder="Your name"
+        >
 
-        <button id="nameContinue">
+
+        <button
+            id="nameContinue">
+
             START SLICING
+
         </button>
 
     </div>
 
 </div>
 
-<!-- GAME OVER -->
+
+<!-- ======================================================
+     GAME OVER
+====================================================== -->
 
 <div
     id="gameOver"
@@ -817,27 +1194,44 @@ button:hover {
 
     <div class="modal">
 
-        <h2 id="gameOverTitle">
+
+        <h2
+            id="gameOverTitle">
+
             GAME OVER
+
         </h2>
 
+
         <div id="resultText">
+
             NICE RUN!
+
         </div>
+
 
         <div id="finalScore">
+
             Score: 0
+
         </div>
 
-        <button id="restartButton">
+
+        <button
+            id="restartButton">
+
             PLAY AGAIN
+
         </button>
 
     </div>
 
 </div>
 
-<!-- RATING -->
+
+<!-- ======================================================
+     RATING
+====================================================== -->
 
 <div
     id="ratingModal"
@@ -845,66 +1239,103 @@ button:hover {
 
     <div class="modal">
 
+
         <h2>
+
             🥷 PLEASE RATE
+
         </h2>
 
+
         <p>
+
             How much did you enjoy
             the game?
+
         </p>
 
+
         <div id="ninjaRating">
+
 
             <span
                 class="ninjaChoice"
                 data-rating="1">
+
                 🥷
+
             </span>
+
 
             <span
                 class="ninjaChoice"
                 data-rating="2">
+
                 🥷
+
             </span>
+
 
             <span
                 class="ninjaChoice"
                 data-rating="3">
+
                 🥷
+
             </span>
+
 
             <span
                 class="ninjaChoice"
                 data-rating="4">
+
                 🥷
+
             </span>
+
 
             <span
                 class="ninjaChoice"
                 data-rating="5">
+
                 🥷
+
             </span>
 
         </div>
 
-        <button id="submitRating">
+
+        <button
+            id="submitRating">
+
             SUBMIT RATING
+
         </button>
 
     </div>
 
 </div>
 
+
 <div id="cameraPermission">
-    Camera required • Allow camera access to play
+
+    Camera required • Allow camera
+    access to play
+
 </div>
 
-<!-- MEDIAPIPE -->
 
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+<!-- ======================================================
+     MEDIAPIPE
+====================================================== -->
 
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js">
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js">
+</script>
+
 
 <script>
 
@@ -917,8 +1348,11 @@ const canvas =
         "gameCanvas"
     );
 
+
 const ctx =
-    canvas.getContext("2d");
+    canvas.getContext(
+        "2d"
+    );
 
 
 function resizeCanvas() {
@@ -931,7 +1365,9 @@ function resizeCanvas() {
 
 }
 
+
 resizeCanvas();
+
 
 window.addEventListener(
     "resize",
@@ -948,45 +1384,54 @@ const video =
         "camera"
     );
 
+
 const scoreElement =
     document.getElementById(
         "score"
     );
+
 
 const timerElement =
     document.getElementById(
         "timer"
     );
 
+
 const livesElement =
     document.getElementById(
         "lives"
     );
+
 
 const startScreen =
     document.getElementById(
         "startScreen"
     );
 
+
 const instructionsModal =
     document.getElementById(
         "instructionsModal"
     );
+
 
 const nameModal =
     document.getElementById(
         "nameModal"
     );
 
+
 const gameOver =
     document.getElementById(
         "gameOver"
     );
 
+
 const ratingModal =
     document.getElementById(
         "ratingModal"
     );
+
 
 const handIndicator =
     document.getElementById(
@@ -1002,9 +1447,9 @@ let fruits = [];
 
 let particles = [];
 
-let trail = [];
-
 let slicedHalves = [];
+
+let trail = [];
 
 let score = 0;
 
@@ -1033,34 +1478,61 @@ let resultTimeout = null;
    HAND TRACKING STATE
 ========================================================= */
 
-let previousHand = null;
+let handHistory = [];
 
 let smoothedHand = null;
 
-let handHistory = [];
+let lastHandSeen = 0;
 
 let lastSliceTime = 0;
 
-let lastHandSeen = 0;
+let swipeActive = false;
 
 
 /*
-    The old version required one large
-    frame-to-frame jump.
-
-    This version calculates movement
-    across several recent frames.
+    IMPROVED SETTINGS
 */
 
-const SWIPE_DISTANCE = 35;
+const HAND_SMOOTHING = 0.30;
 
-const SLICE_COOLDOWN = 55;
 
-const HAND_HISTORY_TIME = 140;
+/*
+    Lower = easier swipe.
+*/
+
+const SWIPE_DISTANCE = 22;
+
+
+/*
+    Remember recent movement.
+*/
+
+const HAND_HISTORY_TIME = 220;
+
+
+/*
+    Minimum movement speed.
+*/
+
+const MIN_SWIPE_SPEED = 0.08;
+
+
+/*
+    Bigger = easier cutting.
+*/
+
+const SLICE_HITBOX = 75;
+
+
+/*
+    Prevent repeated slicing.
+*/
+
+const SLICE_COOLDOWN = 45;
 
 
 /* =========================================================
-   FRUITS
+   FRUIT TYPES
 ========================================================= */
 
 const fruitTypes = [
@@ -1071,11 +1543,13 @@ const fruitTypes = [
         inner: "#ffd0d0"
     },
 
+
     {
         name: "watermelon",
         color: "#35c84a",
         inner: "#ff4057"
     },
+
 
     {
         name: "orange",
@@ -1083,11 +1557,13 @@ const fruitTypes = [
         inner: "#ffd16a"
     },
 
+
     {
         name: "lemon",
         color: "#ffe000",
         inner: "#fff8a5"
     },
+
 
     {
         name: "kiwi",
@@ -1112,45 +1588,68 @@ function createFruit() {
             )
         ];
 
+
     const radius =
         35 +
-        Math.random() * 12;
+        Math.random() *
+        12;
+
 
     return {
 
         x:
             100 +
             Math.random() *
-            (canvas.width - 200),
+            (
+                canvas.width -
+                200
+            ),
+
 
         y:
             canvas.height +
             radius,
 
+
         radius,
 
+
         vx:
-            (Math.random() - 0.5) * 6,
+            (
+                Math.random() -
+                0.5
+            ) * 6,
+
 
         vy:
-            -(17 +
-            Math.random() * 5 +
-            difficulty * 0.5),
+            -(
+                17 +
+                Math.random() * 5 +
+                difficulty * 0.5
+            ),
+
 
         gravity:
             0.38,
 
+
         type,
 
-        sliced: false,
+
+        sliced:
+            false,
+
 
         rotation:
             Math.random() *
             Math.PI,
 
+
         rotationSpeed:
-            (Math.random() - 0.5) *
-            0.15
+            (
+                Math.random() -
+                0.5
+            ) * 0.15
 
     };
 
@@ -1158,43 +1657,65 @@ function createFruit() {
 
 
 /* =========================================================
-   BOMB
+   CREATE BOMB
 ========================================================= */
 
 function createBomb() {
 
     const radius = 38;
 
+
     return {
 
         x:
             100 +
             Math.random() *
-            (canvas.width - 200),
+            (
+                canvas.width -
+                200
+            ),
+
 
         y:
             canvas.height +
             radius,
 
+
         radius,
 
+
         vx:
-            (Math.random() - 0.5) * 6,
+            (
+                Math.random() -
+                0.5
+            ) * 6,
+
 
         vy:
-            -(18 +
-            Math.random() * 4),
+            -(
+                18 +
+                Math.random() * 4
+            ),
+
 
         gravity:
             0.38,
 
-        bomb: true,
 
-        sliced: false,
+        bomb:
+            true,
 
-        rotation: 0,
 
-        rotationSpeed: 0.05
+        sliced:
+            false,
+
+
+        rotation:
+            0,
+
+
+        rotationSpeed:
+            0.05
 
     };
 
@@ -1202,7 +1723,7 @@ function createBomb() {
 
 
 /* =========================================================
-   SPAWN
+   SPAWN OBJECTS
 ========================================================= */
 
 function spawnObjects() {
@@ -1210,7 +1731,8 @@ function spawnObjects() {
     const count =
         Math.random() < 0.65
         ? 1
-        : Math.floor(
+        :
+        Math.floor(
             Math.random() * 3
         ) + 1;
 
@@ -1246,18 +1768,23 @@ function spawnObjects() {
    DRAW FRUIT
 ========================================================= */
 
-function drawFruit(fruit) {
+function drawFruit(
+    fruit
+) {
 
     ctx.save();
+
 
     ctx.translate(
         fruit.x,
         fruit.y
     );
 
+
     ctx.rotate(
         fruit.rotation
     );
+
 
     if (
         fruit.bomb
@@ -1275,23 +1802,30 @@ function drawFruit(fruit) {
 
     }
 
+
     ctx.restore();
 
 }
 
 
 /* =========================================================
-   WHOLE FRUIT
+   DRAW WHOLE FRUIT
 ========================================================= */
 
-function drawWholeFruit(fruit) {
+function drawWholeFruit(
+    fruit
+) {
 
-    ctx.shadowBlur = 25;
+    ctx.shadowBlur =
+        25;
+
 
     ctx.shadowColor =
         fruit.type.color;
 
+
     ctx.beginPath();
+
 
     ctx.arc(
         0,
@@ -1301,15 +1835,20 @@ function drawWholeFruit(fruit) {
         Math.PI * 2
     );
 
+
     ctx.fillStyle =
         fruit.type.color;
 
+
     ctx.fill();
 
-    ctx.shadowBlur = 0;
+
+    ctx.shadowBlur =
+        0;
 
 
     ctx.beginPath();
+
 
     ctx.arc(
         0,
@@ -1319,34 +1858,45 @@ function drawWholeFruit(fruit) {
         Math.PI * 2
     );
 
+
     ctx.fillStyle =
         fruit.type.inner;
+
 
     ctx.fill();
 
 
-    /* Apple stem */
+    /*
+        APPLE STEM
+    */
 
     if (
-        fruit.type.name === "apple"
+        fruit.type.name ===
+        "apple"
     ) {
 
         ctx.strokeStyle =
             "#542b12";
 
-        ctx.lineWidth = 5;
+
+        ctx.lineWidth =
+            5;
+
 
         ctx.beginPath();
+
 
         ctx.moveTo(
             0,
             -fruit.radius + 4
         );
 
+
         ctx.lineTo(
             5,
             -fruit.radius - 12
         );
+
 
         ctx.stroke();
 
@@ -1354,7 +1904,9 @@ function drawWholeFruit(fruit) {
         ctx.fillStyle =
             "#3fb950";
 
+
         ctx.beginPath();
+
 
         ctx.ellipse(
             10,
@@ -1366,14 +1918,18 @@ function drawWholeFruit(fruit) {
             Math.PI * 2
         );
 
+
         ctx.fill();
 
     }
 
 
-    /* Highlight */
+    /*
+        HIGHLIGHT
+    */
 
     ctx.beginPath();
+
 
     ctx.arc(
         -10,
@@ -1383,8 +1939,10 @@ function drawWholeFruit(fruit) {
         Math.PI * 2
     );
 
+
     ctx.fillStyle =
         "rgba(255,255,255,0.65)";
+
 
     ctx.fill();
 
@@ -1392,17 +1950,23 @@ function drawWholeFruit(fruit) {
 
 
 /* =========================================================
-   BOMB
+   DRAW BOMB
 ========================================================= */
 
-function drawBomb(fruit) {
+function drawBomb(
+    fruit
+) {
 
-    ctx.shadowBlur = 20;
+    ctx.shadowBlur =
+        20;
+
 
     ctx.shadowColor =
         "#ff2222";
 
+
     ctx.beginPath();
+
 
     ctx.arc(
         0,
@@ -1412,17 +1976,25 @@ function drawBomb(fruit) {
         Math.PI * 2
     );
 
+
     ctx.fillStyle =
         "#111";
 
+
     ctx.fill();
 
-    ctx.shadowBlur = 0;
+
+    ctx.shadowBlur =
+        0;
+
 
     ctx.strokeStyle =
         "#555";
 
-    ctx.lineWidth = 4;
+
+    ctx.lineWidth =
+        4;
+
 
     ctx.stroke();
 
@@ -1430,14 +2002,19 @@ function drawBomb(fruit) {
     ctx.strokeStyle =
         "#aaa";
 
-    ctx.lineWidth = 4;
+
+    ctx.lineWidth =
+        4;
+
 
     ctx.beginPath();
+
 
     ctx.moveTo(
         15,
         -30
     );
+
 
     ctx.quadraticCurveTo(
         30,
@@ -1446,10 +2023,12 @@ function drawBomb(fruit) {
         -35
     );
 
+
     ctx.stroke();
 
 
     ctx.beginPath();
+
 
     ctx.arc(
         42,
@@ -1459,8 +2038,10 @@ function drawBomb(fruit) {
         Math.PI * 2
     );
 
+
     ctx.fillStyle =
         "#ffb000";
+
 
     ctx.fill();
 
@@ -1468,17 +2049,21 @@ function drawBomb(fruit) {
 
 
 /* =========================================================
-   FRUIT HALF
+   DRAW FRUIT HALF
 ========================================================= */
 
-function drawFruitHalf(half) {
+function drawFruitHalf(
+    half
+) {
 
     ctx.save();
+
 
     ctx.translate(
         half.x,
         half.y
     );
+
 
     ctx.rotate(
         half.rotation
@@ -1491,8 +2076,10 @@ function drawFruitHalf(half) {
 
     ctx.beginPath();
 
+
     if (
-        half.side === "left"
+        half.side ===
+        "left"
     ) {
 
         ctx.arc(
@@ -1515,17 +2102,21 @@ function drawFruitHalf(half) {
 
     }
 
+
     ctx.lineTo(
         0,
         0
     );
 
+
     ctx.closePath();
+
 
     ctx.clip();
 
 
     ctx.beginPath();
+
 
     ctx.arc(
         0,
@@ -1535,13 +2126,16 @@ function drawFruitHalf(half) {
         Math.PI * 2
     );
 
+
     ctx.fillStyle =
         half.color;
+
 
     ctx.fill();
 
 
     ctx.beginPath();
+
 
     ctx.arc(
         0,
@@ -1551,8 +2145,10 @@ function drawFruitHalf(half) {
         Math.PI * 2
     );
 
+
     ctx.fillStyle =
         half.inner;
+
 
     ctx.fill();
 
@@ -1560,37 +2156,49 @@ function drawFruitHalf(half) {
     ctx.restore();
 
 
-    /* Cut edge */
+    /*
+        CUT EDGE
+    */
 
     ctx.save();
+
 
     ctx.translate(
         half.x,
         half.y
     );
 
+
     ctx.rotate(
         half.rotation
     );
 
+
     ctx.strokeStyle =
         "rgba(255,255,255,0.9)";
 
-    ctx.lineWidth = 4;
+
+    ctx.lineWidth =
+        4;
+
 
     ctx.beginPath();
+
 
     ctx.moveTo(
         0,
         -r
     );
 
+
     ctx.lineTo(
         0,
         r
     );
 
+
     ctx.stroke();
+
 
     ctx.restore();
 
@@ -1615,21 +2223,25 @@ function createParticles(
 
         particles.push({
 
-            x,
+            x: x,
 
-            y,
+            y: y,
 
             vx:
-                (Math.random() - 0.5) *
-                14,
+                (
+                    Math.random() -
+                    0.5
+                ) * 14,
 
             vy:
-                (Math.random() - 0.5) *
-                14,
+                (
+                    Math.random() -
+                    0.5
+                ) * 14,
 
             life: 1,
 
-            color
+            color: color
 
         });
 
@@ -1654,11 +2266,14 @@ function updateParticles() {
         p.x +=
             p.vx;
 
+
         p.y +=
             p.vy;
 
+
         p.vy +=
             0.25;
+
 
         p.life -=
             0.025;
@@ -1681,7 +2296,9 @@ function updateParticles() {
         ctx.globalAlpha =
             p.life;
 
+
         ctx.beginPath();
+
 
         ctx.arc(
             p.x,
@@ -1691,10 +2308,13 @@ function updateParticles() {
             Math.PI * 2
         );
 
+
         ctx.fillStyle =
             p.color;
 
+
         ctx.fill();
+
 
         ctx.globalAlpha =
             1;
@@ -1705,27 +2325,35 @@ function updateParticles() {
 
 
 /* =========================================================
-   TRAIL
+   DRAW HAND TRAIL
 ========================================================= */
 
 function drawTrail() {
 
     if (
-        trail.length < 2
-    )
+        trail.length <
+        2
+    ) {
+
         return;
+
+    }
 
 
     ctx.save();
 
+
     ctx.lineCap =
         "round";
+
 
     ctx.lineJoin =
         "round";
 
+
     ctx.shadowBlur =
         25;
+
 
     ctx.shadowColor =
         "#ffffff";
@@ -1740,35 +2368,43 @@ function drawTrail() {
         const p1 =
             trail[i - 1];
 
+
         const p2 =
             trail[i];
 
 
         const alpha =
-            i / trail.length;
+            i /
+            trail.length;
 
 
         ctx.globalAlpha =
             alpha;
 
+
         ctx.beginPath();
+
 
         ctx.moveTo(
             p1.x,
             p1.y
         );
 
+
         ctx.lineTo(
             p2.x,
             p2.y
         );
 
+
         ctx.strokeStyle =
             "#ffffff";
+
 
         ctx.lineWidth =
             4 +
             alpha * 9;
+
 
         ctx.stroke();
 
@@ -1781,71 +2417,64 @@ function drawTrail() {
 
 
 /* =========================================================
-   DISTANCE TO LINE
+   UPDATE SLICED HALVES
 ========================================================= */
 
-function distanceToSegment(
-    px,
-    py,
-    x1,
-    y1,
-    x2,
-    y2
-) {
+function updateSlicedHalves() {
 
-    const dx =
-        x2 - x1;
-
-    const dy =
-        y2 - y1;
-
-
-    if (
-        dx === 0 &&
-        dy === 0
+    for (
+        let i =
+            slicedHalves.length - 1;
+        i >= 0;
+        i--
     ) {
 
-        return Math.hypot(
-            px - x1,
-            py - y1
+        const half =
+            slicedHalves[i];
+
+
+        half.x +=
+            half.vx;
+
+
+        half.y +=
+            half.vy;
+
+
+        half.vy +=
+            0.35;
+
+
+        half.rotation +=
+            half.rotationSpeed;
+
+
+        half.life--;
+
+
+        drawFruitHalf(
+            half
         );
+
+
+        if (
+            half.life <= 0
+        ) {
+
+            slicedHalves.splice(
+                i,
+                1
+            );
+
+        }
 
     }
-
-
-    const t =
-        Math.max(
-            0,
-            Math.min(
-                1,
-                (
-                    (px - x1) * dx +
-                    (py - y1) * dy
-                ) /
-                (dx * dx + dy * dy)
-            )
-        );
-
-
-    const closestX =
-        x1 +
-        t * dx;
-
-    const closestY =
-        y1 +
-        t * dy;
-
-
-    return Math.hypot(
-        px - closestX,
-        py - closestY
-    );
 
 }
 
 
 /* =========================================================
-   SLICE
+   SLICE FRUIT
 ========================================================= */
 
 function sliceFruit(
@@ -1858,15 +2487,20 @@ function sliceFruit(
 
     if (
         fruit.sliced
-    )
+    ) {
+
         return;
+
+    }
 
 
     fruit.sliced =
         true;
 
 
-    /* BOMB */
+    /*
+        BOMB
+    */
 
     if (
         fruit.bomb
@@ -1881,20 +2515,35 @@ function sliceFruit(
 
         lives--;
 
+
         updateLives();
 
 
-        fruits.splice(
-            fruits.indexOf(fruit),
-            1
-        );
+        const index =
+            fruits.indexOf(
+                fruit
+            );
+
+
+        if (
+            index !== -1
+        ) {
+
+            fruits.splice(
+                index,
+                1
+            );
+
+        }
 
 
         if (
             lives <= 0
         ) {
 
-            endGame();
+            endGame(
+                false
+            );
 
         }
 
@@ -1904,21 +2553,25 @@ function sliceFruit(
     }
 
 
-    /* FRUIT */
+    /*
+        FRUIT
+    */
 
-    score += 10;
+    score +=
+        10;
 
 
     /*
-        Never allow score to go
-        above the target.
+        HARD MAX:
+        300
     */
 
     if (
         score > 300
     ) {
 
-        score = 300;
+        score =
+            300;
 
     }
 
@@ -1936,6 +2589,7 @@ function sliceFruit(
 
     const directionX =
         x2 - x1;
+
 
     const directionY =
         y2 - y1;
@@ -1955,12 +2609,15 @@ function sliceFruit(
         directionX /
         length;
 
+
     const ny =
         directionY /
         length;
 
 
-    /* LEFT */
+    /*
+        LEFT HALF
+    */
 
     slicedHalves.push({
 
@@ -2003,7 +2660,9 @@ function sliceFruit(
     });
 
 
-    /* RIGHT */
+    /*
+        RIGHT HALF
+    */
 
     slicedHalves.push({
 
@@ -2046,16 +2705,26 @@ function sliceFruit(
     });
 
 
-    fruits.splice(
-        fruits.indexOf(fruit),
-        1
-    );
+    const index =
+        fruits.indexOf(
+            fruit
+        );
+
+
+    if (
+        index !== -1
+    ) {
+
+        fruits.splice(
+            index,
+            1
+        );
+
+    }
 
 
     /*
         EXACT WIN CONDITION.
-
-        300 = immediate win.
     */
 
     if (
@@ -2065,140 +2734,14 @@ function sliceFruit(
         score =
             300;
 
+
         scoreElement.textContent =
             "300";
+
 
         endGame(
             true
         );
-
-    }
-
-}
-
-
-/* =========================================================
-   UPDATE HALVES
-========================================================= */
-
-function updateSlicedHalves() {
-
-    for (
-        let i =
-            slicedHalves.length - 1;
-        i >= 0;
-        i--
-    ) {
-
-        const half =
-            slicedHalves[i];
-
-
-        half.x +=
-            half.vx;
-
-        half.y +=
-            half.vy;
-
-        half.vy +=
-            0.35;
-
-        half.rotation +=
-            half.rotationSpeed;
-
-        half.life--;
-
-
-        drawFruitHalf(
-            half
-        );
-
-
-        if (
-            half.life <= 0
-        ) {
-
-            slicedHalves.splice(
-                i,
-                1
-            );
-
-        }
-
-    }
-
-}
-
-
-/* =========================================================
-   SLICE LINE
-========================================================= */
-
-function checkSliceLine(
-    x1,
-    y1,
-    x2,
-    y2
-) {
-
-    if (
-        !gameRunning
-    )
-        return;
-
-
-    for (
-        let i =
-            fruits.length - 1;
-        i >= 0;
-        i--
-    ) {
-
-        const fruit =
-            fruits[i];
-
-
-        if (
-            fruit.sliced
-        )
-            continue;
-
-
-        const distance =
-            distanceToSegment(
-                fruit.x,
-                fruit.y,
-                x1,
-                y1,
-                x2,
-                y2
-            );
-
-
-        /*
-            Large hitbox makes
-            slicing much easier.
-        */
-
-        const hitRadius =
-            fruit.radius +
-            55;
-
-
-        if (
-            distance <
-            hitRadius
-        ) {
-
-            sliceFruit(
-                fruit,
-                x1,
-                y1,
-                x2,
-                y2
-            );
-
-        }
 
     }
 
@@ -2215,8 +2758,11 @@ function updateGame(
 
     if (
         !gameRunning
-    )
+    ) {
+
         return;
+
+    }
 
 
     ctx.clearRect(
@@ -2227,6 +2773,10 @@ function updateGame(
     );
 
 
+    /*
+        SPAWN
+    */
+
     if (
         timestamp -
         lastSpawn >
@@ -2235,15 +2785,23 @@ function updateGame(
 
         spawnObjects();
 
+
         lastSpawn =
             timestamp;
 
     }
 
 
+    /*
+        DIFFICULTY
+    */
+
     difficulty =
         1 +
-        (60 - timeLeft) /
+        (
+            60 -
+            timeLeft
+        ) /
         15;
 
 
@@ -2251,9 +2809,14 @@ function updateGame(
         Math.max(
             330,
             800 -
-            difficulty * 55
+            difficulty *
+            55
         );
 
+
+    /*
+        UPDATE FRUITS
+    */
 
     for (
         let i =
@@ -2269,11 +2832,14 @@ function updateGame(
         fruit.x +=
             fruit.vx;
 
+
         fruit.y +=
             fruit.vy;
 
+
         fruit.vy +=
             fruit.gravity;
+
 
         fruit.rotation +=
             fruit.rotationSpeed;
@@ -2284,17 +2850,19 @@ function updateGame(
         );
 
 
+        /*
+            Remove objects that
+            leave the screen.
+
+            Missing fruit DOES NOT
+            cost a life.
+        */
+
         if (
             fruit.y >
-            canvas.height + 100
+            canvas.height +
+            100
         ) {
-
-            /*
-                Missing fruit does NOT
-                remove a life.
-
-                Only bombs do.
-            */
 
             fruits.splice(
                 i,
@@ -2312,6 +2880,10 @@ function updateGame(
 
     drawTrail();
 
+
+    /*
+        Keep trail short.
+    */
 
     const now =
         Date.now();
@@ -2335,7 +2907,234 @@ function updateGame(
 
 
 /* =========================================================
-   HAND TRACKING
+   IMPROVED HAND DETECTION
+========================================================= */
+
+function distanceToSegment(
+    px,
+    py,
+    x1,
+    y1,
+    x2,
+    y2
+) {
+
+    const dx =
+        x2 -
+        x1;
+
+
+    const dy =
+        y2 -
+        y1;
+
+
+    if (
+        dx === 0 &&
+        dy === 0
+    ) {
+
+        return Math.hypot(
+            px - x1,
+            py - y1
+        );
+
+    }
+
+
+    const lengthSquared =
+        dx * dx +
+        dy * dy;
+
+
+    let t =
+        (
+            (
+                px - x1
+            ) * dx +
+            (
+                py - y1
+            ) * dy
+        ) /
+        lengthSquared;
+
+
+    t =
+        Math.max(
+            0,
+            Math.min(
+                1,
+                t
+            )
+        );
+
+
+    const closestX =
+        x1 +
+        t * dx;
+
+
+    const closestY =
+        y1 +
+        t * dy;
+
+
+    return Math.hypot(
+        px - closestX,
+        py - closestY
+    );
+
+}
+
+
+/* =========================================================
+   CHECK SWIPE AGAINST FRUITS
+========================================================= */
+
+function checkSwipeAgainstFruits(
+    start,
+    end
+) {
+
+    if (
+        !gameRunning
+    ) {
+
+        return;
+
+    }
+
+
+    for (
+        let i =
+            fruits.length - 1;
+        i >= 0;
+        i--
+    ) {
+
+        const fruit =
+            fruits[i];
+
+
+        if (
+            fruit.sliced
+        ) {
+
+            continue;
+
+        }
+
+
+        const distance =
+            distanceToSegment(
+                fruit.x,
+                fruit.y,
+                start.x,
+                start.y,
+                end.x,
+                end.y
+            );
+
+
+        const hitDistance =
+            fruit.radius +
+            SLICE_HITBOX;
+
+
+        if (
+            distance <=
+            hitDistance
+        ) {
+
+            sliceFruit(
+                fruit,
+                start.x,
+                start.y,
+                end.x,
+                end.y
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   CLOSE RANGE FRUIT DETECTION
+========================================================= */
+
+function checkNearbyFruit(
+    x,
+    y
+) {
+
+    if (
+        !gameRunning
+    ) {
+
+        return;
+
+    }
+
+
+    for (
+        let i =
+            fruits.length - 1;
+        i >= 0;
+        i--
+    ) {
+
+        const fruit =
+            fruits[i];
+
+
+        if (
+            fruit.sliced
+        ) {
+
+            continue;
+
+        }
+
+
+        const distance =
+            Math.hypot(
+                fruit.x - x,
+                fruit.y - y
+            );
+
+
+        if (
+            distance <
+            fruit.radius +
+            45
+        ) {
+
+            if (
+                swipeActive
+            ) {
+
+                sliceFruit(
+                    fruit,
+                    x - 20,
+                    y,
+                    x + 20,
+                    y
+                );
+
+            }
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   IMPROVED MEDIAPIPE RESULTS
 ========================================================= */
 
 function onResults(
@@ -2349,19 +3148,27 @@ function onResults(
         handIndicator.style.display =
             "none";
 
-        previousHand =
-            null;
+
+        handHistory =
+            [];
+
 
         smoothedHand =
             null;
 
-        handHistory =
-            [];
+
+        swipeActive =
+            false;
+
 
         return;
 
     }
 
+
+    /*
+        NO HAND
+    */
 
     if (
         !results.multiHandLandmarks ||
@@ -2369,60 +3176,82 @@ function onResults(
     ) {
 
         /*
-            Don't immediately destroy
-            tracking state.
-
-            This prevents tiny detection
-            gaps from breaking the swipe.
+            Small grace period so that
+            one missed frame doesn't destroy
+            the swipe.
         */
 
         if (
             Date.now() -
             lastHandSeen >
-            250
+            350
         ) {
 
-            previousHand =
-                null;
+            handHistory =
+                [];
+
 
             smoothedHand =
                 null;
 
-            handHistory =
-                [];
+
+            swipeActive =
+                false;
+
 
             handIndicator.style.display =
                 "none";
 
         }
 
+
         return;
 
     }
 
+
+    /*
+        HAND FOUND
+    */
 
     const hand =
         results.multiHandLandmarks[0];
 
 
     /*
-        MediaPipe landmark 8 =
-        index fingertip.
+        MediaPipe landmarks:
+
+        8 = index fingertip
+        6 = index middle joint
+        5 = index knuckle
     */
 
     const fingertip =
         hand[8];
 
 
+    const indexJoint =
+        hand[6];
+
+
+    const indexKnuckle =
+        hand[5];
+
+
     /*
-        Mirror X because the
-        camera is mirrored visually.
+        Convert coordinates.
+
+        X is reversed because the
+        camera is mirrored.
     */
 
     let x =
-        (1 -
-            fingertip.x) *
+        (
+            1 -
+            fingertip.x
+        ) *
         canvas.width;
+
 
     let y =
         fingertip.y *
@@ -2430,37 +3259,78 @@ function onResults(
 
 
     /*
-        STRONGER SMOOTHING
+        Finger stability check.
+    */
+
+    const fingerLength =
+        Math.hypot(
+            indexKnuckle.x -
+            fingertip.x,
+
+            indexKnuckle.y -
+            fingertip.y
+        );
+
+
+    /*
+        Don't reject the hand too
+        aggressively.
+
+        Only ignore completely
+        broken landmarks.
     */
 
     if (
-        !smoothedHand
+        fingerLength <
+        0.02 ||
+        fingerLength >
+        0.55
+    ) {
+
+        return;
+
+    }
+
+
+    /*
+        SMOOTH FINGER POSITION
+    */
+
+    if (
+        smoothedHand === null
     ) {
 
         smoothedHand = {
-            x,
-            y
+
+            x: x,
+
+            y: y
+
         };
 
     } else {
 
-        smoothedHand.x =
-            smoothedHand.x *
-            0.55 +
-            x *
-            0.45;
+        smoothedHand.x +=
+            (
+                x -
+                smoothedHand.x
+            ) *
+            HAND_SMOOTHING;
 
-        smoothedHand.y =
-            smoothedHand.y *
-            0.55 +
-            y *
-            0.45;
+
+        smoothedHand.y +=
+            (
+                y -
+                smoothedHand.y
+            ) *
+            HAND_SMOOTHING;
 
     }
 
 
     x =
         smoothedHand.x;
+
 
     y =
         smoothedHand.y;
@@ -2471,21 +3341,23 @@ function onResults(
 
 
     /*
-        Visible finger indicator.
+        FINGER INDICATOR
     */
 
     handIndicator.style.display =
         "block";
 
+
     handIndicator.style.left =
         x + "px";
+
 
     handIndicator.style.top =
         y + "px";
 
 
     /*
-        Add to hand history.
+        SAVE POSITION
     */
 
     const now =
@@ -2494,8 +3366,10 @@ function onResults(
 
     handHistory.push({
 
-        x,
-        y,
+        x: x,
+
+        y: y,
+
         time: now
 
     });
@@ -2511,42 +3385,59 @@ function onResults(
 
 
     /*
-        Add glowing trail.
+        TRAIL
     */
 
     trail.push({
 
-        x,
-        y,
+        x: x,
+
+        y: y,
+
         time: now
 
     });
 
 
-    /*
-        Calculate movement over
-        several frames.
+    trail =
+        trail.filter(
+            point =>
+                now -
+                point.time <
+                180
+        );
 
-        This is much more reliable
-        than only checking the last
-        frame.
+
+    /*
+        SWIPE
     */
 
     if (
-        handHistory.length >= 2
+        handHistory.length >=
+        2
     ) {
 
-        const oldest =
+        const start =
             handHistory[0];
 
 
+        const end = {
+
+            x: x,
+
+            y: y
+
+        };
+
+
         const dx =
-            x -
-            oldest.x;
+            end.x -
+            start.x;
+
 
         const dy =
-            y -
-            oldest.y;
+            end.y -
+            start.y;
 
 
         const distance =
@@ -2556,10 +3447,30 @@ function onResults(
             );
 
 
+        const elapsed =
+            Math.max(
+                1,
+                now -
+                start.time
+            );
+
+
+        const speed =
+            distance /
+            elapsed;
+
+
         if (
             distance >=
             SWIPE_DISTANCE
+            &&
+            speed >=
+            MIN_SWIPE_SPEED
         ) {
+
+            swipeActive =
+                true;
+
 
             if (
                 now -
@@ -2567,56 +3478,66 @@ function onResults(
                 SLICE_COOLDOWN
             ) {
 
-                checkSliceLine(
-                    oldest.x,
-                    oldest.y,
-                    x,
-                    y
+                checkSwipeAgainstFruits(
+                    start,
+                    end
                 );
 
 
                 lastSliceTime =
                     now;
 
-
-                /*
-                    Keep only recent
-                    points so the same
-                    movement isn't repeatedly
-                    registered.
-                */
-
-                handHistory =
-                    handHistory.slice(
-                        -2
-                    );
-
             }
+
+
+            /*
+                Prevent the exact same
+                swipe from firing forever.
+            */
+
+            handHistory =
+                handHistory.slice(
+                    -2
+                );
+
+        } else {
+
+            swipeActive =
+                false;
+
+        }
+
+
+        /*
+            Extra close-range check.
+        */
+
+        if (
+            distance >
+            8
+        ) {
+
+            checkNearbyFruit(
+                x,
+                y
+            );
 
         }
 
     }
 
-
-    previousHand = {
-
-        x,
-        y
-
-    };
-
 }
 
 
 /* =========================================================
-   MEDIAPIPE
+   MEDIAPIPE HANDS
 ========================================================= */
 
 const hands =
     new Hands({
 
         locateFile:
-            file => {
+            function(file) {
 
                 return (
                     "https://cdn.jsdelivr.net/npm/@mediapipe/hands/" +
@@ -2633,19 +3554,27 @@ hands.setOptions({
     maxNumHands:
         1,
 
+
     modelComplexity:
         1,
 
+
     /*
-        LOWER thresholds =
+        LOWER =
         easier hand detection.
     */
 
     minDetectionConfidence:
-        0.35,
+        0.30,
+
+
+    /*
+        LOWER =
+        easier continuous tracking.
+    */
 
     minTrackingConfidence:
-        0.35
+        0.30
 
 });
 
@@ -2659,15 +3588,19 @@ hands.onResults(
    CAMERA
 ========================================================= */
 
-let camera = null;
+let camera =
+    null;
 
 
 async function startCamera() {
 
     if (
-        camera
-    )
+        camera !== null
+    ) {
+
         return;
+
+    }
 
 
     camera =
@@ -2675,21 +3608,24 @@ async function startCamera() {
             video,
             {
 
-                onFrame:
-                    async () => {
-
-                        await hands.send({
-                            image:
-                                video
-                        });
-
-                    },
-
                 width:
                     1280,
 
                 height:
-                    720
+                    720,
+
+
+                onFrame:
+                    async function() {
+
+                        await hands.send({
+
+                            image:
+                                video
+
+                        });
+
+                    }
 
             }
         );
@@ -2737,9 +3673,9 @@ function startTimer() {
 
 
     /*
-        Use real elapsed time rather
-        than assuming every interval
-        fires exactly on time.
+        Real elapsed time is used,
+        so browser timing delays don't
+        make the timer inaccurate.
     */
 
     const timerStart =
@@ -2748,12 +3684,15 @@ function startTimer() {
 
     gameTimer =
         setInterval(
-            () => {
+            function() {
 
                 if (
                     !gameRunning
-                )
+                ) {
+
                     return;
+
+                }
 
 
                 const elapsed =
@@ -2761,7 +3700,8 @@ function startTimer() {
                         (
                             performance.now() -
                             timerStart
-                        ) / 1000
+                        ) /
+                        1000
                     );
 
 
@@ -2778,7 +3718,8 @@ function startTimer() {
 
 
                 if (
-                    timeLeft <= 0
+                    timeLeft <=
+                    0
                 ) {
 
                     endGame(
@@ -2801,9 +3742,13 @@ function startTimer() {
 function getLeaderboard() {
 
     return JSON.parse(
+
         localStorage.getItem(
             "fruitNinjaLeaderboard"
-        ) || "[]"
+        )
+        ||
+        "[]"
+
     );
 
 }
@@ -2828,9 +3773,14 @@ function saveScore() {
 
 
     leaderboard.sort(
-        (a, b) =>
-            b.score -
-            a.score
+        function(a, b) {
+
+            return (
+                b.score -
+                a.score
+            );
+
+        }
     );
 
 
@@ -2842,10 +3792,13 @@ function saveScore() {
 
 
     localStorage.setItem(
+
         "fruitNinjaLeaderboard",
+
         JSON.stringify(
             topThree
         )
+
     );
 
 
@@ -2866,7 +3819,8 @@ function updateLeaderboard() {
         );
 
 
-    rows.innerHTML = "";
+    rows.innerHTML =
+        "";
 
 
     for (
@@ -2889,36 +3843,68 @@ function updateLeaderboard() {
             "rankRow";
 
 
-        const rank =
+        let rank;
+
+
+        if (
             i === 0
-            ? "1st"
-            : i === 1
-            ? "2nd"
-            : "3rd";
+        ) {
+
+            rank =
+                "1st";
+
+        } else if (
+            i === 1
+        ) {
+
+            rank =
+                "2nd";
+
+        } else {
+
+            rank =
+                "3rd";
+
+        }
 
 
         row.innerHTML = `
 
-            <span class="rankNumber">
+            <span
+                class="rankNumber">
+
                 ${rank}
+
             </span>
 
-            <span class="rankName">
+
+            <span
+                class="rankName">
+
                 ${
                     player
-                    ? escapeHTML(
+                    ?
+                    escapeHTML(
                         player.name
                     )
-                    : "---"
+                    :
+                    "---"
                 }
+
             </span>
 
-            <span class="rankScore">
+
+            <span
+                class="rankScore">
+
                 ${
                     player
-                    ? player.score
-                    : 0
+                    ?
+                    player.score
+                    :
+                    0
                 }
+
             </span>
 
         `;
@@ -2963,9 +3949,13 @@ function escapeHTML(
 function getRatings() {
 
     return JSON.parse(
+
         localStorage.getItem(
             "fruitNinjaRatings"
-        ) || "[]"
+        )
+        ||
+        "[]"
+
     );
 
 }
@@ -2979,11 +3969,21 @@ function updateAverageRating() {
 
     const average =
         ratings.length === 0
-        ? 0
+        ?
+        0
         :
         ratings.reduce(
-            (a, b) =>
-                a + b,
+            function(
+                total,
+                rating
+            ) {
+
+                return (
+                    total +
+                    rating
+                );
+
+            },
             0
         ) /
         ratings.length;
@@ -2992,7 +3992,9 @@ function updateAverageRating() {
     document.getElementById(
         "averageRating"
     ).textContent =
-        average.toFixed(1) +
+        average.toFixed(
+            1
+        ) +
         " / 5";
 
 
@@ -3009,15 +4011,18 @@ function updateAverageRating() {
 
 
     ninjaElements.forEach(
-        (
+        function(
             ninja,
             index
-        ) => {
+        ) {
 
             ninja.classList.toggle(
+
                 "active",
+
                 index <
                 rounded
+
             );
 
         }
@@ -3040,10 +4045,13 @@ function saveRating(
 
 
     localStorage.setItem(
+
         "fruitNinjaRatings",
+
         JSON.stringify(
             ratings
         )
+
     );
 
 
@@ -3065,11 +4073,11 @@ document
         ".ninjaChoice"
     )
     .forEach(
-        ninja => {
+        function(ninja) {
 
             ninja.addEventListener(
                 "click",
-                () => {
+                function() {
 
                     selectedRating =
                         Number(
@@ -3082,15 +4090,18 @@ document
                             ".ninjaChoice"
                         )
                         .forEach(
-                            (
+                            function(
                                 item,
                                 index
-                            ) => {
+                            ) {
 
                                 item.classList.toggle(
+
                                     "selected",
+
                                     index <
                                     selectedRating
+
                                 );
 
                             }
@@ -3104,7 +4115,7 @@ document
 
 
 /* =========================================================
-   START SCREEN
+   START → INSTRUCTIONS
 ========================================================= */
 
 document
@@ -3113,10 +4124,11 @@ document
     )
     .addEventListener(
         "click",
-        () => {
+        function() {
 
             startScreen.style.display =
                 "none";
+
 
             instructionsModal.style.display =
                 "flex";
@@ -3140,7 +4152,7 @@ function openNameScreen() {
 
 
     /*
-        Always clear previous
+        ALWAYS clear the previous
         player's name.
     */
 
@@ -3159,7 +4171,7 @@ function openNameScreen() {
 
 
     setTimeout(
-        () => {
+        function() {
 
             input.focus();
 
@@ -3207,7 +4219,8 @@ function beginGameFromName() {
 
 
     if (
-        enteredName.length === 0
+        enteredName.length ===
+        0
     ) {
 
         input.focus();
@@ -3246,10 +4259,11 @@ document
     )
     .addEventListener(
         "keydown",
-        event => {
+        function(event) {
 
             if (
-                event.key === "Enter"
+                event.key ===
+                "Enter"
             ) {
 
                 beginGameFromName();
@@ -3269,14 +4283,18 @@ async function startGame() {
     startScreen.style.display =
         "none";
 
+
     instructionsModal.style.display =
         "none";
+
 
     nameModal.style.display =
         "none";
 
+
     gameOver.style.display =
         "none";
+
 
     ratingModal.style.display =
         "none";
@@ -3298,6 +4316,10 @@ async function startGame() {
     }
 
 
+    /*
+        RESET EVERYTHING
+    */
+
     fruits = [];
 
     particles = [];
@@ -3312,8 +4334,10 @@ async function startGame() {
     score =
         0;
 
+
     lives =
         5;
+
 
     timeLeft =
         60;
@@ -3322,6 +4346,7 @@ async function startGame() {
     scoreElement.textContent =
         "0";
 
+
     timerElement.textContent =
         "60";
 
@@ -3329,14 +4354,24 @@ async function startGame() {
     updateLives();
 
 
-    previousHand =
-        null;
+    /*
+        RESET HAND TRACKING
+    */
 
     smoothedHand =
         null;
 
+
+    lastHandSeen =
+        0;
+
+
     lastSliceTime =
         0;
+
+
+    swipeActive =
+        false;
 
 
     gameRunning =
@@ -3397,8 +4432,11 @@ function endGame(
 
     if (
         !gameRunning
-    )
+    ) {
+
         return;
+
+    }
 
 
     gameRunning =
@@ -3426,16 +4464,17 @@ function endGame(
 
 
     /*
-        If the player somehow reaches
-        300, force exactly 300.
+        HARD 300 LIMIT
     */
 
     if (
-        score >= 300
+        score >=
+        300
     ) {
 
         score =
             300;
+
 
         won =
             true;
@@ -3465,15 +4504,15 @@ function endGame(
         title.textContent =
             "🎉 YOU WON!";
 
+
         result.textContent =
             "🏆 300 POINTS — YOU EARNED A PRIZE!";
 
-    }
-
-    else {
+    } else {
 
         title.textContent =
             "GAME OVER";
+
 
         result.textContent =
             "🥷 NICE RUN!";
@@ -3493,14 +4532,13 @@ function endGame(
 
 
     /*
-        Exactly 2 seconds after
-        the result appears,
-        show rating.
+        EXACTLY 2 SECONDS
+        BEFORE RATING.
     */
 
     resultTimeout =
         setTimeout(
-            () => {
+            function() {
 
                 gameOver.style.display =
                     "none";
@@ -3515,7 +4553,7 @@ function endGame(
                         ".ninjaChoice"
                     )
                     .forEach(
-                        ninja => {
+                        function(ninja) {
 
                             ninja.classList.remove(
                                 "selected"
@@ -3545,10 +4583,11 @@ document
     )
     .addEventListener(
         "click",
-        () => {
+        function() {
 
             if (
-                selectedRating === 0
+                selectedRating ===
+                0
             ) {
 
                 return;
@@ -3574,7 +4613,7 @@ document
                     ".ninjaChoice"
                 )
                 .forEach(
-                    ninja => {
+                    function(ninja) {
 
                         ninja.classList.remove(
                             "selected"
@@ -3585,9 +4624,7 @@ document
 
 
             /*
-                IMPORTANT:
-
-                Clear previous player.
+                CLEAR PREVIOUS PLAYER.
             */
 
             playerName =
@@ -3601,8 +4638,11 @@ document
 
 
             /*
-                New player goes to
-                instructions.
+                GO BACK TO
+                INSTRUCTIONS.
+
+                NOT directly into the
+                next player's game.
             */
 
             instructionsModal.style.display =
@@ -3613,7 +4653,7 @@ document
 
 
 /* =========================================================
-   PLAY AGAIN
+   PLAY AGAIN BUTTON
 ========================================================= */
 
 document
@@ -3622,7 +4662,7 @@ document
     )
     .addEventListener(
         "click",
-        () => {
+        function() {
 
             playerName =
                 "";
@@ -3643,12 +4683,21 @@ document
 
         }
     );
+
+
 /* =========================================================
    INITIALIZE
 ========================================================= */
+
 updateLeaderboard();
+
 updateAverageRating();
+
 </script>
+
 </div>
+
 </body>
+
 </html>
+```
