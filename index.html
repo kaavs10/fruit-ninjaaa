@@ -2821,30 +2821,60 @@ function updateGame(
    KNIFE CURSOR
 ========================================================= */
 
+/* =========================================================
+   ULTRA-RESPONSIVE KNIFE CURSOR
+========================================================= */
+
+let knifeTargetX = 0;
+let knifeTargetY = 0;
+let knifeFramePending = false;
+
+function renderKnife() {
+    knifeFramePending = false;
+
+    handIndicator.style.left =
+        knifeTargetX + "px";
+
+    handIndicator.style.top =
+        knifeTargetY + "px";
+}
+
 function updateKnife(x, y) {
+    if (!gameRunning) return;
+
+    knifeTargetX = x;
+    knifeTargetY = y;
+
     handIndicator.style.display = "block";
+
+    // Only one DOM update per browser paint.
+    if (!knifeFramePending) {
+        knifeFramePending = true;
+        requestAnimationFrame(renderKnife);
+    }
 
     if (previousKnifePoint) {
         const dx = x - previousKnifePoint.x;
         const dy = y - previousKnifePoint.y;
         const movement = Math.hypot(dx, dy);
 
-        if (movement > 3) {
-            const targetAngle = Math.atan2(dy, dx) * 180 / Math.PI;
+        if (movement > 1.5) {
+            const targetAngle =
+                Math.atan2(dy, dx) * 180 / Math.PI;
 
-            // Smooth the angle, including wrap-around.
-            let delta = targetAngle - knifeAngle;
+            let delta =
+                targetAngle - knifeAngle;
+
             while (delta > 180) delta -= 360;
             while (delta < -180) delta += 360;
 
-            knifeAngle += delta * KNIFE_SMOOTHING;
+            // Fast rotation; no artificial lag.
+            knifeAngle += delta * 0.8;
+
+            handIndicator.style.transform =
+                `translate(-50%, -50%) rotate(${knifeAngle}deg)`;
         }
     }
-
-    handIndicator.style.left = x + "px";
-    handIndicator.style.top = y + "px";
-    handIndicator.style.transform =
-        `translate(-50%, -50%) rotate(${knifeAngle}deg)`;
 
     previousKnifePoint = { x, y };
 }
@@ -4169,6 +4199,9 @@ function endGame(
         "none";
     previousKnifePoint = null;
     knifeAngle = -25;
+    knifeFramePending = false;
+    knifeTargetX = 0;
+    knifeTargetY = 0;
 
 
     if (
@@ -4450,6 +4483,5 @@ updateAverageRating();
 </script>
 
 </div>
-
 </body>
 </html>
